@@ -1,0 +1,54 @@
+#ifndef    FONTFACTORY_HH
+# define   FONTFACTORY_HH
+
+# include <unordered_map>
+# include <core_utils/CoreObject.hh>
+# include "ColoredFont.hh"
+
+namespace sdl {
+  namespace core {
+    namespace engine {
+
+      class FontFactory: utils::CoreObject {
+        public:
+
+          FontFactory();
+
+          ~FontFactory();
+
+          FontFactory(const FontFactory& other) = delete;
+
+          void operator=(const FontFactory& other) = delete;
+
+          ColoredFontShPtr
+          createColoredFont(const std::string& name,
+                            const int& size = 25,
+                            const Color& color = Color::NamedColor::White);
+
+        private:
+
+          void
+          initializeTTFLib();
+
+          void
+          releaseTTFLib();
+
+          FontShPtr
+          createFont(const std::string& name);
+
+          void
+          releaseFonts();
+
+        private:
+
+          std::unordered_map<std::string, FontShPtr> m_fonts;
+
+      };
+
+    }
+  }
+}
+
+# include "FontFactory.hxx"
+
+#endif    /* FONTFACTORY_HH */

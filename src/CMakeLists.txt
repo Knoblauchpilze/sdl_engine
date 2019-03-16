@@ -12,6 +12,7 @@ set (SOURCES
   EngineLocator.cc
   Color.cc
   Font.cc
+  FontFactory.cc
   )
 
 add_library (sdl_engine SHARED

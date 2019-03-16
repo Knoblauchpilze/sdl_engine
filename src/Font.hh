@@ -35,9 +35,6 @@ namespace sdl {
           void
           unloadAll();
 
-          void
-          initializeTTFLib();
-
         private:
 
           std::string m_name;

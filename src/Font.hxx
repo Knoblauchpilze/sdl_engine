@@ -86,18 +86,6 @@ namespace sdl {
         m_fonts.clear();
       }
 
-      inline
-      void
-      Font::initializeTTFLib() {
-        // Initialize the ttf lib.
-        if (!TTF_WasInit() && TTF_Init() == -1) {
-          error(
-            std::string("Cqught error while initializing TTF lib when creating font ") +
-            "\"" + getName() + "\" (err: \"" + TTF_GetError() + "\")"
-          );
-        }
-      }
-
     }
   }
 }

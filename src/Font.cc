@@ -10,9 +10,6 @@ namespace sdl {
         m_fonts()
       {
         setService(std::string("font"));
-
-        // Initialize the lib.
-        initializeTTFLib();
       }
 
       Font::Font(const Font& other):
