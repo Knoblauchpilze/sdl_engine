@@ -55,14 +55,14 @@ namespace sdl {
           // Render the input text for the 
           SDL_Surface* textAsSurface = m_font->render(text, m_size, m_color);
           if (textAsSurface == nullptr) {
-            error(std::string("Could not render text \"") + text + "\" with font \"" + m_font->getName() + "\"");
+            error(std::string("Could not render text \"") + text + "\"");
           }
 
           // Create a texture from this surface.
           m_text = SDL_CreateTextureFromSurface(renderer, textAsSurface);
           SDL_FreeSurface(textAsSurface);
           if (m_text == nullptr) {
-            error(std::string("Could not create texture from surface for text \"") + text + "\" and font \"" + m_font->getName() + "\"");
+            error(std::string("Could not create texture from surface for text \"") + text + "\"");
           }
 
           // Apply alpha value for the texture.

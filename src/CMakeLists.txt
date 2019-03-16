@@ -13,6 +13,7 @@ set (SOURCES
   Color.cc
   Font.cc
   FontFactory.cc
+  SdlEngine.cc
   )
 
 add_library (sdl_engine SHARED

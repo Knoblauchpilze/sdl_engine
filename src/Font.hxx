@@ -22,10 +22,7 @@ namespace sdl {
         // Load the font if needed.
         TTF_Font* font = loadForSize(size);
         if (font == nullptr) {
-          error(
-            std::string("Could not render text \"") + text + "\" with font \"" + getName() +
-            "\", could not load font for size " + std::to_string(size)
-          );
+          error(std::string("Could not render text \"") + text + "\", could not load font for size " + std::to_string(size));
         }
 
         // Proceed to rendering.
@@ -41,8 +38,8 @@ namespace sdl {
         SDL_Surface* textSurface = TTF_RenderUTF8_Blended(font, text.c_str(), sdlColor);
         if (textSurface == nullptr) {
           error(
-            std::string("Could not render text \"") + text + "\" with font \"" + getName() +
-            "\" (err: \"" + TTF_GetError() + "\")"
+            std::string("Could not render text \"") + text + "\"",
+            std::string("") + TTF_GetError()
           );
         }
 
@@ -64,9 +61,8 @@ namespace sdl {
         // Check that we could effectively load the font.
         if (newFont == nullptr) {
           error(
-            std::string("Could not load font \"") + getName() + "\" with size " +
-            std::to_string(size) +
-            " (err: \"" + TTF_GetError() + "\")"
+            std::string("Could not load font with size ") + std::to_string(size),
+            std::string("") + TTF_GetError()
           );
         }
 

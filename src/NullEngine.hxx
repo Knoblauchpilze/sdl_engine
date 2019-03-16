@@ -7,6 +7,28 @@ namespace sdl {
   namespace core {
     namespace engine {
 
+      inline
+      Window::UUID
+      NullEngine::createWindow(const utils::Sizei& /*size*/,
+                               const std::string& /*title*/)
+      {
+        // Empty implementation.
+        return Window::UUID();
+      }
+
+      inline
+      Texture::UUID
+      NullEngine::createTexture(const utils::Sizei& /*size*/) {
+        // Empty implementation.
+        return Texture::UUID();
+      }
+
+      inline
+      void
+      NullEngine::setActiveWindow(const Window::UUID& /*uuid*/) {
+        // Empty implementation.
+      }
+
     }
   }
 }

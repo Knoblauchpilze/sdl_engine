@@ -11,6 +11,16 @@ namespace sdl {
 
       class NullEngine : public Engine {
         public:
+
+          Window::UUID
+          createWindow(const utils::Sizei& size,
+                       const std::string& title = std::string("Default SDL window")) override;
+
+          Texture::UUID
+          createTexture(const utils::Sizei& size) override;
+
+          void
+          setActiveWindow(const Window::UUID& uuid) override;
       };
 
     }

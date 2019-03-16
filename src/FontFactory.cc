@@ -8,9 +8,12 @@ namespace sdl {
 
       void
       FontFactory::initializeTTFLib() {
-        // Initialize the ttf lib.
+        // Initialize the TTF lib.
         if (!TTF_WasInit() && TTF_Init() == -1) {
-          error(std::string("Caught error while initializing TTF lib (err: \"") + TTF_GetError() + "\")");
+          error(
+            std::string("Caught error while initializing TTF lib"),
+            std::string("") + TTF_GetError()
+          );
         }
       }
 
