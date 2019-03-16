@@ -9,6 +9,8 @@ find_package (SDL2 REQUIRED)
 find_package (SDL2_ttf REQUIRED)
 
 set (SOURCES
+  EngineLocator.cc
+  Color.cc
   )
 
 add_library (sdl_engine SHARED
