@@ -78,6 +78,9 @@ namespace sdl {
           Color
           darken(const float& factor) noexcept;
 
+          SDL_Color
+          toSDLColor() const noexcept;
+
           static
           Color
           fromRGB(const float& r,

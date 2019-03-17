@@ -2,7 +2,7 @@
 # define   PALETTE_HH
 
 # include <memory>
-# include <sdl_engine/Color.hh>
+# include "Color.hh"
 
 namespace sdl {
   namespace core {
@@ -29,6 +29,9 @@ namespace sdl {
 
           void
           setHighlightColor(const Color& color);
+
+          Color
+          getActiveColor() const noexcept;
 
           static
           Palette

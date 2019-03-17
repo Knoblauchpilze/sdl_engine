@@ -6,6 +6,7 @@
 # include <SDL2/SDL_ttf.h>
 # include <core_utils/CoreObject.hh>
 # include "Color.hh"
+# include "Texture.hh"
 
 namespace sdl {
   namespace core {
@@ -22,9 +23,10 @@ namespace sdl {
 
           virtual ~Font();
 
-          SDL_Surface*
+          SDL_Texture*
           render(const std::string& text,
                  const int& size,
+                 SDL_Renderer* renderer,
                  const Color& color = Color::NamedColor::Black);
 
         private:

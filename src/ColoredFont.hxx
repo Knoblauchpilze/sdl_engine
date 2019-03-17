@@ -22,6 +22,7 @@ namespace sdl {
         setService(std::string("font"));
       }
 
+      inline
       ColoredFont::~ColoredFont() {
         clean();
       }
@@ -34,6 +35,12 @@ namespace sdl {
       }
 
       inline
+      const Color&
+      ColoredFont::getColor() const noexcept {
+        return m_color;
+      }
+
+      inline
       void
       ColoredFont::setColor(const Color& color) noexcept {
         m_color = color;
@@ -41,8 +48,11 @@ namespace sdl {
       }
 
       inline
-      SDL_Texture*
-      ColoredFont::render(SDL_Renderer* renderer, const std::string& text) {
+      TextureShPtr
+      ColoredFont::render(const std::string& text,
+                          const Texture::UUID& uuid,
+                          SDL_Renderer* renderer)
+      {
         // Render the text only if the font has been modified in any way.
         // TODO: Note that we do not check that the rendered texture has
         // been rendered for the input text, so we might reuse a cached
@@ -52,21 +62,14 @@ namespace sdl {
           // Clean the texture if needed.
           clean();
 
-          // Render the input text for the 
-          SDL_Surface* textAsSurface = m_font->render(text, m_size, m_color);
-          if (textAsSurface == nullptr) {
+          // Render the input text using the internal font.
+          SDL_Texture* textTex = m_font->render(text, m_size, renderer, m_color);
+          if (textTex == nullptr) {
             error(std::string("Could not render text \"") + text + "\"");
           }
 
-          // Create a texture from this surface.
-          m_text = SDL_CreateTextureFromSurface(renderer, textAsSurface);
-          SDL_FreeSurface(textAsSurface);
-          if (m_text == nullptr) {
-            error(std::string("Could not create texture from surface for text \"") + text + "\"");
-          }
-
-          // Apply alpha value for the texture.
-          SDL_SetTextureAlphaMod(m_text, m_color.a());
+          // Build a texture from this raw SDL texture pointer.
+          m_text = std::make_shared<Texture>(uuid, textTex);
 
           // The texture has been cached for furhter usage.
           m_dirty = false;
@@ -80,7 +83,7 @@ namespace sdl {
       void
       ColoredFont::clean() noexcept {
         if (m_text != nullptr) {
-          SDL_DestroyTexture(m_text);
+          m_text.reset();
         }
       }
 

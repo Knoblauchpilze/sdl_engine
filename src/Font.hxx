@@ -14,28 +14,23 @@ namespace sdl {
       }
 
       inline
-      SDL_Surface*
+      SDL_Texture*
       Font::render(const std::string& text,
                    const int& size,
+                   SDL_Renderer* renderer,
                    const Color& color)
       {
         // Load the font if needed.
         TTF_Font* font = loadForSize(size);
         if (font == nullptr) {
-          error(std::string("Could not render text \"") + text + "\", could not load font for size " + std::to_string(size));
+          error(
+            std::string("Could not render text \"") + text + "\"",
+            std::string("Could not load font for size ") + std::to_string(size)
+          );
         }
 
         // Proceed to rendering.
-
-        // TODO: Transform to color ?
-        SDL_Color sdlColor = SDL_Color{
-          static_cast<uint8_t>(color.r() * 255.0f),
-          static_cast<uint8_t>(color.g() * 255.0f),
-          static_cast<uint8_t>(color.b() * 255.0f),
-          static_cast<uint8_t>(color.a() * 255.0f)
-        };
-
-        SDL_Surface* textSurface = TTF_RenderUTF8_Blended(font, text.c_str(), sdlColor);
+        SDL_Surface* textSurface = TTF_RenderUTF8_Blended(font, text.c_str(), color.toSDLColor());
         if (textSurface == nullptr) {
           error(
             std::string("Could not render text \"") + text + "\"",
@@ -43,7 +38,21 @@ namespace sdl {
           );
         }
 
-        return textSurface;
+        // Now convert the surface to a valid texture.
+        SDL_Texture* tex = SDL_CreateTextureFromSurface(renderer, textSurface);
+        
+        // Release the resources used by the surface.
+        SDL_FreeSurface(textSurface);
+
+        // Check whether the texture could successfully be created from the surface.
+        if (tex == nullptr) {
+          error(
+            std::string("Unable to create texture from surface for text \"") + text + "\"",
+            std::string("") + SDL_GetError()
+          );
+        }
+
+        return tex;
       }
 
       inline

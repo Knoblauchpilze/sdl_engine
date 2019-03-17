@@ -9,6 +9,8 @@ namespace sdl {
   namespace core {
     namespace engine {
 
+      class Engine;
+
       class EngineLocator {
         public:
 

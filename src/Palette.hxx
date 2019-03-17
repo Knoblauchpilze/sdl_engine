@@ -9,12 +9,11 @@ namespace sdl {
 
       inline
       Palette::Palette():
-        m_foregroundColor(engine::Color::NamedColor::Black),
         m_backgroundColor(engine::Color::NamedColor::Purple),
+        m_foregroundColor(engine::Color::NamedColor::Black),
         m_hoverColor(engine::Color::NamedColor::Silver),
         m_selectionColor(engine::Color::NamedColor::White),
-        m_textColor(engine::Color::NamedColor::Navy),
-        m_selectedTextColor(engine::Color::NamedColor::Magenta)
+        m_highlightColor(engine::Color::NamedColor::Navy)
       {}
 
       inline
@@ -39,6 +38,19 @@ namespace sdl {
       void
       Palette::setSelectionColor(const Color& color) {
         m_selectionColor = color;
+      }
+
+      inline
+      void
+      Palette::setHighlightColor(const Color& color) {
+        m_highlightColor = color;
+      }
+
+      inline
+      Color
+      Palette::getActiveColor() const noexcept {
+        // TODO: Actually handle active color.
+        return m_backgroundColor;
       }
 
       inline

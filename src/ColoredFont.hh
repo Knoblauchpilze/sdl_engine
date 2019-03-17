@@ -5,6 +5,7 @@
 # include <core_utils/CoreObject.hh>
 # include "Font.hh"
 # include "Color.hh"
+# include "Texture.hh"
 
 namespace sdl {
   namespace core {
@@ -23,11 +24,16 @@ namespace sdl {
           void
           setSize(const int& size) noexcept;
 
+          const Color&
+          getColor() const noexcept;
+
           void
           setColor(const Color& color) noexcept;
 
-          SDL_Texture*
-          render(SDL_Renderer* renderer, const std::string& text);
+          TextureShPtr
+          render(const std::string& text,
+                 const Texture::UUID& uuid,
+                 SDL_Renderer* renderer);
 
         private:
 
@@ -41,7 +47,7 @@ namespace sdl {
           Color m_color;
           bool m_dirty;
 
-          SDL_Texture* m_text;
+          TextureShPtr m_text;
 
       };
 

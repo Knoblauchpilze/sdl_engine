@@ -118,6 +118,17 @@ namespace sdl {
       }
 
       inline
+      SDL_Color
+      Color::toSDLColor() const noexcept {
+        return SDL_Color{
+          static_cast<uint8_t>(std::min(std::max(m_r, 0.0f), 1.0f) * 255.0f),
+          static_cast<uint8_t>(std::min(std::max(m_g, 0.0f), 1.0f) * 255.0f),
+          static_cast<uint8_t>(std::min(std::max(m_b, 0.0f), 1.0f) * 255.0f),
+          static_cast<uint8_t>(std::min(std::max(m_a, 0.0f), 1.0f) * 255.0f),
+        };
+      }
+
+      inline
       Color
       Color::fromRGB(const float& r,
                      const float& g,
