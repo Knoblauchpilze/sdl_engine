@@ -32,6 +32,18 @@ namespace sdl {
 
       inline
       void
+      NullEngine::clearWindow(const Window::UUID& /*uuid*/) {
+        // Empty implementation.
+      }
+
+      inline
+      void
+      NullEngine::renderWindow(const Window::UUID& /*uuid*/) {
+        // Empty implementation.
+      }
+
+      inline
+      void
       NullEngine::destroyWindow(const Window::UUID& /*uuid*/) {
         // Empty implementation.
       }

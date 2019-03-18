@@ -38,6 +38,12 @@ namespace sdl {
           draw(TextureShPtr tex,
                utils::Boxf* where = nullptr);
 
+          void
+          clear() noexcept;
+
+          void
+          render() noexcept;
+
         private:
 
           void

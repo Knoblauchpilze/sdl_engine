@@ -129,6 +129,33 @@ namespace sdl {
             std::string("") + SDL_GetError()
           );
         }
+
+        // Let's assign a custom blend mode for the texture. It plays nicely with what we want most
+        // of the time.
+        // This custom blend mode is mainly used to be able to have additive alpha blending in children widget.
+        // Basically if a widget has a transparency of 128 and one of its children has also a transparency of 128,
+        // we would want the final pixel to have a transparency of 64 (i.e. one fourth of totally opaque).
+        // This cannot be achieved using any of the proposed blend modes so we have to rely on custom blend mode.
+        // The custom blend mode can be composed as follows:
+        // dstRGB = colorOperation(srcRGB * srcColorFactor, dstRGB * dstColorFactor)
+        // dstA = alphaOperation(srcA * srcAlphaFactor, dstA * dstAlphaFactor)
+        SDL_BlendMode mode = SDL_ComposeCustomBlendMode(
+          SDL_BLENDFACTOR_SRC_ALPHA,           // srcColorFactor
+          SDL_BLENDFACTOR_ONE_MINUS_SRC_ALPHA, // dstColorFactor
+          SDL_BLENDOPERATION_ADD,              // colorOperation
+          SDL_BLENDFACTOR_ZERO,                // srcAlphaFactor
+          SDL_BLENDFACTOR_ONE,                 // dstAlphaFactor
+          SDL_BLENDOPERATION_ADD               // alphaOperation
+        );
+
+        // Assign the custom blend mode.
+        int retCode = SDL_SetTextureBlendMode(m_texture, mode);
+        if (retCode != 0) {
+          error(
+            std::string("Cannot set blend mode to ") + std::to_string(mode),
+            std::string("") + SDL_GetError()
+          );
+        }
       }
 
       inline

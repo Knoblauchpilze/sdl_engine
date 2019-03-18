@@ -28,6 +28,12 @@ namespace sdl {
                         const std::string& icon) = 0;
 
           virtual void
+          clearWindow(const Window::UUID& uuid) = 0;
+
+          virtual void
+          renderWindow(const Window::UUID& uuid) = 0;
+
+          virtual void
           destroyWindow(const Window::UUID& uuid) = 0;
 
           virtual Texture::UUID

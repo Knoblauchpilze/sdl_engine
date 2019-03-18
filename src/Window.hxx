@@ -81,6 +81,18 @@ namespace sdl {
 
       inline
       void
+      Window::Window::clear() noexcept {
+        SDL_RenderClear(m_renderer);
+      }
+
+      inline
+      void
+      Window::render() noexcept {
+        SDL_RenderPresent(m_renderer);
+      }
+
+      inline
+      void
       Window::create(const utils::Sizei& size)
       {
         // Attempt to create the underlying SDL window.

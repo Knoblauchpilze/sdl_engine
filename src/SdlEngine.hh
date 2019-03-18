@@ -34,6 +34,12 @@ namespace sdl {
                         const std::string& icon) override;
 
           void
+          clearWindow(const Window::UUID& uuid) override;
+
+          void
+          renderWindow(const Window::UUID& uuid) override;
+
+          void
           destroyWindow(const Window::UUID& uuid) override;
 
           Texture::UUID

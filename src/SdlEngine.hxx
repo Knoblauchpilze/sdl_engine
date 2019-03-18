@@ -82,6 +82,28 @@ namespace sdl {
         win->setIcon(icon);
       }
 
+      void
+      SdlEngine::clearWindow(const Window::UUID& uuid) {
+        std::lock_guard<std::mutex> guard(m_locker);
+
+        // Retrieve the required window.
+        WindowShPtr win = getWindowOrThrow(uuid);
+
+        // Clear its content.
+        win->clear();
+      }
+
+      void
+      SdlEngine::renderWindow(const Window::UUID& uuid) {
+        std::lock_guard<std::mutex> guard(m_locker);
+
+        // Retrieve the required window.
+        WindowShPtr win = getWindowOrThrow(uuid);
+
+        // Render its content.
+        win->render();
+      }
+
       inline
       void
       SdlEngine::destroyWindow(const Window::UUID& uuid) {
