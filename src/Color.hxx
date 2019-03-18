@@ -129,6 +129,17 @@ namespace sdl {
       }
 
       inline
+      std::string
+      Color::toString() const noexcept {
+        return
+          std::string("[Color: ") +
+          "r: " + std::to_string(static_cast<int>(255.0f * r())) + ", " +
+          "g: " + std::to_string(static_cast<int>(255.0f * g())) + ", " +
+          "b: " + std::to_string(static_cast<int>(255.0f * b())) + ", " +
+          "a: " + std::to_string(static_cast<int>(255.0f * a())) + "]";
+      }
+
+      inline
       Color
       Color::fromRGB(const float& r,
                      const float& g,
@@ -149,6 +160,19 @@ namespace sdl {
 
     }
   }
+}
+
+inline
+std::ostream&
+operator<<(const sdl::core::engine::Color& color, std::ostream& out) noexcept {
+  return operator<<(out, color);
+}
+
+inline
+std::ostream&
+operator<<(std::ostream& out, const sdl::core::engine::Color& color) noexcept {
+  out << color.toString();
+  return out;
 }
 
 #endif    /* COLOR_HXX */

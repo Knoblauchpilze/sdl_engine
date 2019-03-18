@@ -81,6 +81,9 @@ namespace sdl {
           SDL_Color
           toSDLColor() const noexcept;
 
+          std::string
+          toString() const noexcept;
+
           static
           Color
           fromRGB(const float& r,
@@ -123,6 +126,12 @@ namespace sdl {
     }
   }
 }
+
+std::ostream&
+operator<<(const sdl::core::engine::Color& color, std::ostream& out) noexcept;
+
+std::ostream&
+operator<<(std::ostream& out, const sdl::core::engine::Color& color) noexcept;
 
 # include "Color.hxx"
 
