@@ -201,7 +201,7 @@ namespace sdl {
         ++m_texID;
 
         // Apply alpha value for the texture.
-        setTextureAlpha(texture->getUUID(), font->getColor());
+        texture->setAlpha(font->getColor());
 
         return texture->getUUID();
       }
@@ -241,7 +241,7 @@ namespace sdl {
         // Retrieve the texture to fill.
         TextureShPtr tex = getTextureOrThrow(uuid);
 
-        SDL_SetTextureAlphaMod((*tex)(), color.toSDLColor().a);
+        tex->setAlpha(color);
       }
 
       inline

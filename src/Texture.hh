@@ -7,6 +7,7 @@
 # include <core_utils/CoreObject.hh>
 # include <maths_utils/Size.hh>
 # include <maths_utils/Box.hh>
+# include "Color.hh"
 # include "Palette.hh"
 
 namespace sdl {
@@ -47,6 +48,9 @@ namespace sdl {
           draw(std::shared_ptr<Texture> tex,
                utils::Boxf* box,
                SDL_Renderer* renderer);
+
+          void
+          setAlpha(const Color& color);
 
         private:
 

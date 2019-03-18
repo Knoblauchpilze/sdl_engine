@@ -110,6 +110,12 @@ namespace sdl {
 
       inline
       void
+      Texture::setAlpha(const Color& color) {
+        SDL_SetTextureAlphaMod(m_texture, color.toSDLColor().a);
+      }
+
+      inline
+      void
       Texture::create(const utils::Sizei& size,
                       SDL_Renderer* renderer)
       {
