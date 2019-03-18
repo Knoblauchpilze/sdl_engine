@@ -52,6 +52,59 @@ namespace sdl {
       }
 
       inline
+      void
+      SdlEngine::setActiveWindow(const Window::UUID& uuid) {
+        std::lock_guard<std::mutex> guard(m_locker);
+
+        // Check whether this window actually exist.
+        const WindowsMap::const_iterator win = m_windows.find(uuid);
+        if (win == m_windows.cend()) {
+          error(
+            std::string("Could not set active window to ") + std::to_string(uuid),
+            std::string("Window does not exist")
+          );
+        }
+
+        m_activeWin = win->second;
+      }
+
+      inline
+      void
+      SdlEngine::setWindowIcon(const Window::UUID& uuid,
+                               const std::string& icon)
+      {
+        std::lock_guard<std::mutex> guard(m_locker);
+
+        // Retrieve the required window.
+        WindowShPtr win = getWindowOrThrow(uuid);
+
+        // Assign the icon to this window.
+        win->setIcon(icon);
+      }
+
+      inline
+      void
+      SdlEngine::destroyWindow(const Window::UUID& uuid) {
+        std::lock_guard<std::mutex> guard(m_locker);
+
+        // Erase the window from the internal map.
+        const std::size_t erased = m_windows.erase(uuid);
+
+        // Warn the user if the texture could not be removed.
+        if (erased != 1) {
+          log(
+            std::string("Could not erase inexisting texture ") + std::to_string(uuid),
+            utils::Level::Warning
+          );
+        }
+
+        // Also remove the active window if it corresponds to the id.
+        if (m_activeWin != nullptr && m_activeWin->getUUID() == uuid) {
+          m_activeWin.reset();
+        }
+      }
+
+      inline
       Texture::UUID
       SdlEngine::createTexture(const utils::Sizei& size) {
         // Acquire the lock so that we do not create multiple textures at the
@@ -172,20 +225,42 @@ namespace sdl {
       inline
       void
       SdlEngine::drawTexture(const Texture::UUID& tex,
-                             const Texture::UUID& on,
+                             const Texture::UUID* on,
                              utils::Boxf* where)
       {
         std::lock_guard<std::mutex> guard(m_locker);
 
+        // We have two main cases: either the `on` argument is valid,
+        // in which cas we have a regular blit onto a texture or it
+        // is null, in which case we will use the default target of
+        // the renderer which is the window itself.
+
+        // Check whether we want to draw on the window.
+        if (on == nullptr) {
+          // Retrieve the texture to draw.
+          TextureShPtr layer = getTextureOrThrow(tex);
+
+          // Check that an active window is available, otherwise
+          // we cannot use the underlying renderer.
+          checkActiveWindowOrThrow(
+            std::string("Cannot draw texture ") + std::to_string(tex) + " window"
+          );
+
+          // Render thr texture on the window.
+          m_activeWin->draw(layer, where);
+
+          return;
+        }
+        
         // Retrieve the texture to draw and the texture onto
         // which the drawing should operate.
         TextureShPtr layer = getTextureOrThrow(tex);
-        TextureShPtr base = getTextureOrThrow(on);
+        TextureShPtr base = getTextureOrThrow(*on);
 
         // Check that an active window is available, otherwise
         // we cannot use the underlying renderer.
         checkActiveWindowOrThrow(
-          std::string("Cannot draw texture ") + std::to_string(tex) + " onto " + std::to_string(on)
+          std::string("Cannot draw texture ") + std::to_string(tex) + " onto " + std::to_string(*on)
         );
 
         // Perform the drawing.
@@ -225,23 +300,6 @@ namespace sdl {
 
       inline
       void
-      SdlEngine::setActiveWindow(const Window::UUID& uuid) {
-        std::lock_guard<std::mutex> guard(m_locker);
-
-        // Check whether this window actually exist.
-        const WindowsMap::const_iterator win = m_windows.find(uuid);
-        if (win == m_windows.cend()) {
-          error(
-            std::string("Could not set active window to ") + std::to_string(uuid),
-            std::string("Window does not exist")
-          );
-        }
-
-        m_activeWin = win->second;
-      }
-
-      inline
-      void
       SdlEngine::checkActiveWindowOrThrow(const std::string& errorMessage) const {
         if (m_activeWin == nullptr) {
           error(
@@ -264,6 +322,21 @@ namespace sdl {
         }
 
         return tex->second;
+      }
+
+      inline
+      WindowShPtr
+      SdlEngine::getWindowOrThrow(const Window::UUID& uuid) const {
+        const WindowsMap::const_iterator win = m_windows.find(uuid);
+
+        if (win == m_windows.cend()) {
+          error(
+            std::string("Could not find window ") + std::to_string(uuid),
+            std::string("Window does not exist")
+          );
+        }
+
+        return win->second;
       }
 
     }

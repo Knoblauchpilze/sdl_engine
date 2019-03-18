@@ -19,6 +19,13 @@ namespace sdl {
           void
           setActiveWindow(const Window::UUID& uuid) override;
 
+          void
+          setWindowIcon(const Window::UUID& uuid,
+                        const std::string& icon) override;
+
+          void
+          destroyWindow(const Window::UUID& uuid) override;
+
           Texture::UUID
           createTexture(const utils::Sizei& size) override;
 
@@ -39,7 +46,7 @@ namespace sdl {
 
           void
           drawTexture(const Texture::UUID& tex,
-                      const Texture::UUID& on,
+                      const Texture::UUID* on = nullptr,
                       utils::Boxf* where = nullptr) override;
 
           utils::Sizei

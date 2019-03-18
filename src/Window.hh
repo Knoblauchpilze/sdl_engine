@@ -6,6 +6,7 @@
 # include <SDL2/SDL.h>
 # include <core_utils/CoreObject.hh>
 # include <maths_utils/Size.hh>
+# include "Texture.hh"
 
 namespace sdl {
   namespace core {
@@ -29,6 +30,13 @@ namespace sdl {
 
           SDL_Renderer*
           getRenderer();
+
+          void
+          setIcon(const std::string& icon);
+
+          void
+          draw(TextureShPtr tex,
+               utils::Boxf* where = nullptr);
 
         private:
 

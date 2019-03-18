@@ -23,6 +23,13 @@ namespace sdl {
           virtual void
           setActiveWindow(const Window::UUID& uuid) = 0;
 
+          virtual void
+          setWindowIcon(const Window::UUID& uuid,
+                        const std::string& icon) = 0;
+
+          virtual void
+          destroyWindow(const Window::UUID& uuid) = 0;
+
           virtual Texture::UUID
           createTexture(const utils::Sizei& size) = 0;
 
@@ -43,7 +50,7 @@ namespace sdl {
 
           virtual void
           drawTexture(const Texture::UUID& tex,
-                      const Texture::UUID& on,
+                      const Texture::UUID* on = nullptr,
                       utils::Boxf* where = nullptr) = 0;
 
           virtual utils::Sizei

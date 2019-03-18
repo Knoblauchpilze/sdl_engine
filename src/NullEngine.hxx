@@ -23,6 +23,20 @@ namespace sdl {
       }
 
       inline
+      void
+      NullEngine::setWindowIcon(const Window::UUID& /*uuid*/,
+                                const std::string& /*icon*/)
+      {
+        // EMpty implementation.
+      }
+
+      inline
+      void
+      NullEngine::destroyWindow(const Window::UUID& /*uuid*/) {
+        // Empty implementation.
+      }
+
+      inline
       Texture::UUID
       NullEngine::createTexture(const utils::Sizei& /*size*/) {
         // Empty implementation.
@@ -36,14 +50,14 @@ namespace sdl {
         return Texture::UUID();
       }
 
-      // inline
-      // Texture::UUID
-      // NullEngine::createTextureFromText(const std::string& /*text*/,
-      //                                   ColoredFontShPtr /*font*/)
-      // {
-      //   // Empty implementation.
-      //   return Texture::UUID();
-      // }
+      inline
+      Texture::UUID
+      NullEngine::createTextureFromText(const std::string& /*text*/,
+                                        ColoredFontShPtr /*font*/)
+      {
+        // Empty implementation.
+        return Texture::UUID();
+      }
 
       inline
       void
@@ -64,7 +78,7 @@ namespace sdl {
       inline
       void
       NullEngine::drawTexture(const Texture::UUID& /*tex*/,
-                              const Texture::UUID& /*on*/,
+                              const Texture::UUID* /*on*/,
                               utils::Boxf* /*where*/)
       {
         // Empty implementation.

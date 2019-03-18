@@ -40,6 +40,47 @@ namespace sdl {
 
       inline
       void
+      Window::setIcon(const std::string& icon) {
+        // Load this icon.
+        SDL_Surface* iconAsSurface = SDL_LoadBMP(icon.c_str());
+        if (iconAsSurface == nullptr) {
+          error(
+            std::string("Could not load icon \"") + icon + "\"",
+            std::string("") + SDL_GetError()
+          );
+        }
+
+        // Set the icon to the window.
+        SDL_SetWindowIcon(m_window, iconAsSurface);
+
+        // Release resources used to create the icon.
+        SDL_FreeSurface(iconAsSurface);
+      }
+
+      inline
+      void
+      Window::draw(TextureShPtr tex,
+                   utils::Boxf* where)
+      {
+        // Save the renderer state so that we can restore the
+        // initial rendering target and properties (color, etc.).
+        RendererState state(m_renderer);
+
+        // Set this texture as rendering target.
+        SDL_SetRenderTarget(m_renderer, nullptr);
+
+        // Draw the input texture at the corresponding location.
+        if (where == nullptr) {
+          SDL_RenderCopy(m_renderer, (*tex)(), nullptr, nullptr);
+        } 
+        else {
+          SDL_Rect dstArea = utils::toSDLRect(*where);
+          SDL_RenderCopy(m_renderer, (*tex)(), nullptr, &dstArea);
+        }
+      }
+
+      inline
+      void
       Window::create(const utils::Sizei& size)
       {
         // Attempt to create the underlying SDL window.
