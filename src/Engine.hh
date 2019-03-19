@@ -1,6 +1,7 @@
 #ifndef    ENGINE_HH
 # define   ENGINE_HH
 
+# include <memory>
 # include <maths_utils/Size.hh>
 # include <maths_utils/Box.hh>
 # include "Window.hh"
@@ -67,6 +68,7 @@ namespace sdl {
 
       };
 
+      using EngineShPtr = std::shared_ptr<Engine>;
     }
   }
 }
