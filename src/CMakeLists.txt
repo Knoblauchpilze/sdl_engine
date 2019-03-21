@@ -9,7 +9,6 @@ find_package (SDL2 REQUIRED)
 find_package (SDL2_ttf REQUIRED)
 
 set (SOURCES
-  EngineLocator.cc
   Color.cc
   Font.cc
   FontFactory.cc
