@@ -32,7 +32,6 @@ namespace sdl {
 
           TextureShPtr
           render(const std::string& text,
-                 const Texture::UUID& uuid,
                  SDL_Renderer* renderer);
 
         private:

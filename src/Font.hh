@@ -6,7 +6,6 @@
 # include <SDL2/SDL_ttf.h>
 # include <core_utils/CoreObject.hh>
 # include "Color.hh"
-# include "Texture.hh"
 
 namespace sdl {
   namespace core {

@@ -17,25 +17,15 @@ namespace sdl {
       class Texture: public utils::CoreObject {
         public:
 
-          using UUID = uint32_t;
-
-        public:
-
-          Texture(const UUID& uuid,
-                  const utils::Sizei& size,
+          Texture(const utils::Sizei& size,
                   SDL_Renderer* renderer);
 
-          Texture(const UUID& uuid,
-                  const std::string& file,
+          Texture(const std::string& file,
                   SDL_Renderer* renderer);
 
-          Texture(const UUID& uuid,
-                  SDL_Texture* tex);
+          Texture(SDL_Texture* tex);
 
           ~Texture();
-
-          const UUID&
-          getUUID() const noexcept;
 
           SDL_Texture*
           operator()() const noexcept;
@@ -66,8 +56,6 @@ namespace sdl {
           clean();
 
         private:
-
-          UUID m_uuid;
 
           SDL_Texture* m_texture;
       };

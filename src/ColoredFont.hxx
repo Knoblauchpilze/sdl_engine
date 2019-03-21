@@ -50,7 +50,6 @@ namespace sdl {
       inline
       TextureShPtr
       ColoredFont::render(const std::string& text,
-                          const Texture::UUID& uuid,
                           SDL_Renderer* renderer)
       {
         // Render the text only if the font has been modified in any way.
@@ -69,7 +68,7 @@ namespace sdl {
           }
 
           // Build a texture from this raw SDL texture pointer.
-          m_text = std::make_shared<Texture>(uuid, textTex);
+          m_text = std::make_shared<Texture>(textTex);
 
           // The texture has been cached for furhter usage.
           m_dirty = false;

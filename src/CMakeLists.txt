@@ -11,7 +11,10 @@ find_package (SDL2_ttf REQUIRED)
 set (SOURCES
   Color.cc
   Font.cc
+  Palette.cc
   FontFactory.cc
+  Texture.cc
+  Window.cc
   SdlEngine.cc
   )
 

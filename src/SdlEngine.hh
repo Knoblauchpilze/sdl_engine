@@ -42,34 +42,34 @@ namespace sdl {
           void
           destroyWindow(const Window::UUID& uuid) override;
 
-          Texture::UUID
+          utils::Uuid
           createTexture(const utils::Sizei& size) override;
 
-          Texture::UUID
+          utils::Uuid
           createTextureFromFile(const std::string& file) override;
 
-          Texture::UUID
+          utils::Uuid
           createTextureFromText(const std::string& text,
                                 ColoredFontShPtr font) override;
 
           void
-          fillTexture(const Texture::UUID& uuid,
+          fillTexture(const utils::Uuid& uuid,
                       const Palette& palette) override;
 
           void
-          setTextureAlpha(const Texture::UUID& uuid,
+          setTextureAlpha(const utils::Uuid& uuid,
                           const Color& color) override;
 
           void
-          drawTexture(const Texture::UUID& tex,
-                      const Texture::UUID* on = nullptr,
+          drawTexture(const utils::Uuid& tex,
+                      const utils::Uuid* on = nullptr,
                       utils::Boxf* where = nullptr) override;
 
           utils::Sizei
-          queryTexture(const Texture::UUID& uuid) override;
+          queryTexture(const utils::Uuid& uuid) override;
 
           void
-          destroyTexture(const Texture::UUID& uuid) override;
+          destroyTexture(const utils::Uuid& uuid) override;
 
         private:
 
@@ -83,7 +83,7 @@ namespace sdl {
           checkActiveWindowOrThrow(const std::string& errorMessage) const;
 
           TextureShPtr
-          getTextureOrThrow(const Texture::UUID& uuid) const;
+          getTextureOrThrow(const utils::Uuid& uuid) const;
 
           WindowShPtr
           getWindowOrThrow(const Window::UUID& uuid) const;
@@ -91,7 +91,7 @@ namespace sdl {
         private:
 
           using WindowsMap = std::unordered_map<Window::UUID, WindowShPtr>;
-          using TexturesMap = std::unordered_map<Texture::UUID, TextureShPtr>;
+          using TexturesMap = std::unordered_map<utils::Uuid, TextureShPtr>;
 
           std::mutex m_locker;
 
@@ -99,7 +99,6 @@ namespace sdl {
           WindowsMap m_windows;
           WindowShPtr m_activeWin;
 
-          Texture::UUID m_texID;
           TexturesMap m_textures;
       };
 
