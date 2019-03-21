@@ -46,6 +46,7 @@ namespace sdl {
           Color m_color;
           bool m_dirty;
 
+          std::string m_texText;
           TextureShPtr m_text;
 
       };

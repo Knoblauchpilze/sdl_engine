@@ -17,6 +17,7 @@ namespace sdl {
         m_color(color),
         m_dirty(true),
 
+        m_texText(),
         m_text(nullptr)
       {
         setService(std::string("font"));
@@ -53,10 +54,7 @@ namespace sdl {
                           SDL_Renderer* renderer)
       {
         // Render the text only if the font has been modified in any way.
-        // TODO: Note that we do not check that the rendered texture has
-        // been rendered for the input text, so we might reuse a cached
-        // texture for a different text.
-        if (m_dirty) {
+        if (m_dirty || m_texText.compare(text) != 0) {
 
           // Clean the texture if needed.
           clean();
@@ -72,6 +70,7 @@ namespace sdl {
 
           // The texture has been cached for furhter usage.
           m_dirty = false;
+          m_texText = text;
         }
 
         // Return the internal texture.
