@@ -18,25 +18,25 @@ namespace sdl {
       class Engine {
         public:
 
-          virtual Window::UUID
+          virtual utils::Uuid
           createWindow(const utils::Sizei& size,
                        const std::string& title = std::string("Default SDL window")) = 0;
 
           virtual void
-          setActiveWindow(const Window::UUID& uuid) = 0;
+          setActiveWindow(const utils::Uuid& uuid) = 0;
 
           virtual void
-          setWindowIcon(const Window::UUID& uuid,
+          setWindowIcon(const utils::Uuid& uuid,
                         const std::string& icon) = 0;
 
           virtual void
-          clearWindow(const Window::UUID& uuid) = 0;
+          clearWindow(const utils::Uuid& uuid) = 0;
 
           virtual void
-          renderWindow(const Window::UUID& uuid) = 0;
+          renderWindow(const utils::Uuid& uuid) = 0;
 
           virtual void
-          destroyWindow(const Window::UUID& uuid) = 0;
+          destroyWindow(const utils::Uuid& uuid) = 0;
 
           virtual utils::Uuid
           createTexture(const utils::Sizei& size) = 0;

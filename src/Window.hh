@@ -5,6 +5,7 @@
 # include <string>
 # include <SDL2/SDL.h>
 # include <core_utils/CoreObject.hh>
+# include <core_utils/Uuid.hh>
 # include <maths_utils/Size.hh>
 # include "Texture.hh"
 
@@ -15,18 +16,10 @@ namespace sdl {
       class Window: public utils::CoreObject {
         public:
 
-          using UUID = uint32_t;
-
-        public:
-
-          Window(const UUID& uuid,
-                 const utils::Sizei& size,
+          Window(const utils::Sizei& size,
                  const std::string& title = std::string("Default SDL window"));
 
           ~Window();
-
-          const UUID&
-          getUUID() const noexcept;
 
           SDL_Renderer*
           getRenderer();
@@ -53,8 +46,6 @@ namespace sdl {
           clean();
 
         private:
-
-          UUID m_uuid;
 
           SDL_Window* m_window;
           SDL_Renderer* m_renderer;

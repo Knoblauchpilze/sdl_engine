@@ -5,7 +5,7 @@ namespace sdl {
   namespace core {
     namespace engine {
 
-      Window::UUID
+      utils::Uuid
       SdlEngine::createWindow(const utils::Sizei& size,
                               const std::string& title)
       {
@@ -14,24 +14,24 @@ namespace sdl {
         std::lock_guard<std::mutex> guard(m_locker);
 
         // Attempt to create a window with the specified dimensions.
-        WindowShPtr window = std::make_shared<Window>(m_winID, size,title);
+        WindowShPtr window = std::make_shared<Window>(size, title);
 
         // Register this window in the internal tables.
-        m_windows[m_winID] = window;
-        ++m_winID;
+        utils::Uuid uuid = utils::Uuid::create();
+        m_windows[uuid] = window;
 
-        return window->getUUID();
+        return uuid;
       }
 
       void
-      SdlEngine::setActiveWindow(const Window::UUID& uuid) {
+      SdlEngine::setActiveWindow(const utils::Uuid& uuid) {
         std::lock_guard<std::mutex> guard(m_locker);
 
         // Check whether this window actually exist.
         const WindowsMap::const_iterator win = m_windows.find(uuid);
         if (win == m_windows.cend()) {
           error(
-            std::string("Could not set active window to ") + std::to_string(uuid),
+            std::string("Could not set active window to ") + uuid.toString(),
             std::string("Window does not exist")
           );
         }
@@ -40,7 +40,7 @@ namespace sdl {
       }
 
       void
-      SdlEngine::setWindowIcon(const Window::UUID& uuid,
+      SdlEngine::setWindowIcon(const utils::Uuid& uuid,
                                const std::string& icon)
       {
         std::lock_guard<std::mutex> guard(m_locker);
@@ -53,7 +53,7 @@ namespace sdl {
       }
 
       void
-      SdlEngine::clearWindow(const Window::UUID& uuid) {
+      SdlEngine::clearWindow(const utils::Uuid& uuid) {
         std::lock_guard<std::mutex> guard(m_locker);
 
         // Retrieve the required window.
@@ -64,7 +64,7 @@ namespace sdl {
       }
 
       void
-      SdlEngine::renderWindow(const Window::UUID& uuid) {
+      SdlEngine::renderWindow(const utils::Uuid& uuid) {
         std::lock_guard<std::mutex> guard(m_locker);
 
         // Retrieve the required window.
@@ -76,7 +76,7 @@ namespace sdl {
 
 
       void
-      SdlEngine::destroyWindow(const Window::UUID& uuid) {
+      SdlEngine::destroyWindow(const utils::Uuid& uuid) {
         std::lock_guard<std::mutex> guard(m_locker);
 
         // Erase the window from the internal map.
@@ -85,15 +85,13 @@ namespace sdl {
         // Warn the user if the texture could not be removed.
         if (erased != 1) {
           log(
-            std::string("Could not erase inexisting texture ") + std::to_string(uuid),
+            std::string("Could not erase inexisting texture ") + uuid.toString(),
             utils::Level::Warning
           );
         }
 
         // Also remove the active window if it corresponds to the id.
-        if (m_activeWin != nullptr && m_activeWin->getUUID() == uuid) {
-          m_activeWin.reset();
-        }
+        // TODO: Actually handle it.
       }
 
       utils::Uuid

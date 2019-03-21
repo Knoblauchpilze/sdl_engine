@@ -8,11 +8,9 @@ namespace sdl {
     namespace engine {
 
       inline  
-      Window::Window(const UUID& uuid,
-                     const utils::Sizei& size,
+      Window::Window(const utils::Sizei& size,
                      const std::string& title):
         utils::CoreObject(title),
-        m_uuid(uuid),
         m_window(nullptr),
         m_renderer(nullptr)
       {
@@ -24,12 +22,6 @@ namespace sdl {
       inline
       Window::~Window() {
         clean();
-      }
-
-      inline
-      const Window::UUID&
-      Window::getUUID() const noexcept {
-        return m_uuid;
       }
 
       inline

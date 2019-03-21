@@ -22,25 +22,25 @@ namespace sdl {
 
           virtual ~SdlEngine();
 
-          Window::UUID
+          utils::Uuid
           createWindow(const utils::Sizei& size,
                        const std::string& title = std::string("Default SDL window")) override;
 
           void
-          setActiveWindow(const Window::UUID& uuid) override;
+          setActiveWindow(const utils::Uuid& uuid) override;
 
           void
-          setWindowIcon(const Window::UUID& uuid,
+          setWindowIcon(const utils::Uuid& uuid,
                         const std::string& icon) override;
 
           void
-          clearWindow(const Window::UUID& uuid) override;
+          clearWindow(const utils::Uuid& uuid) override;
 
           void
-          renderWindow(const Window::UUID& uuid) override;
+          renderWindow(const utils::Uuid& uuid) override;
 
           void
-          destroyWindow(const Window::UUID& uuid) override;
+          destroyWindow(const utils::Uuid& uuid) override;
 
           utils::Uuid
           createTexture(const utils::Sizei& size) override;
@@ -86,16 +86,15 @@ namespace sdl {
           getTextureOrThrow(const utils::Uuid& uuid) const;
 
           WindowShPtr
-          getWindowOrThrow(const Window::UUID& uuid) const;
+          getWindowOrThrow(const utils::Uuid& uuid) const;
 
         private:
 
-          using WindowsMap = std::unordered_map<Window::UUID, WindowShPtr>;
+          using WindowsMap = std::unordered_map<utils::Uuid, WindowShPtr>;
           using TexturesMap = std::unordered_map<utils::Uuid, TextureShPtr>;
 
           std::mutex m_locker;
 
-          Window::UUID m_winID;
           WindowsMap m_windows;
           WindowShPtr m_activeWin;
 

@@ -15,7 +15,6 @@ namespace sdl {
 
         m_locker(),
 
-        m_winID(Window::UUID()),
         m_windows(),
         m_activeWin(nullptr),
 
@@ -59,12 +58,12 @@ namespace sdl {
 
       inline
       WindowShPtr
-      SdlEngine::getWindowOrThrow(const Window::UUID& uuid) const {
+      SdlEngine::getWindowOrThrow(const utils::Uuid& uuid) const {
         const WindowsMap::const_iterator win = m_windows.find(uuid);
 
         if (win == m_windows.cend()) {
           error(
-            std::string("Could not find window ") + std::to_string(uuid),
+            std::string("Could not find window ") + uuid.toString(),
             std::string("Window does not exist")
           );
         }
