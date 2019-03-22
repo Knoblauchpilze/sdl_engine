@@ -35,12 +35,14 @@ namespace sdl {
                const Palette& palette);
 
           void
-          draw(std::shared_ptr<Texture> tex,
-               utils::Boxf* box,
+          draw(utils::Boxf* box,
                SDL_Renderer* renderer);
 
           void
           setAlpha(const Color& color);
+
+          utils::Sizei
+          query();
 
         private:
 

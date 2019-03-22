@@ -24,22 +24,6 @@ namespace sdl {
       }
 
       void
-      SdlEngine::setActiveWindow(const utils::Uuid& uuid) {
-        std::lock_guard<std::mutex> guard(m_locker);
-
-        // Check whether this window actually exist.
-        const WindowsMap::const_iterator win = m_windows.find(uuid);
-        if (win == m_windows.cend()) {
-          error(
-            std::string("Could not set active window to ") + uuid.toString(),
-            std::string("Window does not exist")
-          );
-        }
-
-        m_activeWin = win->second;
-      }
-
-      void
       SdlEngine::setWindowIcon(const utils::Uuid& uuid,
                                const std::string& icon)
       {
@@ -89,82 +73,61 @@ namespace sdl {
             utils::Level::Warning
           );
         }
-
-        // Also remove the active window if it corresponds to the id.
-        // TODO: Actually handle it.
       }
 
       utils::Uuid
-      SdlEngine::createTexture(const utils::Sizei& size) {
+      SdlEngine::createTexture(const utils::Uuid& win,
+                               const utils::Sizei& size)
+      {
         // Acquire the lock so that we do not create multiple textures at the
         // same time.
         std::lock_guard<std::mutex> guard(m_locker);
 
-        // Check whether an active window is set: if this is not the case we
-        // cannot create a texture as a texture must have a window parent so
-        // that we can use the associated renderer.
-        checkActiveWindowOrThrow(
-          std::string("Cannot create texture with dimensions ") + size.toString()
-        );
+        // Try to retrieve the desired window from which the texture should be created.
+        WindowShPtr parentWin = getWindowOrThrow(win);
 
-        // Attempt to create a texture with the specified dimensions.
-        TextureShPtr texture = std::make_shared<Texture>(size, m_activeWin->getRenderer());
+        // Create the desired texture.
+        utils::Uuid tex = parentWin->createTexture(size);
 
-        // Register this texture in the internal tables.
-        utils::Uuid uuid = utils::Uuid::create();
-        m_textures[uuid] = texture;
-
-        return uuid;
+        // Register it into the internal table and return it.
+        return registerTextureForWindow(tex, win);
       }
 
       utils::Uuid
-      SdlEngine::createTextureFromFile(const std::string& file) {
+      SdlEngine::createTextureFromFile(const utils::Uuid& win,
+                                       const std::string& file)
+      {
         // Acquire the lock so that we do not create multiple textures at the
         // same time.
         std::lock_guard<std::mutex> guard(m_locker);
 
+        // Try to retrieve the desired window from which the texture should be created.
+        WindowShPtr parentWin = getWindowOrThrow(win);
 
-        // Check whether an active window is set: we need a renderer to perform
-        // the conversion from surface to texture and thus a valid window to
-        // use the underlying renderer.
-        checkActiveWindowOrThrow(
-          std::string("Cannot create texture from file ") + file
-        );
+        // Create the desired texture.
+        utils::Uuid tex = parentWin->createTextureFromFile(file);
 
-        // Attempt to create a texture with the specified file name.
-        TextureShPtr texture = std::make_shared<Texture>(file, m_activeWin->getRenderer());
-
-        // Register this texture in the internal tables.
-        utils::Uuid uuid = utils::Uuid::create();
-        m_textures[uuid] = texture;
-
-        return uuid;
+        // Register it into the internal table and return it.
+        return registerTextureForWindow(tex, win);
       }
 
       utils::Uuid
-      SdlEngine::createTextureFromText(const std::string& text,
+      SdlEngine::createTextureFromText(const utils::Uuid& win,
+                                       const std::string& text,
                                        ColoredFontShPtr font)
       {
+        // Acquire the lock so that we do not create multiple textures at the
+        // same time.
         std::lock_guard<std::mutex> guard(m_locker);
 
-        // In order to render a text; we need to use the renderer provided
-        // by any active window. We thus need to make sure that we effectively
-        // have a valid active window.
-        checkActiveWindowOrThrow(
-          std::string("Cannot create texture from text \"") + text + "\""
-        );
+        // Try to retrieve the desired window from which the texture should be created.
+        WindowShPtr parentWin = getWindowOrThrow(win);
 
-        // Use the underlying renderer to perform the rendering of the text.
-        TextureShPtr texture = font->render(text, m_activeWin->getRenderer());
+        // Create the desired texture.
+        utils::Uuid tex = parentWin->createTextureFromText(text, font);
 
-        // Register this texture in the internal tables.
-        utils::Uuid uuid = utils::Uuid::create();
-        m_textures[uuid] = texture;
-
-        // Apply alpha value for the texture.
-        texture->setAlpha(font->getColor());
-
-        return uuid;
+        // Register it into the internal table and return it.
+        return registerTextureForWindow(tex, win);
       }
 
       void
@@ -173,22 +136,11 @@ namespace sdl {
       {
         std::lock_guard<std::mutex> guard(m_locker);
 
-        // Retrieve the texture to fill.
-        TextureShPtr tex = getTextureOrThrow(uuid);
+        // Retrieve the window associated to the texture to fill.
+        WindowShPtr win = getWindowFromTextureOrThrow(uuid);
 
-        // We need to fill the texture with the color provided by the
-        // input palette.
-        // Based on the active window, we will use the underlying renderer
-        // to perform the painting operation.
-        checkActiveWindowOrThrow(
-          std::string("Cannot fill texture ") + uuid.toString() + " with color"
-        );
-
-        // Retrieve the renderer associated to the active window and pass it
-        // through to the texture along with the palette so that the texture
-        // can automatically handle the filling operation.
-        SDL_Renderer* renderer = m_activeWin->getRenderer();
-        tex->fill(renderer, palette);
+        // Delegate the fill operation to the window object.
+        win->fill(uuid, palette);
       }
 
       void
@@ -197,10 +149,12 @@ namespace sdl {
       {
         std::lock_guard<std::mutex> guard(m_locker);
 
-        // Retrieve the texture to fill.
-        TextureShPtr tex = getTextureOrThrow(uuid);
+        // Retrieve the window associated to the texture for which alpha
+        // should be set.
+        WindowShPtr win = getWindowFromTextureOrThrow(uuid);
 
-        tex->setAlpha(color);
+        // Delegate the alpha channel update to the window object.
+        win->setTextureAlpha(uuid, color);
       }
 
       void
@@ -210,59 +164,64 @@ namespace sdl {
       {
         std::lock_guard<std::mutex> guard(m_locker);
 
-        // We have two main cases: either the `on` argument is valid,
-        // in which cas we have a regular blit onto a texture or it
-        // is null, in which case we will use the default target of
-        // the renderer which is the window itself.
+        // We can only blit both textures from the same window.
+        // Of course this does not apply if the `on` argument is
+        // empty, in which case we should be able to blit the
+        // input `tex` no matter what.
 
-        // Check whether we want to draw on the window.
         if (on == nullptr) {
-          // Retrieve the texture to draw.
-          TextureShPtr layer = getTextureOrThrow(tex);
+          // Retrieve the window associated to the `tex` argument.
+          WindowShPtr win = getWindowFromTextureOrThrow(tex);
 
-          // Check that an active window is available, otherwise
-          // we cannot use the underlying renderer.
-          checkActiveWindowOrThrow(
-            std::string("Cannot draw texture ") + tex.toString() + " window"
-          );
+          // Perform the blit operation.
+          win->drawTexture(tex, on, where);
 
-          // Render thr texture on the window.
-          m_activeWin->draw(layer, where);
-
+          // All set.
           return;
         }
-        
-        // Retrieve the texture to draw and the texture onto
-        // which the drawing should operate.
-        TextureShPtr layer = getTextureOrThrow(tex);
-        TextureShPtr base = getTextureOrThrow(*on);
 
-        // Check that an active window is available, otherwise
-        // we cannot use the underlying renderer.
-        checkActiveWindowOrThrow(
-          std::string("Cannot draw texture ") + tex.toString() + " onto " + on->toString()
-        );
+        // Try to retrieve both identifiers for the input textures.
+        utils::Uuid win1 = getWindowUuidFromTextureOrThrow(tex);
+        utils::Uuid win2 = getWindowUuidFromTextureOrThrow(*on);
 
-        // Perform the drawing.
-        base->draw(layer, where, m_activeWin->getRenderer());
+        // Check whether both textures belong to the same window.
+        if (win1 != win2) {
+          error(
+            std::string("Cannot draw texture ") + tex.toString() + " on " + on->toString(),
+            std::string("Texture do not belong to the same window")
+          );
+        }
+
+        // Both texture belong to the same window, pass on to the
+        // window pointer associated to any of the texture.
+        WindowShPtr win = getWindowOrThrow(win1);
+
+        win->drawTexture(tex, on, where);
       }
 
       utils::Sizei
       SdlEngine::queryTexture(const utils::Uuid& uuid) {
         std::lock_guard<std::mutex> guard(m_locker);
 
-        // Retrieve the texture to query.
-        TextureShPtr tex = getTextureOrThrow(uuid);
+        // Retrieve the window associated to the texture which
+        // should be queried.
+        WindowShPtr win = getWindowFromTextureOrThrow(uuid);
 
-        int w, h;
-        SDL_QueryTexture((*tex)(), nullptr, nullptr, &w, &h);
+        // Return the result of the query.
 
-        return utils::Sizei(w, h);
+        return win->queryTexture(uuid);
       }
 
       void
       SdlEngine::destroyTexture(const utils::Uuid& uuid) {
         std::lock_guard<std::mutex> guard(m_locker);
+
+        // Retrieve the window associated to the texture which
+        // should be erased.
+        WindowShPtr win = getWindowFromTextureOrThrow(uuid);
+
+        // Erase this texture from the window.
+        win->destroyTexture(uuid);
 
         // Erase the texture from the internal map.
         const std::size_t erased = m_textures.erase(uuid);

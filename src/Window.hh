@@ -3,11 +3,13 @@
 
 # include <memory>
 # include <string>
+# include <unordered_map>
 # include <SDL2/SDL.h>
 # include <core_utils/CoreObject.hh>
 # include <core_utils/Uuid.hh>
 # include <maths_utils/Size.hh>
 # include "Texture.hh"
+# include "ColoredFont.hh"
 
 namespace sdl {
   namespace core {
@@ -21,15 +23,37 @@ namespace sdl {
 
           ~Window();
 
-          SDL_Renderer*
-          getRenderer();
-
           void
           setIcon(const std::string& icon);
 
+          utils::Uuid
+          createTexture(const utils::Sizei& size);
+
+          utils::Uuid
+          createTextureFromFile(const std::string& file);
+
+          utils::Uuid
+          createTextureFromText(const std::string& text,
+                                ColoredFontShPtr font);
+
           void
-          draw(TextureShPtr tex,
-               utils::Boxf* where = nullptr);
+          fill(const utils::Uuid& uuid,
+               const Palette& palette);
+
+          void
+          setTextureAlpha(const utils::Uuid& uuid,
+                          const Color& color);
+
+          void
+          drawTexture(const utils::Uuid& tex,
+                      const utils::Uuid* on = nullptr,
+                      utils::Boxf* where = nullptr);
+
+          utils::Sizei
+          queryTexture(const utils::Uuid& uuid);
+
+          void
+          destroyTexture(const utils::Uuid& uuid);
 
           void
           clear() noexcept;
@@ -39,16 +63,26 @@ namespace sdl {
 
         private:
 
+          using TexturesMap = std::unordered_map<utils::Uuid, TextureShPtr>;
+
           void
           create(const utils::Sizei& size);
 
           void
           clean();
 
+          utils::Uuid
+          registerTexture(TextureShPtr tex);
+
+          TextureShPtr
+          getTextureOrThrow(const utils::Uuid& uuid) const;
+
         private:
 
           SDL_Window* m_window;
           SDL_Renderer* m_renderer;
+
+          TexturesMap m_textures;
       };
 
       using WindowShPtr = std::shared_ptr<Window>;

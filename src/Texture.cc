@@ -26,24 +26,16 @@ namespace sdl {
       }
 
       void
-      Texture::draw(std::shared_ptr<Texture> tex,
-                    utils::Boxf* box,
+      Texture::draw(utils::Boxf* box,
                     SDL_Renderer* renderer)
       {
-        // Save the renderer state so that we can restore the
-        // initial rendering target and properties (color, etc.).
-        RendererState state(renderer);
-
-        // Set this texture as rendering target.
-        SDL_SetRenderTarget(renderer, m_texture);
-
         // Draw the input texture at the corresponding location.
         if (box == nullptr) {
-          SDL_RenderCopy(renderer, (*tex)(), nullptr, nullptr);
+          SDL_RenderCopy(renderer, m_texture, nullptr, nullptr);
         } 
         else {
           SDL_Rect dstArea = utils::toSDLRect(*box);
-          SDL_RenderCopy(renderer, (*tex)(), nullptr, &dstArea);
+          SDL_RenderCopy(renderer, m_texture, nullptr, &dstArea);
         }
       }
 

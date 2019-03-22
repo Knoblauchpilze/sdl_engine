@@ -16,8 +16,6 @@ namespace sdl {
         m_locker(),
 
         m_windows(),
-        m_activeWin(nullptr),
-
         m_textures()
       {
         setService(std::string("engine"));
@@ -31,19 +29,52 @@ namespace sdl {
       }
 
       inline
-      void
-      SdlEngine::checkActiveWindowOrThrow(const std::string& errorMessage) const {
-        if (m_activeWin == nullptr) {
-          error(
-            errorMessage,
-            std::string("No active window set")
-          );
-        }
+      utils::Uuid
+      SdlEngine::createTexture(const utils::Sizei& size) {
+        // Not handled in here, we need a window ID.
+        error(std::string("Cannot create texture zith size ") + size.toString() + " without an active window");
+
+        // Return even though error will always throw.
+        return utils::Uuid();
       }
 
       inline
-      TextureShPtr
-      SdlEngine::getTextureOrThrow(const utils::Uuid& uuid) const {
+      utils::Uuid
+      SdlEngine::createTextureFromFile(const std::string& file) {
+        // Not handled in here, we need a window ID.
+        error(std::string("Cannot create texture from file \"") + file + "\" without an active window");
+
+        // Return even though error will always throw.
+        return utils::Uuid();
+      }
+
+      inline
+      utils::Uuid
+      SdlEngine::createTextureFromText(const std::string& text,
+                                       ColoredFontShPtr /*font*/)
+      {
+        // Not handled in here, we need a window ID.
+        error(std::string("Cannot create texture from text \"") + text + "\" without an active window");
+
+        // Return even though error will always throw.
+        return utils::Uuid();
+      }
+
+      inline
+      utils::Uuid
+      SdlEngine::registerTextureForWindow(const utils::Uuid& tex,
+                                          const utils::Uuid& win)
+      {
+        // Register it into the internal table.
+        m_textures[tex] = win;
+
+        // Return it.
+        return tex;
+      }
+
+      inline
+      utils::Uuid
+      SdlEngine::getWindowUuidFromTextureOrThrow(const utils::Uuid& uuid) const {
         const TexturesMap::const_iterator tex = m_textures.find(uuid);
 
         if (tex == m_textures.cend()) {
@@ -54,6 +85,14 @@ namespace sdl {
         }
 
         return tex->second;
+      }
+
+      inline
+      WindowShPtr
+      SdlEngine::getWindowFromTextureOrThrow(const utils::Uuid& uuid) const {
+        return getWindowOrThrow(
+          getWindowUuidFromTextureOrThrow(uuid)
+        );
       }
 
       inline

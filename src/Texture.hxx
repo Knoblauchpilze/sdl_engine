@@ -55,6 +55,16 @@ namespace sdl {
       }
 
       inline
+      utils::Sizei
+      Texture::query() {
+        // Query the texture.
+        int w, h;
+        SDL_QueryTexture(m_texture, nullptr, nullptr, &w, &h);
+
+        return utils::Sizei(w, h);
+      }
+
+      inline
       void
       Texture::clean() {
         if (m_texture != nullptr) {

@@ -26,24 +26,47 @@ namespace sdl {
       }
 
       void
-      Window::draw(TextureShPtr tex,
-                   utils::Boxf* where)
+      Window::drawTexture(const utils::Uuid& tex,
+                          const utils::Uuid* on,
+                          utils::Boxf* where)
       {
+        // We want to draw the input `tex` on the target `on` at
+        // position `where`.
+        // `on` may be nil, in which case we should assign the default
+        // rendering target to the internal `m_renderer` and perform
+        // the blit.
+        // If `where` is set to nul, it only affects how the SDL
+        // will process the blit operation internally but does not
+        // really change anything at this level.
+        // The rendering process is delegated to the texture for the
+        // actual blitting part, but this window will perform all
+        // the rendering pipeline configuration beforehand.
+
         // Save the renderer state so that we can restore the
         // initial rendering target and properties (color, etc.).
         RendererState state(m_renderer);
 
-        // Set this texture as rendering target.
-        SDL_SetRenderTarget(m_renderer, nullptr);
+        // So the first thing to do is to assign a valid rendering target.
+        // To do so, we should set the target to `on`, except if it is
+        // null, in which case we should set the renderer to perform
+        // blit on default target.
+        SDL_Texture* target = nullptr;
+        if (on != nullptr) {
+          // Try to retrieve the corresponding texture.
+          TextureShPtr base = getTextureOrThrow(*on);
 
-        // Draw the input texture at the corresponding location.
-        if (where == nullptr) {
-          SDL_RenderCopy(m_renderer, (*tex)(), nullptr, nullptr);
-        } 
-        else {
-          SDL_Rect dstArea = utils::toSDLRect(*where);
-          SDL_RenderCopy(m_renderer, (*tex)(), nullptr, &dstArea);
+          target = (*base)();
         }
+
+        // Set this texture as rendering target.
+        SDL_SetRenderTarget(m_renderer, target);
+
+        // Now that the rendering target is set, perform the drawing.
+
+        // Retrieve the texture to draw.
+        TextureShPtr layer = getTextureOrThrow(tex);
+
+        layer->draw(where, m_renderer);
       }
 
       void

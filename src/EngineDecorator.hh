@@ -1,31 +1,26 @@
-#ifndef    SDL_ENGINE_HH
-# define   SDL_ENGINE_HH
+#ifndef    ENGINE_DECORATOR_HH
+# define   ENGINE_DECORATOR_HH
 
-# include <mutex>
 # include <memory>
-# include <unordered_map>
-# include <SDL2/SDL.h>
+# include <string>
 # include <core_utils/CoreObject.hh>
-# include <maths_utils/Size.hh>
 # include "Engine.hh"
-# include "Window.hh"
-# include "Texture.hh"
-# include "RendererState.hh"
 
 namespace sdl {
   namespace core {
     namespace engine {
 
-      class SdlEngine : public Engine, public utils::CoreObject {
+      class EngineDecorator: public Engine, public utils::CoreObject {
         public:
 
-          SdlEngine();
+          EngineDecorator(EngineShPtr engine,
+                          const std::string& name = std::string("engine_decorator"));
 
-          virtual ~SdlEngine();
+          virtual ~EngineDecorator();
 
           utils::Uuid
           createWindow(const utils::Sizei& size,
-                       const std::string& title = std::string("Default SDL window")) override;
+                       const std::string& title = std::string("Default SDL window"));
 
           void
           setWindowIcon(const utils::Uuid& uuid,
@@ -77,49 +72,26 @@ namespace sdl {
                       utils::Boxf* where = nullptr) override;
 
           utils::Sizei
-          queryTexture(const utils::Uuid& uuid) override;
+          queryTexture(const utils::Uuid& uuid);
 
           void
-          destroyTexture(const utils::Uuid& uuid) override;
+          destroyTexture(const utils::Uuid& uuid);
+
+        protected:
+
+          void
+          setEngine(EngineShPtr engine);
 
         private:
 
-          void
-          initializeSDLLib();
-
-          void
-          releaseSDLLib();
-
-          utils::Uuid
-          registerTextureForWindow(const utils::Uuid& tex,
-                                   const utils::Uuid& win);
-
-          utils::Uuid
-          getWindowUuidFromTextureOrThrow(const utils::Uuid& uuid) const;
-
-          WindowShPtr
-          getWindowFromTextureOrThrow(const utils::Uuid& uuid) const;
-
-          WindowShPtr
-          getWindowOrThrow(const utils::Uuid& uuid) const;
-
-        private:
-
-          using WindowsMap = std::unordered_map<utils::Uuid, WindowShPtr>;
-          // Textures are associated to their related window identifier.
-          using TexturesMap = std::unordered_map<utils::Uuid, utils::Uuid>;
-
-          std::mutex m_locker;
-
-          WindowsMap m_windows;
-          TexturesMap m_textures;
+          EngineShPtr m_engine;
       };
 
-      using SdlEngineShPtr = std::shared_ptr<SdlEngine>;
+      using EngineDecoratorShPtr = std::shared_ptr<EngineDecorator>;
     }
   }
 }
 
-# include "SdlEngine.hxx"
+# include "EngineDecorator.hxx"
 
-#endif    /* SDL_ENGINE_HH */
+#endif    /* ENGINE_DECORATOR_HH */

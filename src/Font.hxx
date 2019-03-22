@@ -1,7 +1,6 @@
 #ifndef    FONT_HXX
 # define   FONT_HXX
 
-// # include <algorithm>
 # include "Font.hh"
 
 namespace sdl {

@@ -23,9 +23,6 @@ namespace sdl {
                        const std::string& title = std::string("Default SDL window")) = 0;
 
           virtual void
-          setActiveWindow(const utils::Uuid& uuid) = 0;
-
-          virtual void
           setWindowIcon(const utils::Uuid& uuid,
                         const std::string& icon) = 0;
 
@@ -39,11 +36,24 @@ namespace sdl {
           destroyWindow(const utils::Uuid& uuid) = 0;
 
           virtual utils::Uuid
+          createTexture(const utils::Uuid& win,
+                        const utils::Sizei& size) = 0;
+
+          virtual utils::Uuid
           createTexture(const utils::Sizei& size) = 0;
+
+          virtual utils::Uuid
+          createTextureFromFile(const utils::Uuid& win,
+                                const std::string& file) = 0;
 
           virtual utils::Uuid
           createTextureFromFile(const std::string& file) = 0;
           
+          virtual utils::Uuid
+          createTextureFromText(const utils::Uuid& win,
+                                const std::string& text,
+                                ColoredFontShPtr font) = 0;
+
           virtual utils::Uuid
           createTextureFromText(const std::string& text,
                                 ColoredFontShPtr font) = 0;
