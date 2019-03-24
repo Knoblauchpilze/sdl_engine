@@ -195,7 +195,6 @@ namespace sdl {
         // Both texture belong to the same window, pass on to the
         // window pointer associated to any of the texture.
         WindowShPtr win = getWindowOrThrow(win1);
-
         win->drawTexture(tex, on, where);
       }
 
