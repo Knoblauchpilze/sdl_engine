@@ -11,6 +11,8 @@ namespace sdl {
       class QuitEvent: public Event {
         public:
 
+          QuitEvent();
+
           QuitEvent(const SDL_QuitEvent& event);
 
           ~QuitEvent();

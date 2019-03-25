@@ -10,6 +10,7 @@
 # include "Palette.hh"
 # include "Color.hh"
 # include "ColoredFont.hh"
+# include "Event.hh"
 
 namespace sdl {
   namespace core {
@@ -76,6 +77,9 @@ namespace sdl {
 
           virtual void
           destroyTexture(const utils::Uuid& uuid) = 0;
+
+          virtual EventShPtr
+          pollEvent(bool& moreEvents) = 0;
 
       };
 

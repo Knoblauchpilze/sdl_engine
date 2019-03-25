@@ -8,6 +8,15 @@ namespace sdl {
     namespace engine {
 
       inline
+      QuitEvent::QuitEvent():
+        Event(Event::Type::Quit, std::string("quit_event")),
+        m_quit(SDL_QuitEvent{
+          SDL_QUIT,
+          SDL_GetTicks()
+        })
+      {}
+
+      inline
       QuitEvent::QuitEvent(const SDL_QuitEvent& event):
         Event(Event::Type::None, std::string("quit_event")),
         m_quit(event)

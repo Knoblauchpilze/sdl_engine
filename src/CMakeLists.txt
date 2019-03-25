@@ -7,16 +7,22 @@ set (CMAKE_POSITION_INDEPENDENT_CODE ON)
 find_package (SDL2 REQUIRED)
 find_package (SDL2_ttf REQUIRED)
 
+add_subdirectory(
+  ${CMAKE_CURRENT_SOURCE_DIR}/events
+  )
+
+add_subdirectory(
+  ${CMAKE_CURRENT_SOURCE_DIR}/fonts
+)
+
 set (SOURCES
+  ${SOURCES}
   Color.cc
-  Font.cc
   Palette.cc
-  FontFactory.cc
   Texture.cc
   Window.cc
   SdlEngine.cc
   EngineDecorator.cc
-  EventListener.cc
   )
 
 add_library (sdl_engine SHARED
@@ -25,7 +31,7 @@ add_library (sdl_engine SHARED
   ${SDL2_TTF_INCLUDE_DIRS}
   )
 
-set(SDL_CORE_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}" PARENT_SCOPE)
+set(SDL_ENGINE_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}" PARENT_SCOPE)
 
 target_link_libraries(sdl_engine
   ${SDL2_LIBRARY}
@@ -35,6 +41,8 @@ target_link_libraries(sdl_engine
 
 target_include_directories (sdl_engine PUBLIC
   ${CMAKE_CURRENT_SOURCE_DIR}
+  ${CMAKE_CURRENT_SOURCE_DIR}/events
+  ${CMAKE_CURRENT_SOURCE_DIR}/fonts
   ${SDL2_INCLUDE_DIR}
   ${SDL2_TTF_INCLUDE_DIRS}
   )

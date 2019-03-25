@@ -1,5 +1,6 @@
 
 # include "SdlEngine.hh"
+# include "EventFactory.hh"
 
 namespace sdl {
   namespace core {
@@ -232,6 +233,21 @@ namespace sdl {
             utils::Level::Warning
           );
         }
+      }
+
+      EventShPtr
+      SdlEngine::pollEvent(bool& moreEvents) {
+        // Poll the next event in the queue.
+        SDL_Event event;
+        moreEvents = SDL_PollEvent(&event);
+
+        // Return an event from the retrieved event if any.
+        if (moreEvents) {
+          return EventFactory::create(event);
+        }
+
+        // Return null as there's no event available right now.
+        return nullptr;
       }
 
       void

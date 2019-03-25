@@ -16,4 +16,8 @@ install: r
 	sudo mkdir -p /usr/local/include/sdl_engine
 	sudo cp src/*.hh /usr/local/include/sdl_engine
 	sudo cp src/*.hxx /usr/local/include/sdl_engine
+	sudo cp src/events/*.hh /usr/local/include/sdl_engine
+	sudo cp src/events/*.hxx /usr/local/include/sdl_engine
+	sudo cp src/fonts/*.hh /usr/local/include/sdl_engine
+	sudo cp src/fonts/*.hxx /usr/local/include/sdl_engine
 

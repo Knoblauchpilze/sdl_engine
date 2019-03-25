@@ -123,6 +123,12 @@ namespace sdl {
         m_engine->destroyTexture(uuid);
       }
 
+      inline
+      EventShPtr
+      EngineDecorator::pollEvent(bool& moreEvents) {
+        return m_engine->pollEvent(moreEvents);
+      }
+
     }
   }
 }

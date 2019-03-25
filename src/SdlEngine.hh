@@ -4,7 +4,6 @@
 # include <mutex>
 # include <memory>
 # include <unordered_map>
-# include <SDL2/SDL.h>
 # include <core_utils/CoreObject.hh>
 # include <maths_utils/Size.hh>
 # include "Engine.hh"
@@ -81,6 +80,9 @@ namespace sdl {
 
           void
           destroyTexture(const utils::Uuid& uuid) override;
+
+          EventShPtr
+          pollEvent(bool& moreEvents) override;
 
         private:
 

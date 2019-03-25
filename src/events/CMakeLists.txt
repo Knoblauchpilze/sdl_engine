@@ -1,0 +1,8 @@
+
+set (SOURCES
+  ${SOURCES}
+  ${CMAKE_CURRENT_SOURCE_DIR}/EventListener.cc
+  ${CMAKE_CURRENT_SOURCE_DIR}/EventFactory.cc
+  PARENT_SCOPE
+  )
+

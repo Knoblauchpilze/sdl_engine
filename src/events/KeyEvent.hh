@@ -24,6 +24,9 @@ namespace sdl {
           bool
           isRelease() const noexcept;
 
+          bool
+          isEscape() const noexcept;
+
         private:
 
           void

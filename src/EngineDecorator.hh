@@ -72,10 +72,13 @@ namespace sdl {
                       utils::Boxf* where = nullptr) override;
 
           utils::Sizei
-          queryTexture(const utils::Uuid& uuid);
+          queryTexture(const utils::Uuid& uuid) override;
 
           void
-          destroyTexture(const utils::Uuid& uuid);
+          destroyTexture(const utils::Uuid& uuid) override;
+
+          EventShPtr
+          pollEvent(bool& moreEvents) override;
 
         protected:
 

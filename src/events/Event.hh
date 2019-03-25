@@ -1,6 +1,7 @@
 #ifndef    EVENT_HH
 # define   EVENT_HH
 
+# include <memory>
 # include <core_utils/CoreObject.hh>
 
 namespace sdl {
@@ -53,6 +54,7 @@ namespace sdl {
 
       };
 
+      using EventShPtr = std::shared_ptr<Event>;
     }
   }
 }

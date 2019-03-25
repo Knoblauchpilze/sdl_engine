@@ -37,6 +37,12 @@ namespace sdl {
       }
 
       inline
+      bool
+      KeyEvent::isEscape() const noexcept {
+        return getKey() == SDLK_ESCAPE;
+      }
+
+      inline
       void
       KeyEvent::init() {
         // Check whether the event has a right type.

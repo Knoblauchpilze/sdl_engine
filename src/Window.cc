@@ -1,6 +1,5 @@
 
 # include "Window.hh"
-# include "BoxUtils.hh"
 # include "RendererState.hh"
 
 namespace sdl {

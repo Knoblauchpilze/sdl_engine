@@ -1,0 +1,8 @@
+
+set (SOURCES
+  ${SOURCES}
+  ${CMAKE_CURRENT_SOURCE_DIR}/Font.cc
+  ${CMAKE_CURRENT_SOURCE_DIR}/FontFactory.cc
+  PARENT_SCOPE
+  )
+
