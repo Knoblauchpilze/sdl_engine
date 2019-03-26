@@ -52,11 +52,11 @@ namespace sdl {
           utils::Uuid
           createTextureFromText(const utils::Uuid& win,
                                 const std::string& text,
-                                ColoredFontShPtr font) override;
+                                const utils::Uuid& font) override;
 
           utils::Uuid
           createTextureFromText(const std::string& text,
-                                ColoredFontShPtr font) override;
+                                const utils::Uuid& font) override;
 
           void
           fillTexture(const utils::Uuid& uuid,
@@ -76,6 +76,14 @@ namespace sdl {
 
           void
           destroyTexture(const utils::Uuid& uuid) override;
+
+          utils::Uuid
+          createColoredFont(const std::string& name,
+                            const int& size = 25,
+                            const Color& color = Color::NamedColor::White) override;
+
+          void
+          destroyColoredFont(const utils::Uuid& uuid) override;
 
           EventShPtr
           pollEvent(bool& moreEvents) override;

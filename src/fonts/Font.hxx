@@ -15,6 +15,7 @@ namespace sdl {
       inline
       TTF_Font*
       Font::loadForSize(const int& size) {
+        // TODO: Handle multi-threading: we need to protect concurrent creation of fonts.
         // Check for already loaded font.
         const std::unordered_map<int, TTF_Font*>::const_iterator font = m_fonts.find(size);
         if (font != m_fonts.cend()) {

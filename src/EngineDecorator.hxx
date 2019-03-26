@@ -73,7 +73,7 @@ namespace sdl {
       utils::Uuid
       EngineDecorator::createTextureFromText(const utils::Uuid& win,
                                              const std::string& text,
-                                             ColoredFontShPtr font)
+                                             const utils::Uuid& font)
       {
         return m_engine->createTextureFromText(win, text, font);
       }
@@ -81,7 +81,7 @@ namespace sdl {
       inline
       utils::Uuid
       EngineDecorator::createTextureFromText(const std::string& text,
-                                             ColoredFontShPtr font)
+                                             const utils::Uuid& font)
       {
         return m_engine->createTextureFromText(text, font);
       }
@@ -121,6 +121,21 @@ namespace sdl {
       void
       EngineDecorator::destroyTexture(const utils::Uuid& uuid) {
         m_engine->destroyTexture(uuid);
+      }
+
+      inline
+      utils::Uuid
+      EngineDecorator::createColoredFont(const std::string& name,
+                                         const int& size,
+                                         const Color& color)
+      {
+        return m_engine->createColoredFont(name, size, color);
+      }
+
+      inline
+      void
+      EngineDecorator::destroyColoredFont(const utils::Uuid& uuid) {
+        m_engine->destroyColoredFont(uuid);
       }
 
       inline

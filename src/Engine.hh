@@ -53,11 +53,11 @@ namespace sdl {
           virtual utils::Uuid
           createTextureFromText(const utils::Uuid& win,
                                 const std::string& text,
-                                ColoredFontShPtr font) = 0;
+                                const utils::Uuid& font) = 0;
 
           virtual utils::Uuid
           createTextureFromText(const std::string& text,
-                                ColoredFontShPtr font) = 0;
+                                const utils::Uuid& font) = 0;
 
           virtual void
           fillTexture(const utils::Uuid& uuid,
@@ -77,6 +77,14 @@ namespace sdl {
 
           virtual void
           destroyTexture(const utils::Uuid& uuid) = 0;
+
+          virtual utils::Uuid
+          createColoredFont(const std::string& name,
+                            const int& size = 25,
+                            const Color& color = Color::NamedColor::White) = 0;
+
+          virtual void
+          destroyColoredFont(const utils::Uuid& uuid) = 0;
 
           virtual EventShPtr
           pollEvent(bool& moreEvents) = 0;

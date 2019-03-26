@@ -67,10 +67,10 @@ namespace sdl {
         // Erase the window from the internal map.
         const std::size_t erased = m_windows.erase(uuid);
 
-        // Warn the user if the texture could not be removed.
+        // Warn the user if the window could not be removed.
         if (erased != 1) {
           log(
-            std::string("Could not erase inexisting texture ") + uuid.toString(),
+            std::string("Could not erase inexisting window ") + uuid.toString(),
             utils::Level::Warning
           );
         }
@@ -115,7 +115,7 @@ namespace sdl {
       utils::Uuid
       SdlEngine::createTextureFromText(const utils::Uuid& win,
                                        const std::string& text,
-                                       ColoredFontShPtr font)
+                                       const utils::Uuid& font)
       {
         // Acquire the lock so that we do not create multiple textures at the
         // same time.
@@ -124,8 +124,11 @@ namespace sdl {
         // Try to retrieve the desired window from which the texture should be created.
         WindowShPtr parentWin = getWindowOrThrow(win);
 
+        // Try to retrieve the font corresponding to the input uuid.
+        ColoredFontShPtr coloredFont = getFontOrThrow(font);
+
         // Create the desired texture.
-        utils::Uuid tex = parentWin->createTextureFromText(text, font);
+        utils::Uuid tex = parentWin->createTextureFromText(text, coloredFont);
 
         // Register it into the internal table and return it.
         return registerTextureForWindow(tex, win);
@@ -208,7 +211,6 @@ namespace sdl {
         WindowShPtr win = getWindowFromTextureOrThrow(uuid);
 
         // Return the result of the query.
-
         return win->queryTexture(uuid);
       }
 
@@ -230,6 +232,39 @@ namespace sdl {
         if (erased != 1) {
           log(
             std::string("Could not erase inexisting texture ") + uuid.toString(),
+            utils::Level::Warning
+          );
+        }
+      }
+
+      utils::Uuid
+      SdlEngine::createColoredFont(const std::string& name,
+                                   const int& size,
+                                   const Color& color)
+      {
+        std::lock_guard<std::mutex> guard(m_locker);
+
+        // Create the font using the internal factory.
+        ColoredFontShPtr font = m_fontFactory->createColoredFont(name, size, color);
+
+        // Register this window in the internal tables.
+        utils::Uuid uuid = utils::Uuid::create();
+        m_fonts[uuid] = font;
+
+        return uuid;
+      }
+
+      void
+      SdlEngine::destroyColoredFont(const utils::Uuid& uuid) {
+        std::lock_guard<std::mutex> guard(m_locker);
+
+        // Erase the font from the internal map.
+        const std::size_t erased = m_fonts.erase(uuid);
+
+        // Warn the user if the font could not be removed.
+        if (erased != 1) {
+          log(
+            std::string("Could not erase inexisting font ") + uuid.toString(),
             utils::Level::Warning
           );
         }

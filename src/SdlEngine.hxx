@@ -15,16 +15,33 @@ namespace sdl {
 
         m_locker(),
 
+        m_fontFactory(nullptr),
+
         m_windows(),
-        m_textures()
+        m_textures(),
+        m_fonts()
       {
         setService(std::string("engine"));
 
         initializeSDLLib();
+
+        m_fontFactory = std::make_shared<FontFactory>();
       }
 
       inline
       SdlEngine::~SdlEngine() {
+        // We need to clear the elements instantiated with the libraries before
+        // unloading the libraries.
+
+        // First TTF related stuff.
+        // Clean fonts.
+        m_fonts.clear();
+        // And then unload the TTF library.
+        m_fontFactory.reset();
+
+        // Clean windows, which will clear automatically the textures.
+        m_windows.clear();
+        // And then unload the SDL library.
         releaseSDLLib();
       }
 
@@ -51,7 +68,7 @@ namespace sdl {
       inline
       utils::Uuid
       SdlEngine::createTextureFromText(const std::string& text,
-                                       ColoredFontShPtr /*font*/)
+                                       const utils::Uuid& /*font*/)
       {
         // Not handled in here, we need a window ID.
         error(std::string("Cannot create texture from text \"") + text + "\" without an active window");
@@ -108,6 +125,21 @@ namespace sdl {
         }
 
         return win->second;
+      }
+
+      inline
+      ColoredFontShPtr
+      SdlEngine::getFontOrThrow(const utils::Uuid& uuid) const {
+        const FontsMap::const_iterator font = m_fonts.find(uuid);
+
+        if (font == m_fonts.cend()) {
+          error(
+            std::string("Could not find font ") + uuid.toString(),
+            std::string("Font does not exist")
+          );
+        }
+
+        return font->second;
       }
 
     }

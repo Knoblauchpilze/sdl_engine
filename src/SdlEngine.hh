@@ -10,6 +10,7 @@
 # include "Window.hh"
 # include "Texture.hh"
 # include "RendererState.hh"
+# include "FontFactory.hh"
 
 namespace sdl {
   namespace core {
@@ -56,11 +57,11 @@ namespace sdl {
           utils::Uuid
           createTextureFromText(const utils::Uuid& win,
                                 const std::string& text,
-                                ColoredFontShPtr font) override;
+                                const utils::Uuid& font) override;
 
           utils::Uuid
           createTextureFromText(const std::string& text,
-                                ColoredFontShPtr font) override;
+                                const utils::Uuid& font) override;
 
           void
           fillTexture(const utils::Uuid& uuid,
@@ -80,6 +81,14 @@ namespace sdl {
 
           void
           destroyTexture(const utils::Uuid& uuid) override;
+
+          utils::Uuid
+          createColoredFont(const std::string& name,
+                            const int& size = 25,
+                            const Color& color = Color::NamedColor::White) override;
+
+          void
+          destroyColoredFont(const utils::Uuid& uuid) override;
 
           EventShPtr
           pollEvent(bool& moreEvents) override;
@@ -105,16 +114,24 @@ namespace sdl {
           WindowShPtr
           getWindowOrThrow(const utils::Uuid& uuid) const;
 
+          ColoredFontShPtr
+          getFontOrThrow(const utils::Uuid& uuid) const;
+
         private:
 
           using WindowsMap = std::unordered_map<utils::Uuid, WindowShPtr>;
           // Textures are associated to their related window identifier.
           using TexturesMap = std::unordered_map<utils::Uuid, utils::Uuid>;
+          
+          using FontsMap = std::unordered_map<utils::Uuid, ColoredFontShPtr>;
 
           std::mutex m_locker;
 
+          FontFactoryShPtr m_fontFactory;
+
           WindowsMap m_windows;
           TexturesMap m_textures;
+          FontsMap m_fonts;
       };
 
       using SdlEngineShPtr = std::shared_ptr<SdlEngine>;
