@@ -1,6 +1,7 @@
 #ifndef    FONTFACTORY_HH
 # define   FONTFACTORY_HH
 
+# include <memory>
 # include <unordered_map>
 # include <core_utils/CoreObject.hh>
 # include "ColoredFont.hh"
@@ -45,6 +46,7 @@ namespace sdl {
 
       };
 
+      using FontFactoryShPtr = std::shared_ptr<FontFactory>;
     }
   }
 }
