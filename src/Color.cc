@@ -64,6 +64,8 @@ namespace sdl {
             r = 0.3922f; g = 0.0f; b = 0.0f;
             break;
           case NamedColor::Black:
+            r = 0.0f; g = 0.0f; b = 0.0f;
+            break;
           default:
             r = 0.0f; g = 0.5843f; b = 0.9294f;
             break;
