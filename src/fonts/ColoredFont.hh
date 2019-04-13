@@ -4,7 +4,7 @@
 # include <memory>
 # include <core_utils/CoreObject.hh>
 # include "Font.hh"
-# include "Color.hh"
+# include "Palette.hh"
 # include "Texture.hh"
 
 namespace sdl {
@@ -16,19 +16,19 @@ namespace sdl {
 
           explicit
           ColoredFont(FontShPtr font,
-                      const int& size,
-                      const Color& color = Color::NamedColor::Black);
+                      const Palette& palette,
+                      const int& size);
 
           virtual ~ColoredFont();
 
           void
           setSize(const int& size) noexcept;
 
-          const Color&
-          getColor() const noexcept;
+          const Palette&
+          getPalette() const noexcept;
 
           void
-          setColor(const Color& color) noexcept;
+          setPalette(const Palette& palette) noexcept;
 
           TextureShPtr
           render(const std::string& text,
@@ -43,7 +43,7 @@ namespace sdl {
 
           FontShPtr m_font;
           int m_size;
-          Color m_color;
+          Palette m_palette;
           bool m_dirty;
 
           std::string m_texText;

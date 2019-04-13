@@ -9,12 +9,12 @@ namespace sdl {
 
       inline
       ColoredFont::ColoredFont(FontShPtr font,
-                               const int& size,
-                               const Color& color):
+                               const Palette& palette,
+                               const int& size):
         utils::CoreObject(font->getName()),
         m_font(font),
         m_size(size),
-        m_color(color),
+        m_palette(palette),
         m_dirty(true),
 
         m_texText(),
@@ -36,15 +36,15 @@ namespace sdl {
       }
 
       inline
-      const Color&
-      ColoredFont::getColor() const noexcept {
-        return m_color;
+      const Palette&
+      ColoredFont::getPalette() const noexcept {
+        return m_palette;
       }
 
       inline
       void
-      ColoredFont::setColor(const Color& color) noexcept {
-        m_color = color;
+      ColoredFont::setPalette(const Palette& palette) noexcept {
+        m_palette = palette;
         m_dirty = true;
       }
 
@@ -60,7 +60,7 @@ namespace sdl {
           clean();
 
           // Render the input text using the internal font.
-          SDL_Texture* textTex = m_font->render(text, m_size, renderer, m_color);
+          SDL_Texture* textTex = m_font->render(text, m_size, renderer, m_palette.getWindowTextColor());
           if (textTex == nullptr) {
             error(std::string("Could not render text \"") + text + "\"");
           }
