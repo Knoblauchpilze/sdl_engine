@@ -66,7 +66,7 @@ namespace sdl {
           }
 
           // Build a texture from this raw SDL texture pointer.
-          m_text = std::make_shared<Texture>(textTex);
+          m_text = std::make_shared<Texture>(textTex, Palette::ColorRole::WindowText);
 
           // The texture has been cached for furhter usage.
           m_dirty = false;
