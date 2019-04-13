@@ -24,13 +24,13 @@ namespace sdl {
       inline
       ColoredFontShPtr
       FontFactory::createColoredFont(const std::string& name,
-                                     const int& size,
-                                     const Color& color)
+                                     const Palette& palette,
+                                     const int& size)
       {
         return std::make_shared<ColoredFont>(
           createFont(name),
-          size,
-          color
+          palette,
+          size
         );
       }
 

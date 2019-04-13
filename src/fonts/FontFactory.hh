@@ -4,6 +4,7 @@
 # include <memory>
 # include <unordered_map>
 # include <core_utils/CoreObject.hh>
+# include "Palette.hh"
 # include "ColoredFont.hh"
 
 namespace sdl {
@@ -23,8 +24,8 @@ namespace sdl {
 
           ColoredFontShPtr
           createColoredFont(const std::string& name,
-                            const int& size = 25,
-                            const Color& color = Color::NamedColor::White);
+                            const Palette& palette,
+                            const int& size = 25);
 
         private:
 
