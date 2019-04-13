@@ -31,9 +31,11 @@ namespace sdl {
 
       inline
       utils::Uuid
-      Window::createTexture(const utils::Sizei& size) {
+      Window::createTexture(const utils::Sizei& size,
+                            const Palette::ColorRole& role)
+      {
         // Create the texture.
-        TextureShPtr tex = std::make_shared<Texture>(size, m_renderer);
+        TextureShPtr tex = std::make_shared<Texture>(size, role, m_renderer);
 
         // Register and return it.
         return registerTexture(tex);
@@ -41,9 +43,11 @@ namespace sdl {
 
       inline
       utils::Uuid
-      Window::createTextureFromFile(const std::string& file) {
+      Window::createTextureFromFile(const std::string& file,
+                                    const Palette::ColorRole& role)
+      {
         // Create the texture.
-        TextureShPtr tex = std::make_shared<Texture>(file, m_renderer);
+        TextureShPtr tex = std::make_shared<Texture>(file, role, m_renderer);
 
         // Register and return it.
         return registerTexture(tex);

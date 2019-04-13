@@ -9,6 +9,7 @@
 # include <core_utils/Uuid.hh>
 # include <maths_utils/Size.hh>
 # include "Texture.hh"
+# include "Palette.hh"
 # include "ColoredFont.hh"
 
 namespace sdl {
@@ -27,10 +28,12 @@ namespace sdl {
           setIcon(const std::string& icon);
 
           utils::Uuid
-          createTexture(const utils::Sizei& size);
+          createTexture(const utils::Sizei& size,
+                        const Palette::ColorRole& role);
 
           utils::Uuid
-          createTextureFromFile(const std::string& file);
+          createTextureFromFile(const std::string& file,
+                                const Palette::ColorRole& role);
 
           utils::Uuid
           createTextureFromText(const std::string& text,
