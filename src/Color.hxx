@@ -141,6 +141,17 @@ namespace sdl {
 
       inline
       Color
+      Color::mix(const Color& color) const noexcept {
+        return Color(
+          std::min(1.0f, (r() + color.r()) / 2.0f),
+          std::min(1.0f, (g() + color.g()) / 2.0f),
+          std::min(1.0f, (b() + color.b()) / 2.0f),
+          std::min(1.0f, (a() + color.a()) / 2.0f)
+        );
+      }
+
+      inline
+      Color
       Color::fromRGB(const float& r,
                      const float& g,
                      const float& b) noexcept

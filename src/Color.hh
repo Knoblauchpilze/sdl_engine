@@ -84,6 +84,9 @@ namespace sdl {
           std::string
           toString() const noexcept;
 
+          Color
+          mix(const Color& color) const noexcept;
+
           static
           Color
           fromRGB(const float& r,
