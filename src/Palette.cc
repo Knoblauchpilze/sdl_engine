@@ -6,34 +6,158 @@ namespace sdl {
     namespace engine {
 
       Palette
-      Palette::fromBackgroundColor(const engine::Color& color) noexcept {
+      Palette::fromButtonColor(const engine::Color& color) noexcept {
         Palette palette;
 
-        // Assign the background color as desired by the input argument.
-        palette.m_backgroundColor = color;
-
-        // The foreground color is white if the brightness of the background
-        // color is small enough, or black otherwise.
-        palette.m_foregroundColor = Color::NamedColor::White;
-        if (palette.m_backgroundColor.brightness() > 0.5f) {
-          palette.m_foregroundColor = Color::NamedColor::Black;
-        }
-
-        // The highlight color is hard-coded for now whatever the background
-        // color which might lead to some aberrations.
-        // TODO: Fix this.
-        palette.m_hoverColor = Color::NamedColor::CorneFlowerBlue;
-
-        // The selection color is equal to the hover color.
-        palette.m_selectionColor = palette.m_hoverColor;
-
-        // The highlight color is hard-coded for now whatever the background
-        // color which might lead to some aberrations.
-        // TODO: Fix this.
-        palette.m_highlightColor = Color::NamedColor::Purple;
+        // Initialize the palette from the input button color.
+        palette.initFromButtonColor(color);
 
         // Return the built-in palette.
         return palette;
+      }
+
+      void
+      Palette::initFromButtonColor(const Color& color) {
+        // The `Background` color is identical to the input button's color.
+        Color bg = color;
+
+        // The `Button` color is obviously equal to the niput color.
+        Color button = color;
+
+        // The `WindowText` and `Base` color are set to `Black` and `White`
+        // based on the luminance of the input `color`.
+        const float brightness = color.brightness();
+
+        Color windowText;
+        Color windowTextDisabled = Color::NamedColor::Gray;
+        Color base;
+        if (brightness >= 0.5f) {
+          windowText = Color::NamedColor::Black;
+          base = Color::NamedColor::White;
+        }
+        else {
+          windowText = Color::NamedColor::White;
+          base = Color::NamedColor::Black;
+        }
+
+        // The alternate base is a mix between the `Base` and the `Button` color.
+        Color alternateBase = base.mix(button);
+
+        // Assign each color group from the computed colors.
+        setColorGroupFromColors(
+          ColorGroup::Disabled,
+          bg,
+          button.darken(0.5f),
+          bg,
+          alternateBase,
+          button.darken(0.5f),
+          button,
+          bg,
+          Color::NamedColor::White,
+          button.darken(0.66f),
+          button.darken(0.5f),
+          button.darken(0.66f),
+          Color::NamedColor::Black,
+          Color::NamedColor::Navy,
+          Color::NamedColor::White
+        );
+
+        setColorGroupFromColors(
+          ColorGroup::Active,
+          bg,
+          windowText,
+          base,
+          alternateBase,
+          windowText,
+          button,
+          windowText,
+          Color::NamedColor::White,
+          button.brighten(1.5f),
+          button.darken(0.5f),
+          button.darken(0.66f),
+          Color::NamedColor::Black,
+          Color::NamedColor::Navy,
+          Color::NamedColor::White
+        );
+
+        copyInactiveFromActiveColorGroup();
+      }
+
+      void
+      Palette::setColorGroupFromColors(const ColorGroup& group,
+                                       const Color& background,
+                                       const Color& windowText,
+                                       const Color& base,
+                                       const Color& alternateBase,
+                                       const Color& text,
+                                       const Color& button,
+                                       const Color& buttonText,
+                                       const Color& brightText,
+                                       const Color& light,
+                                       const Color& dark,
+                                       const Color& mid,
+                                       const Color& shadow,
+                                       const Color& highlight,
+                                       const Color& highlightedText)
+      {
+        std::unordered_map<ColorRole, Color>* colors = nullptr;
+
+        switch (group) {
+          case ColorGroup::Disabled:
+            colors = &m_disabledColors;
+            break;
+          case ColorGroup::Inactive:
+            colors = &m_inactiveColors;
+            break;
+          case ColorGroup::Active:
+            colors = &m_activeColors;
+            break;
+          default:
+            break;
+        }
+
+        // Check whether the input color group is valid.
+        if (colors == nullptr) {
+          error(
+            std::string("Cannot assign color role from input color group ") + std::to_string(static_cast<int>(group)),
+            std::string("Unknown color group")
+          );
+        }
+
+
+        if (group != ColorGroup::Disabled) {
+          log(std::string("Background: ") + background.toString());
+          log(std::string("WindowText: ") + windowText.toString());
+          log(std::string("Base: ") + base.toString());
+          log(std::string("AlternateBase: ") + alternateBase.toString());
+          log(std::string("Text: ") + text.toString());
+          log(std::string("Button: ") + button.toString());
+          log(std::string("ButtonText: ") + buttonText.toString());
+
+          log(std::string("BrightText: ") + brightText.toString());
+          log(std::string("Light: ") + light.toString());
+          log(std::string("Dark: ") + dark.toString());
+          log(std::string("Mid: ") + mid.toString());
+          log(std::string("Shadow: ") + shadow.toString());
+          log(std::string("Highlight: ") + highlight.toString());
+          log(std::string("HighlightedText: ") + highlightedText.toString());
+        }
+
+        setColorForRoleAndGroup(*colors, ColorRole::Background, background);
+        setColorForRoleAndGroup(*colors, ColorRole::WindowText, windowText);
+        setColorForRoleAndGroup(*colors, ColorRole::Base, base);
+        setColorForRoleAndGroup(*colors, ColorRole::AlternateBase, alternateBase);
+        setColorForRoleAndGroup(*colors, ColorRole::Text, text);
+        setColorForRoleAndGroup(*colors, ColorRole::Button, button);
+        setColorForRoleAndGroup(*colors, ColorRole::ButtonText, buttonText);
+
+        setColorForRoleAndGroup(*colors, ColorRole::BrightText, brightText);
+        setColorForRoleAndGroup(*colors, ColorRole::Light, light);
+        setColorForRoleAndGroup(*colors, ColorRole::Dark, dark);
+        setColorForRoleAndGroup(*colors, ColorRole::Mid, mid);
+        setColorForRoleAndGroup(*colors, ColorRole::Shadow, shadow);
+        setColorForRoleAndGroup(*colors, ColorRole::Highlight, highlight);
+        setColorForRoleAndGroup(*colors, ColorRole::HighlightedText, highlightedText);
       }
 
     }
