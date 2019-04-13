@@ -29,7 +29,6 @@ namespace sdl {
         const float brightness = color.brightness();
 
         Color windowText;
-        Color windowTextDisabled = Color::NamedColor::Gray;
         Color base;
         if (brightness >= 0.5f) {
           windowText = Color::NamedColor::Black;
@@ -122,25 +121,6 @@ namespace sdl {
             std::string("Cannot assign color role from input color group ") + std::to_string(static_cast<int>(group)),
             std::string("Unknown color group")
           );
-        }
-
-
-        if (group != ColorGroup::Disabled) {
-          log(std::string("Background: ") + background.toString());
-          log(std::string("WindowText: ") + windowText.toString());
-          log(std::string("Base: ") + base.toString());
-          log(std::string("AlternateBase: ") + alternateBase.toString());
-          log(std::string("Text: ") + text.toString());
-          log(std::string("Button: ") + button.toString());
-          log(std::string("ButtonText: ") + buttonText.toString());
-
-          log(std::string("BrightText: ") + brightText.toString());
-          log(std::string("Light: ") + light.toString());
-          log(std::string("Dark: ") + dark.toString());
-          log(std::string("Mid: ") + mid.toString());
-          log(std::string("Shadow: ") + shadow.toString());
-          log(std::string("Highlight: ") + highlight.toString());
-          log(std::string("HighlightedText: ") + highlightedText.toString());
         }
 
         setColorForRoleAndGroup(*colors, ColorRole::Background, background);
