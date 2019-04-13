@@ -25,7 +25,8 @@ namespace sdl {
                   const Palette::ColorRole& role,
                   SDL_Renderer* renderer);
 
-          Texture(SDL_Texture* tex);
+          Texture(SDL_Texture* tex,
+                  const Palette::ColorRole& role);
 
           ~Texture();
 
@@ -42,6 +43,9 @@ namespace sdl {
 
           void
           setAlpha(const Color& color);
+
+          void
+          setRole(const Palette::ColorRole& role);
 
           utils::Sizei
           query();

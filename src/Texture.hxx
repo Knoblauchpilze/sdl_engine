@@ -34,8 +34,10 @@ namespace sdl {
       }
 
       inline
-      Texture::Texture(SDL_Texture* tex):
+      Texture::Texture(SDL_Texture* tex,
+                       const Palette::ColorRole& role):
         utils::CoreObject(std::string("texture")),
+        m_role(role),
         m_texture(tex)
       {
         setService(std::string("texture"));
@@ -56,6 +58,12 @@ namespace sdl {
       void
       Texture::setAlpha(const Color& color) {
         SDL_SetTextureAlphaMod(m_texture, color.toSDLColor().a);
+      }
+
+      inline
+      void
+      Texture::setRole(const Palette::ColorRole& role) {
+        m_role = role;
       }
 
       inline
