@@ -47,7 +47,9 @@ namespace sdl {
 
       inline
       utils::Uuid
-      SdlEngine::createTexture(const utils::Sizei& size) {
+      SdlEngine::createTexture(const utils::Sizei& size,
+                               const Palette::ColorRole& /*role*/)
+      {
         // Not handled in here, we need a window ID.
         error(std::string("Cannot create texture zith size ") + size.toString() + " without an active window");
 
@@ -57,7 +59,9 @@ namespace sdl {
 
       inline
       utils::Uuid
-      SdlEngine::createTextureFromFile(const std::string& file) {
+      SdlEngine::createTextureFromFile(const std::string& file,
+                                       const Palette::ColorRole& /*role*/)
+      {
         // Not handled in here, we need a window ID.
         error(std::string("Cannot create texture from file \"") + file + "\" without an active window");
 

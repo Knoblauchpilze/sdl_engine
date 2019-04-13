@@ -37,17 +37,21 @@ namespace sdl {
 
           utils::Uuid
           createTexture(const utils::Uuid& win,
-                        const utils::Sizei& size) override;
+                        const utils::Sizei& size,
+                        const Palette::ColorRole& role) override;
 
           utils::Uuid
-          createTexture(const utils::Sizei& size) override;
+          createTexture(const utils::Sizei& size,
+                        const Palette::ColorRole& role) override;
 
           utils::Uuid
           createTextureFromFile(const utils::Uuid& win,
-                                const std::string& file) override;
+                                const std::string& file,
+                                const Palette::ColorRole& role) override;
 
           utils::Uuid
-          createTextureFromFile(const std::string& file) override;
+          createTextureFromFile(const std::string& file,
+                                const Palette::ColorRole& role) override;
 
           utils::Uuid
           createTextureFromText(const utils::Uuid& win,
@@ -79,8 +83,8 @@ namespace sdl {
 
           utils::Uuid
           createColoredFont(const std::string& name,
-                            const int& size = 25,
-                            const Color& color = Color::NamedColor::White) override;
+                            const Palette& palette,
+                            const int& size = 25) override;
 
           void
           destroyColoredFont(const utils::Uuid& uuid) override;

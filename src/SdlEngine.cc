@@ -78,7 +78,8 @@ namespace sdl {
 
       utils::Uuid
       SdlEngine::createTexture(const utils::Uuid& win,
-                               const utils::Sizei& size)
+                               const utils::Sizei& size,
+                               const Palette::ColorRole& role)
       {
         // Acquire the lock so that we do not create multiple textures at the
         // same time.
@@ -88,7 +89,7 @@ namespace sdl {
         WindowShPtr parentWin = getWindowOrThrow(win);
 
         // Create the desired texture.
-        utils::Uuid tex = parentWin->createTexture(size);
+        utils::Uuid tex = parentWin->createTexture(size, role);
 
         // Register it into the internal table and return it.
         return registerTextureForWindow(tex, win);
@@ -96,7 +97,8 @@ namespace sdl {
 
       utils::Uuid
       SdlEngine::createTextureFromFile(const utils::Uuid& win,
-                                       const std::string& file)
+                                       const std::string& file,
+                                       const Palette::ColorRole& role)
       {
         // Acquire the lock so that we do not create multiple textures at the
         // same time.
@@ -106,7 +108,7 @@ namespace sdl {
         WindowShPtr parentWin = getWindowOrThrow(win);
 
         // Create the desired texture.
-        utils::Uuid tex = parentWin->createTextureFromFile(file);
+        utils::Uuid tex = parentWin->createTextureFromFile(file, role);
 
         // Register it into the internal table and return it.
         return registerTextureForWindow(tex, win);
@@ -239,13 +241,13 @@ namespace sdl {
 
       utils::Uuid
       SdlEngine::createColoredFont(const std::string& name,
-                                   const int& size,
-                                   const Color& color)
+                                   const Palette& palette,
+                                   const int& size)
       {
         std::lock_guard<std::mutex> guard(m_locker);
 
         // Create the font using the internal factory.
-        ColoredFontShPtr font = m_fontFactory->createColoredFont(name, size, color);
+        ColoredFontShPtr font = m_fontFactory->createColoredFont(name, palette, size);
 
         // Register this window in the internal tables.
         utils::Uuid uuid = utils::Uuid::create();

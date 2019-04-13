@@ -44,29 +44,35 @@ namespace sdl {
       inline
       utils::Uuid
       EngineDecorator::createTexture(const utils::Uuid& win,
-                                     const utils::Sizei& size)
+                                     const utils::Sizei& size,
+                                     const Palette::ColorRole& role)
       {
-        return m_engine->createTexture(win, size);
+        return m_engine->createTexture(win, size, role);
       }
 
       inline
       utils::Uuid
-      EngineDecorator::createTexture(const utils::Sizei& size) {
-        return m_engine->createTexture(size);
+      EngineDecorator::createTexture(const utils::Sizei& size,
+                                     const Palette::ColorRole& role)
+      {
+        return m_engine->createTexture(size, role);
       }
 
       inline
       utils::Uuid
       EngineDecorator::createTextureFromFile(const utils::Uuid& win,
-                                             const std::string& file)
+                                             const std::string& file,
+                                             const Palette::ColorRole& role)
       {
-        return m_engine->createTextureFromFile(win, file);
+        return m_engine->createTextureFromFile(win, file, role);
       }
 
       inline
       utils::Uuid
-      EngineDecorator::createTextureFromFile(const std::string& file) {
-        return m_engine->createTextureFromFile(file);
+      EngineDecorator::createTextureFromFile(const std::string& file,
+                                             const Palette::ColorRole& role)
+      {
+        return m_engine->createTextureFromFile(file, role);
       }
 
       inline
@@ -126,10 +132,10 @@ namespace sdl {
       inline
       utils::Uuid
       EngineDecorator::createColoredFont(const std::string& name,
-                                         const int& size,
-                                         const Color& color)
+                                         const Palette& palette,
+                                         const int& size)
       {
-        return m_engine->createColoredFont(name, size, color);
+        return m_engine->createColoredFont(name, palette, size);
       }
 
       inline
