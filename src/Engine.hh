@@ -72,6 +72,10 @@ namespace sdl {
                           const Color& color) = 0;
 
           virtual void
+          setTextureRole(const utils::Uuid& uuid,
+                         const Palette::ColorRole& role) = 0;
+
+          virtual void
           drawTexture(const utils::Uuid& tex,
                       const utils::Uuid* on = nullptr,
                       utils::Boxf* where = nullptr) = 0;
