@@ -38,17 +38,21 @@ namespace sdl {
 
           virtual utils::Uuid
           createTexture(const utils::Uuid& win,
-                        const utils::Sizei& size) = 0;
+                        const utils::Sizei& size,
+                        const Palette::ColorRole& role) = 0;
 
           virtual utils::Uuid
-          createTexture(const utils::Sizei& size) = 0;
+          createTexture(const utils::Sizei& size,
+                        const Palette::ColorRole& role) = 0;
 
           virtual utils::Uuid
           createTextureFromFile(const utils::Uuid& win,
-                                const std::string& file) = 0;
+                                const std::string& file,
+                                const Palette::ColorRole& role) = 0;
 
           virtual utils::Uuid
-          createTextureFromFile(const std::string& file) = 0;
+          createTextureFromFile(const std::string& file,
+                                const Palette::ColorRole& role) = 0;
           
           virtual utils::Uuid
           createTextureFromText(const utils::Uuid& win,
@@ -80,8 +84,8 @@ namespace sdl {
 
           virtual utils::Uuid
           createColoredFont(const std::string& name,
-                            const int& size = 25,
-                            const Color& color = Color::NamedColor::White) = 0;
+                            const Palette& palette,
+                            const int& size = 25) = 0;
 
           virtual void
           destroyColoredFont(const utils::Uuid& uuid) = 0;
