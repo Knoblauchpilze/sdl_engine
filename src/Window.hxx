@@ -86,8 +86,20 @@ namespace sdl {
         // Try to retrieve the corresponding texture.
         TextureShPtr tex = getTextureOrThrow(uuid);
 
-        // Fill it using the internal renderer.
+        // Set its alpha channel from the input color.
         tex->setAlpha(color);
+      }
+
+      inline
+      void
+      Window::setTextureRole(const utils::Uuid& uuid,
+                             const Palette::ColorRole& role)
+      {
+        // Try to retrieve the corresponding texture.
+        TextureShPtr tex = getTextureOrThrow(uuid);
+
+        // Update the role from the input argument.
+        tex->setRole(role);
       }
 
       inline
