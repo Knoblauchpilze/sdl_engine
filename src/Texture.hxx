@@ -9,8 +9,10 @@ namespace sdl {
 
       inline
       Texture::Texture(const utils::Sizei& size,
+                       const Palette::ColorRole& role,
                        SDL_Renderer* renderer):
         utils::CoreObject(std::string("texture")),
+        m_role(role),
         m_texture(nullptr)
       {
         setService(std::string("texture"));
@@ -20,8 +22,10 @@ namespace sdl {
 
       inline
       Texture::Texture(const std::string& file,
+                       const Palette::ColorRole& role,
                        SDL_Renderer* renderer):
         utils::CoreObject(std::string("texture")),
+        m_role(role),
         m_texture(nullptr)
       {
         setService(std::string("texture"));

@@ -29,7 +29,7 @@ namespace sdl {
                     const Palette& palette)
       {
         // Retrieve the color to use to fill the texture from the palette.
-        SDL_Color color = palette.getActiveColor().toSDLColor();
+        SDL_Color color = palette.getColorForRole(m_role).toSDLColor();
 
         // Save the current state of the renderer: this will automatically handle restoring
         // the state upon destroying this object.

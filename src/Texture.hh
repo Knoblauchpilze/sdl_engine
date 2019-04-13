@@ -18,9 +18,11 @@ namespace sdl {
         public:
 
           Texture(const utils::Sizei& size,
+                  const Palette::ColorRole& role,
                   SDL_Renderer* renderer);
 
           Texture(const std::string& file,
+                  const Palette::ColorRole& role,
                   SDL_Renderer* renderer);
 
           Texture(SDL_Texture* tex);
@@ -59,6 +61,7 @@ namespace sdl {
 
         private:
 
+          Palette::ColorRole m_role;
           SDL_Texture* m_texture;
       };
 
