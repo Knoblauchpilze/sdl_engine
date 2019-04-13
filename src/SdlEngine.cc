@@ -164,6 +164,20 @@ namespace sdl {
       }
 
       void
+      SdlEngine::setTextureRole(const utils::Uuid& uuid,
+                                const Palette::ColorRole& role)
+      {
+        std::lock_guard<std::mutex> guard(m_locker);
+
+        // Retrieve the window associated to the texture for which the
+        // role should be set.
+        WindowShPtr win = getWindowFromTextureOrThrow(uuid);
+
+        // Delegate the alpha channel update to the window object.
+        win->setTextureRole(uuid, role);
+      }
+
+      void
       SdlEngine::drawTexture(const utils::Uuid& tex,
                              const utils::Uuid* on,
                              utils::Boxf* where)
