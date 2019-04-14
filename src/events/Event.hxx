@@ -34,6 +34,12 @@ namespace sdl {
 
       inline
       void
+      Event::ignore() noexcept {
+        setAccepted(false);
+      }
+
+      inline
+      void
       Event::setAccepted(const bool accepted) noexcept {
         m_accepted = accepted;
       }

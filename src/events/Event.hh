@@ -13,14 +13,18 @@ namespace sdl {
 
           // Describes the available type of events.
           enum class Type {
-            None,
-            KeyPress,
-            KeyRelease,
-            MouseButtonPress,
-            MouseButtonRelease,
-            MouseMove,
-            MouseWheel,
-            Quit
+            None,                //<! - Not an event
+            KeyPress,            //<! - One of the keyboard's keys has been pressed.
+            KeyRelease,          //<! - One of the keyboard's keys has been released.
+            MouseButtonPress,    //<! - One of the mouse button has been pressed.
+            MouseButtonRelease,  //<! - One of the mouse button has been released.
+            MouseMove,           //<! - The mouse cursor has been moved.
+            MouseWheel,          //<! - The mouse wheel has been used.
+            Enter,               //<! - Mouse enter object's boundaries.
+            FocusIn,             //<! - Object gains keyboard focus.
+            FocusOut,            //<! - Object loses keyboard focus.
+            Leave,               //<! - Mouse leaves the object's boundaries.
+            Quit                 //<! - Main application was closed.
           };
 
         public:
@@ -32,6 +36,9 @@ namespace sdl {
 
           void
           accept() noexcept;
+
+          void
+          ignore() noexcept;
 
           void
           setAccepted(const bool accepted) noexcept;
