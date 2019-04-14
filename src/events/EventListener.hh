@@ -9,6 +9,9 @@ namespace sdl {
   namespace core {
     namespace engine {
 
+      class EventListener;
+      using EventListenerShPtr = std::shared_ptr<EventListener>;
+
       class EventListener: public utils::CoreObject {
         public:
 
@@ -16,26 +19,38 @@ namespace sdl {
 
           virtual ~EventListener();
 
+          // Note that this function returns `true` if the event has been recognized,
+          // and false if this is not the case.
+          // To determine whether the event should be sent to children one should check
+          // the `e->isAccepted()` result.
+          bool
+          event(EventShPtr e);
+
+          void
+          installEventFilter(EventListenerShPtr filter);
+
+          void
+          removeEventFilter(EventListenerShPtr filter);
+
           virtual bool
-          handleEvent(Event* e);
-
-          virtual void
-          installEventFilter(EventListener* filter);
-
-          virtual void
-          removeEventFilter(EventListener* filter);
-
-          virtual bool
-          filterEvent(EventListener* watched, Event* e);
+          filterEvent(EventListener* watched,
+                      EventShPtr e);
 
         protected:
 
-          using Filters = std::vector<EventListener*>;
+          // Note that the return value it is true only if the event `e` has been recognized.
+          // To check whether the event has been accepted, use the `e->isAccepted()` method.
+          virtual bool
+          handleEvent(EventShPtr e);
+
+        private:
+
+          using Filters = std::vector<EventListenerShPtr>;
 
           using Filter = Filters::const_iterator;
 
           Filter
-          findFilter(EventListener* filter) const;
+          findFilter(EventListenerShPtr filter) const;
 
           bool
           validFilter(const Filter& filter) const noexcept;
