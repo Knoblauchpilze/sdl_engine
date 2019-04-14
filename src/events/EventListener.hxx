@@ -12,57 +12,79 @@ namespace sdl {
       EventListener::~EventListener() {}
 
       inline
-      const EventListener::Interaction::Mask&
-      EventListener::getInteractionMask() const noexcept {
-        return m_mask;
+      bool
+      EventListener::handleEvent(Event* /*e*/) {
+        // No event handling here, mark this event as "not processed".
+        return false;
       }
 
       inline
       void
-      EventListener::onKeyPressedEvent(const KeyEvent& /*keyEvent*/) {
-        // Empty implementation
+      EventListener::installEventFilter(EventListener* filter) {
+        // Check filter validity.
+        if (filter == nullptr) {
+          log(
+            std::string("Cannot install event filter, invalid null filter"),
+            utils::Level::Warning
+          );
+
+          return;
+        }
+
+        // Only add this filter if it does not exist yet.
+        // The `removeFilter` does handle properly the case where
+        // the provided filter does not exist so use it as a cheap
+        // solution to remove the `filter` in all cases.
+        removeFilter(findFilter(filter));
+
+        // Insert this filter at the end of the internal vector.
+        // Based on the mechanism provided by `filterEvent`, if
+        // we insert the filter at the end of the vector it will
+        // be applied first which is what we want.
+        m_filters.push_back(filter);
       }
 
       inline
       void
-      EventListener::onKeyReleasedEvent(const KeyEvent& /*keyEvent*/) {
-        // Empty implementation
-      }
-
-      inline
-      void
-      EventListener::onMouseMotionEvent(const MouseEvent& /*mouseMotionEvent*/) {
-        // Empty implementation
-      }
-
-      inline
-      void
-      EventListener::onMouseButtonPressedEvent(const MouseEvent& /*mouseButtonEvent*/) {
-        // Empty implementation
-      }
-
-      inline
-      void
-      EventListener::onMouseButtonReleasedEvent(const MouseEvent& /*mouseButtonEvent*/) {
-        // Empty implementation
-      }
-
-      inline
-      void
-      EventListener::onMouseWheelEvent(const MouseEvent& /*event*/) {
-        // Empty implementation
-      }
-
-      inline
-      void
-      EventListener::onQuitEvent(const QuitEvent& /*event*/) {
-        // Empty implementation
+      EventListener::removeEventFilter(EventListener* filter) {
+        // Use the dedicated handler.
+        removeFilter(findFilter(filter));
       }
 
       inline
       bool
-      EventListener::isRelevant(const Interaction::Mask& event) const noexcept {
-        return m_mask & event;
+      EventListener::filterEvent(EventListener* /*watched*/, Event* /*e*/) {
+        // No filtering provided here, return false.
+        return false;
+      }
+
+      inline
+      EventListener::Filter
+      EventListener::findFilter(EventListener* filter) const {
+        // Traverse the registered filter and try to find the input `filter`.
+        Filter internalFilter = m_filters.cbegin();
+
+        while (validFilter(internalFilter) && *internalFilter != filter) {
+          ++internalFilter;
+        }
+
+        return internalFilter;
+      }
+
+      inline
+      bool
+      EventListener::validFilter(const Filter& filter) const noexcept {
+        return filter != m_filters.cend();
+      }
+
+      inline
+      void
+      EventListener::removeFilter(const Filter& filter) {
+        // Check whether this filter is valid.
+        if (validFilter(filter)) {
+          // Remove it.
+          m_filters.erase(filter);
+        }
       }
 
     }
