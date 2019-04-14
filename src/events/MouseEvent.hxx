@@ -71,6 +71,20 @@ namespace sdl {
       }
 
       inline
+      utils::Vector2f
+      MouseEvent::getMousePosition() const noexcept {
+        if (m_motion != nullptr) {
+          return utils::Vector2f(m_motion->x, m_motion->y);
+        }
+
+        if (m_button != nullptr) {
+          return utils::Vector2f(m_button->x, m_button->y);
+        }
+
+        return utils::Vector2f(0.0f, 0.0f);
+      }
+
+      inline
       int
       MouseEvent::getXRel() const noexcept {
         if (m_motion != nullptr) {

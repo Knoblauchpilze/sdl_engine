@@ -4,6 +4,7 @@
 # include "Event.hh"
 # include <memory>
 # include <SDL2/SDL.h>
+# include <maths_utils/Vector2.hh>
 
 namespace sdl {
   namespace core {
@@ -44,11 +45,8 @@ namespace sdl {
           bool
           isRelease() const noexcept;
 
-          int
-          getX() const noexcept;
-
-          int
-          getY() const noexcept;
+          utils::Vector2f
+          getMousePosition() const noexcept;
 
           int
           getXRel() const noexcept;
