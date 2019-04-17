@@ -1,5 +1,5 @@
-#ifndef    RENDERERSTATE_HH
-# define   RENDERERSTATE_HH
+#ifndef    RENDERER_STATE_HH
+# define   RENDERER_STATE_HH
 
 # include <memory>
 # include <SDL2/SDL.h>
@@ -32,4 +32,4 @@ namespace sdl {
 
 # include "RendererState.hxx"
 
-#endif    /* RENDERERSTATE_HH */
+#endif    /* RENDERER_STATE_HH */

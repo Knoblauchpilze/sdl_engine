@@ -1,5 +1,5 @@
-#ifndef    RENDERERSTATE_HXX
-# define   RENDERERSTATE_HXX
+#ifndef    RENDERER_STATE_HXX
+# define   RENDERER_STATE_HXX
 
 # include "RendererState.hh"
 
@@ -27,4 +27,4 @@ namespace sdl {
   }
 }
 
-#endif    /* RENDERERSTATE_HXX */
+#endif    /* RENDERER_STATE_HXX */
