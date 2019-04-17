@@ -4,7 +4,7 @@
 # include <vector>
 # include <core_utils/CoreObject.hh>
 # include "Event.hh"
-# include "EventQueue.hh"
+# include "EventsQueue.hh"
 
 namespace sdl {
   namespace core {
@@ -39,7 +39,7 @@ namespace sdl {
                       EventShPtr e);
 
           void
-          setEventQueue(EventQueue* queue) noexcept;
+          setEventsQueue(EventsQueue* queue) noexcept;
 
         protected:
 
@@ -69,7 +69,7 @@ namespace sdl {
         private:
 
           Filters m_filters;
-          EventQueue* m_queue;
+          EventsQueue* m_queue;
 
       };
 

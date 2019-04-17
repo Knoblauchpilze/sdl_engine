@@ -34,7 +34,7 @@ namespace sdl {
 
       inline
       void
-      EngineObject::setEventQueue(EventQueue* queue) noexcept {
+      EngineObject::setEventsQueue(EventsQueue* queue) noexcept {
         m_queue = queue;
       }
 

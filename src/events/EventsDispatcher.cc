@@ -13,6 +13,7 @@ namespace sdl {
                                          const bool exitOnEscape,
                                          const std::string& name):
         utils::CoreObject(name),
+        EventsQueue(),
         m_framerate(std::max(0.1f, eventHandlingRate)),
         m_frameDuration(1000.0f / m_framerate),
         m_exitOnEscape(exitOnEscape),

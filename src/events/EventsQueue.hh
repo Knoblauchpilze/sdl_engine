@@ -1,5 +1,5 @@
-#ifndef    EVENT_QUEUE_HH
-# define   EVENT_QUEUE_HH
+#ifndef    EVENTS_QUEUE_HH
+# define   EVENTS_QUEUE_HH
 
 # include <memory>
 # include "Event.hh"
@@ -10,7 +10,7 @@ namespace sdl {
 
       class EngineObject;
 
-      class EventQueue {
+      class EventsQueue {
         public:
 
           virtual void
@@ -25,4 +25,4 @@ namespace sdl {
   }
 }
 
-#endif    /* EVENT_QUEUE_HH */
+#endif    /* EVENTS_QUEUE_HH */

@@ -55,7 +55,7 @@ namespace sdl {
         }
 
         // Add this dispatcher as event queue for the listener.
-        listener->setEventQueue(this);
+        listener->setEventsQueue(this);
 
         // Insert it into the internal list of listeners.
         std::lock_guard<std::mutex> guard(m_listenersLocker);

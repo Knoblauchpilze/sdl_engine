@@ -8,13 +8,13 @@
 # include <core_utils/CoreObject.hh>
 # include "Engine.hh"
 # include "EngineObject.hh"
-# include "EventQueue.hh"
+# include "EventsQueue.hh"
 
 namespace sdl {
   namespace core {
     namespace engine {
 
-      class EventsDispatcher: public utils::CoreObject, public EventQueue {
+      class EventsDispatcher: public utils::CoreObject, public EventsQueue {
         public:
 
           explicit
