@@ -8,8 +8,6 @@ namespace sdl {
   namespace core {
     namespace engine {
 
-      
-
       class Color {
         public:
 
