@@ -3,6 +3,7 @@
 
 # include <memory>
 # include <string>
+# include <cstdint>
 # include <unordered_map>
 # include <SDL2/SDL.h>
 # include <core_utils/CoreObject.hh>
@@ -23,6 +24,9 @@ namespace sdl {
                  const std::string& title = std::string("Default SDL window"));
 
           ~Window();
+
+          std::uint32_t
+          getSDLID() const;
 
           void
           setIcon(const std::string& icon);

@@ -6,6 +6,18 @@ namespace sdl {
   namespace core {
     namespace engine {
 
+      std::uint32_t
+      Window::getSDLID() const {
+        if (m_window == nullptr) {
+          error(
+            std::string("Cannot retrieve SDL window ID for"),
+            std::string("Invalid internal SDL window")
+          );
+        }
+
+        return SDL_GetWindowID(m_window);
+      }
+
       void
       Window::setIcon(const std::string& icon) {
         // Load this icon.
