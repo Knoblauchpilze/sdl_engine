@@ -2,6 +2,7 @@
 # include "EventFactory.hh"
 # include "KeyEvent.hh"
 # include "MouseEvent.hh"
+# include "WindowEvent.hh"
 # include "QuitEvent.hh"
 
 # include <iostream>
@@ -26,6 +27,8 @@ namespace sdl {
             return std::make_shared<MouseEvent>(event.button);
           case SDL_MOUSEWHEEL:
             return std::make_shared<MouseEvent>(event.wheel);
+          case SDL_WINDOWEVENT:
+            return std::make_shared<WindowEvent>(event.window);
           case SDL_QUIT:
             return std::make_shared<QuitEvent>(event.quit);
           default:
