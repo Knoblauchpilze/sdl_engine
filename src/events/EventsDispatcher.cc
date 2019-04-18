@@ -120,12 +120,15 @@ namespace sdl {
           // Handle this event.
           EventShPtr event = m_eventsQueue.back();
 
-          withSafetyNet(
-            [&event, this]() {
-              dispatchEvent(event);
-            },
-            std::string("dispatchEvent")
-          );
+          // Event with type `None` are discarded right away.
+          if (event->getType() != Event::Type::None) {
+            withSafetyNet(
+              [&event, this]() {
+                dispatchEvent(event);
+              },
+              std::string("dispatchEvent")
+            );
+          }
 
           m_eventsQueue.pop_back();
         }
@@ -136,7 +139,7 @@ namespace sdl {
 
       void
       EventsDispatcher::dispatchEvent(const EventShPtr event) {
-        // This function basically just transmit the `event` to all the registered
+        // This function basically transmits the `event` to all the registered
         // listeners.
         // We only have one special case which is when the `Escape` key is pressed
         // and the internal `m_exitOnEscape` status is ticked: in this case we want
