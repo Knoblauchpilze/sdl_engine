@@ -18,6 +18,7 @@ namespace sdl {
         m_fontFactory(nullptr),
 
         m_windows(),
+        m_winIDToWindows(),
         m_textures(),
         m_fonts()
       {
@@ -144,6 +145,21 @@ namespace sdl {
         }
 
         return font->second;
+      }
+
+      inline
+      utils::Uuid
+      SdlEngine::getWindowUuidFromSDLWinID(const uint32_t& winID) const {
+        const SDLWinToWindows::const_iterator win = m_winIDToWindows.find(winID);
+
+        if (win == m_winIDToWindows.cend()) {
+          error(
+            std::string("Could not find window uuid from SDL id ") + std::to_string(winID),
+            std::string("Window does not exist")
+          );
+        }
+
+        return win->second;
       }
 
     }

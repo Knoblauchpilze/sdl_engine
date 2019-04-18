@@ -158,6 +158,42 @@ namespace sdl {
         return m_engine->pollEvent(moreEvents);
       }
 
+      inline
+      void
+      EngineDecorator::populateEvent(Event& event) {
+        m_engine->populateEvent(event);
+      }
+
+      inline
+      void
+      EngineDecorator::populateEvent(EnterEvent& event) {
+        m_engine->populateEvent(event);
+      }
+
+      inline
+      void
+      EngineDecorator::populateEvent(KeyEvent& event) {
+        m_engine->populateEvent(event);
+      }
+
+      inline
+      void
+      EngineDecorator::populateEvent(MouseEvent& event) {
+        m_engine->populateEvent(event);
+      }
+
+      inline
+      void
+      EngineDecorator::populateEvent(QuitEvent& event) {
+        m_engine->populateEvent(event);
+      }
+
+      inline
+      void
+      EngineDecorator::populateEvent(WindowEvent& event) {
+        m_engine->populateEvent(event);
+      }
+
     }
   }
 }

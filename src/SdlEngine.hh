@@ -3,6 +3,7 @@
 
 # include <mutex>
 # include <memory>
+# include <cstdint>
 # include <unordered_map>
 # include <core_utils/CoreObject.hh>
 # include <maths_utils/Size.hh>
@@ -101,6 +102,9 @@ namespace sdl {
           EventShPtr
           pollEvent(bool& moreEvents) override;
 
+          void
+          populateEvent(WindowEvent& event) override;
+
         private:
 
           void
@@ -125,9 +129,14 @@ namespace sdl {
           ColoredFontShPtr
           getFontOrThrow(const utils::Uuid& uuid) const;
 
+          utils::Uuid
+          getWindowUuidFromSDLWinID(const std::uint32_t& winID) const;
+
         private:
 
           using WindowsMap = std::unordered_map<utils::Uuid, WindowShPtr>;
+          using SDLWinToWindows = std::unordered_map<std::uint32_t, utils::Uuid>;
+
           // Textures are associated to their related window identifier.
           using TexturesMap = std::unordered_map<utils::Uuid, utils::Uuid>;
           
@@ -138,6 +147,7 @@ namespace sdl {
           FontFactoryShPtr m_fontFactory;
 
           WindowsMap m_windows;
+          SDLWinToWindows m_winIDToWindows;
           TexturesMap m_textures;
           FontsMap m_fonts;
       };

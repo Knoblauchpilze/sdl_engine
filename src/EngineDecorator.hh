@@ -96,6 +96,24 @@ namespace sdl {
           EventShPtr
           pollEvent(bool& moreEvents) override;
 
+          void
+          populateEvent(Event& event) override;
+
+          void
+          populateEvent(EnterEvent& event) override;
+
+          void
+          populateEvent(KeyEvent& event) override;
+
+          void
+          populateEvent(MouseEvent& event) override;
+
+          void
+          populateEvent(QuitEvent& event) override;
+
+          void
+          populateEvent(WindowEvent& event) override;
+
         protected:
 
           void

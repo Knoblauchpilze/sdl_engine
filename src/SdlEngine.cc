@@ -21,6 +21,8 @@ namespace sdl {
         utils::Uuid uuid = utils::Uuid::create();
         m_windows[uuid] = window;
 
+        m_winIDToWindows[window->getSDLID()] = uuid;
+
         return uuid;
       }
 
@@ -289,16 +291,29 @@ namespace sdl {
       EventShPtr
       SdlEngine::pollEvent(bool& moreEvents) {
         // Poll the next event in the queue.
-        SDL_Event event;
-        moreEvents = SDL_PollEvent(&event);
+        SDL_Event sdlEvent;
+        moreEvents = SDL_PollEvent(&sdlEvent);
 
         // Return an event from the retrieved event if any.
         if (moreEvents) {
-          return EventFactory::create(event);
+          // Create this event.
+          EventShPtr event = EventFactory::create(sdlEvent);
+
+          // Populate additional data for this event if needed.
+          event->populateFromEngineData(*this);
+
+          // Return this event.
+          return event;
         }
 
         // Return null as there's no event available right now.
         return nullptr;
+      }
+
+      void
+      SdlEngine::populateEvent(WindowEvent& event) {
+        // We need to assign the window event from the SDL window ID of the event.
+        event.setWindowID(getWindowUuidFromSDLWinID(event.getSDLWinID()));
       }
 
       void
