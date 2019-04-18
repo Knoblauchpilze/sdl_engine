@@ -11,6 +11,11 @@
 # include "Color.hh"
 # include "ColoredFont.hh"
 # include "Event.hh"
+# include "EnterEvent.hh"
+# include "KeyEvent.hh"
+# include "MouseEvent.hh"
+# include "QuitEvent.hh"
+# include "WindowEvent.hh"
 
 namespace sdl {
   namespace core {
@@ -97,11 +102,30 @@ namespace sdl {
           virtual EventShPtr
           pollEvent(bool& moreEvents) = 0;
 
+          virtual void
+          populateEvent(Event& event);
+
+          virtual void
+          populateEvent(EnterEvent& event);
+
+          virtual void
+          populateEvent(KeyEvent& event);
+
+          virtual void
+          populateEvent(MouseEvent& event);
+
+          virtual void
+          populateEvent(QuitEvent& event);
+
+          virtual void
+          populateEvent(WindowEvent& event);
       };
 
       using EngineShPtr = std::shared_ptr<Engine>;
     }
   }
 }
+
+# include "Engine.hxx"
 
 #endif    /* ENGINE_HH */
