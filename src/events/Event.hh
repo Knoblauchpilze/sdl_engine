@@ -8,6 +8,8 @@ namespace sdl {
   namespace core {
     namespace engine {
 
+      class Engine;
+
       class Event: public utils::CoreObject {
         public:
 
@@ -24,6 +26,9 @@ namespace sdl {
             FocusIn,             //<! - Object gains keyboard focus.
             FocusOut,            //<! - Object loses keyboard focus.
             Leave,               //<! - Mouse leaves the object's boundaries.
+            WindowEnter,         //<! - Mouse leaves the window's boundaries.
+            WindowLeave,         //<! - Mouse leaves the window's boundaries.
+            WindowResize,        //<! - Size of window has been modified.
             Quit                 //<! - Main application was closed.
           };
 
@@ -45,6 +50,9 @@ namespace sdl {
 
           Type
           getType() const noexcept;
+
+          virtual void
+          populateFromEngineData(Engine& engine);
 
         protected:
 

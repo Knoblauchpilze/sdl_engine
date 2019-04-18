@@ -7,6 +7,7 @@ namespace sdl {
   namespace core {
     namespace engine {
 
+      inline
       EnterEvent::EnterEvent(const SDL_MouseMotionEvent& event):
         Event(Event::Type::None, std::string("enter_event_") + std::to_string(event.x) + "x" + std::to_string(event.y)),
         m_motion(event)

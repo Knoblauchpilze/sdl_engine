@@ -1,10 +1,10 @@
 #ifndef    MOUSE_EVENT_HH
 # define   MOUSE_EVENT_HH
 
-# include "Event.hh"
 # include <memory>
 # include <SDL2/SDL.h>
 # include <maths_utils/Vector2.hh>
+# include "Event.hh"
 
 namespace sdl {
   namespace core {
@@ -35,6 +35,9 @@ namespace sdl {
           MouseEvent(const SDL_MouseWheelEvent& event);
 
           ~MouseEvent();
+
+          void
+          populateFromEngineData(Engine& engine) override;
 
           Button
           getButton() const noexcept;
@@ -85,6 +88,7 @@ namespace sdl {
 
       };
 
+      using MouseEventShPtr = std::shared_ptr<MouseEvent>;
     }
   }
 }

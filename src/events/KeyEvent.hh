@@ -15,6 +15,9 @@ namespace sdl {
 
           ~KeyEvent();
 
+          void
+          populateFromEngineData(Engine& engine) override;
+
           int
           getKey() const noexcept;
 

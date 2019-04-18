@@ -17,6 +17,9 @@ namespace sdl {
 
           ~QuitEvent();
 
+          void
+          populateFromEngineData(Engine& engine) override;
+
         private:
 
           void

@@ -2,6 +2,7 @@
 # define   KEY_EVENT_HXX
 
 # include "KeyEvent.hh"
+# include "Engine.hh"
 
 namespace sdl {
   namespace core {

@@ -17,6 +17,9 @@ namespace sdl {
 
           ~EnterEvent();
 
+          void
+          populateFromEngineData(Engine& engine) override;
+
           utils::Vector2f
           getMousePosition() const noexcept;
 
