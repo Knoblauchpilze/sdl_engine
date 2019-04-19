@@ -17,6 +17,11 @@ namespace sdl {
       class EventsDispatcher: public utils::CoreObject, public EventsQueue {
         public:
 
+          // TODO: Increase the framerate of event handling because otherwise we are
+          // limiting ourselves due to the fact that for example even if a `Repaint`
+          // event is posted every 1/60th of a second, if the event handling only
+          // occur every 1/30th of a second we will not be able to process all the
+          // events and end up with an effective framerate of 30fps.
           explicit
           EventsDispatcher(const float& eventHandlingRate = 30.0f,
                           EngineShPtr engine = nullptr,
@@ -34,6 +39,7 @@ namespace sdl {
           bool
           isRunning();
 
+          // TODO: Add specific kind of listeners ? Like WindowListener for example.
           void
           addListener(EngineObject* listener);
 

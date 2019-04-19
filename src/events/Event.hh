@@ -31,6 +31,7 @@ namespace sdl {
             WindowResize,        //<! - Size of window has been modified.
             Quit                 //<! - Main application was closed.
           };
+          // TODO: Add a repaint event (also a geometry update event ?) and a `Refresh` event.
 
         public:
 
