@@ -75,7 +75,7 @@ namespace sdl {
             );
 
             // Move on to the next frame.
-            return;
+            continue;
           }
 
           // Sleep for the remaining time to complete a frame if there's enough time left.
@@ -84,6 +84,8 @@ namespace sdl {
             std::this_thread::sleep_for(std::chrono::milliseconds(remainingDuration));
           }
         }
+
+        log(std::string("Exiting events thread"), utils::Level::Notice);
       }
 
       int
