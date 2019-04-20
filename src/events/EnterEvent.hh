@@ -3,7 +3,6 @@
 
 # include "Event.hh"
 # include <memory>
-# include <SDL2/SDL.h>
 # include <maths_utils/Vector2.hh>
 
 namespace sdl {
@@ -13,24 +12,19 @@ namespace sdl {
       class EnterEvent: public Event {
         public:
 
-          EnterEvent(const SDL_MouseMotionEvent& event);
+          EnterEvent(const utils::Vector2f& coordinates);
 
           ~EnterEvent();
 
           void
           populateFromEngineData(Engine& engine) override;
 
-          utils::Vector2f
+          const utils::Vector2f&
           getMousePosition() const noexcept;
 
         private:
 
-          void
-          init();
-
-        private:
-
-          SDL_MouseMotionEvent m_motion;
+          utils::Vector2f m_coordinates;
 
       };
 
