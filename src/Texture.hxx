@@ -13,11 +13,15 @@ namespace sdl {
                        SDL_Renderer* renderer):
         utils::CoreObject(std::string("texture")),
         m_role(role),
-        m_texture(nullptr)
+        m_texture(nullptr),
+        m_renderer(renderer),
+        
+        m_type(Type::Basic),
+        m_size(size),
+        m_file(),
+        m_surface(nullptr)
       {
         setService(std::string("texture"));
-
-        create(size, renderer);
       }
 
       inline
@@ -26,19 +30,30 @@ namespace sdl {
                        SDL_Renderer* renderer):
         utils::CoreObject(std::string("texture")),
         m_role(role),
-        m_texture(nullptr)
+        m_texture(nullptr),
+        m_renderer(renderer),
+
+        m_type(Type::Image),
+        m_size(),
+        m_file(file),
+        m_surface(nullptr)
       {
         setService(std::string("texture"));
-
-        create(file, renderer);
       }
 
       inline
-      Texture::Texture(SDL_Texture* tex,
+      Texture::Texture(SDL_Surface* surface,
+                       SDL_Renderer* renderer,
                        const Palette::ColorRole& role):
         utils::CoreObject(std::string("texture")),
         m_role(role),
-        m_texture(tex)
+        m_texture(nullptr),
+        m_renderer(renderer),
+
+        m_type(Type::Surface),
+        m_size(),
+        m_file(),
+        m_surface(surface)
       {
         setService(std::string("texture"));
       }
@@ -74,6 +89,25 @@ namespace sdl {
         SDL_QueryTexture(m_texture, nullptr, nullptr, &w, &h);
 
         return utils::Sizei(w, h);
+      }
+
+      inline
+      void
+      Texture::create() {
+        switch (m_type) {
+          case Type::Basic:
+            create(m_size, m_renderer);
+            break;
+          case Type::Image:
+            create(m_file, m_renderer);
+            break;
+          case Type::Surface:
+            create(m_renderer);
+            break;
+          default:
+            error(std::string("Cannot create texture with unknown type ") + std::to_string(static_cast<int>(m_type)));
+            break;
+        }
       }
 
       inline

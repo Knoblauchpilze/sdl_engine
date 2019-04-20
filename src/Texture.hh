@@ -25,7 +25,8 @@ namespace sdl {
                   const Palette::ColorRole& role,
                   SDL_Renderer* renderer);
 
-          Texture(SDL_Texture* tex,
+          Texture(SDL_Surface* surface,
+                  SDL_Renderer* renderer,
                   const Palette::ColorRole& role);
 
           ~Texture();
@@ -52,6 +53,15 @@ namespace sdl {
 
         private:
 
+          enum class Type {
+            Basic,
+            Image,
+            Surface
+          };
+
+          void
+          create();
+
           void
           create(const utils::Sizei& size,
                  SDL_Renderer* renderer);
@@ -61,12 +71,21 @@ namespace sdl {
                  SDL_Renderer* renderer);
 
           void
+          create(SDL_Renderer* renderer);
+
+          void
           clean();
 
         private:
 
           Palette::ColorRole m_role;
           SDL_Texture* m_texture;
+          SDL_Renderer* m_renderer;
+
+          Type m_type;
+          utils::Sizei m_size;
+          std::string m_file;
+          SDL_Surface* m_surface;
       };
 
       using TextureShPtr = std::shared_ptr<Texture>;

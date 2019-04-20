@@ -28,6 +28,11 @@ namespace sdl {
       Texture::fill(SDL_Renderer* renderer,
                     const Palette& palette)
       {
+        // Check whether the texture exists.
+        if (m_texture == nullptr) {
+          create();
+        }
+
         // Retrieve the color to use to fill the texture from the palette.
         SDL_Color color = palette.getColorForRole(m_role).toSDLColor();
 
@@ -46,6 +51,11 @@ namespace sdl {
       Texture::draw(utils::Boxf* box,
                     SDL_Renderer* renderer)
       {
+        // Check whether the texture exists.
+        if (m_texture == nullptr) {
+          create();
+        }
+
         // Draw the input texture at the corresponding location.
         if (box == nullptr) {
           SDL_RenderCopy(renderer, m_texture, nullptr, nullptr);
@@ -128,6 +138,24 @@ namespace sdl {
         if (m_texture == nullptr) {
           error(
             std::string("Unable to create picture widget using file \"") + file + "\"",
+            std::string("") + SDL_GetError()
+          );
+        }
+      }
+
+      void
+      Texture::create(SDL_Renderer* renderer) {
+        // Convert the surface to a valid texture.
+        SDL_Texture* tex = SDL_CreateTextureFromSurface(renderer, m_surface);
+        
+        // Release the resources used by the surface.
+        SDL_FreeSurface(m_surface);
+        m_surface = nullptr;
+
+        // Check whether the texture could successfully be created from the surface.
+        if (tex == nullptr) {
+          error(
+            std::string("Unable to create texture from surface"),
             std::string("") + SDL_GetError()
           );
         }
