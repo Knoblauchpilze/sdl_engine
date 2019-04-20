@@ -8,8 +8,11 @@ namespace sdl {
     namespace engine {
 
       inline
-      EnterEvent::EnterEvent(const utils::Vector2f& coordinates):
-        Event(Event::Type::Enter, std::string("enter_event_") + coordinates.toString()),
+      EnterEvent::EnterEvent(const utils::Vector2f& coordinates,
+                             EngineObject* receiver):
+        Event(Event::Type::Enter,
+              receiver,
+              std::string("enter_event_") + coordinates.toString()),
         m_coordinates(coordinates)
       {}
 

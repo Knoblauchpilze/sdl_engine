@@ -12,7 +12,8 @@ namespace sdl {
       class PaintEvent: public Event {
         public:
 
-          PaintEvent(const utils::Boxf& updateRegion);
+          PaintEvent(const utils::Boxf& updateRegion,
+                     EngineObject* receiver = nullptr);
 
           ~PaintEvent();
 

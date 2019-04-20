@@ -10,7 +10,7 @@ namespace sdl {
 
       inline
       KeyEvent::KeyEvent(const SDL_KeyboardEvent& event):
-        Event(Event::Type::None, std::string("key_event_") + std::to_string(event.keysym.sym)),
+        Event(Event::Type::None, nullptr, std::string("key_event_") + std::to_string(event.keysym.sym)),
         m_key(event)
       {
         init();

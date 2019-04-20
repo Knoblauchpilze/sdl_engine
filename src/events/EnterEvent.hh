@@ -12,7 +12,8 @@ namespace sdl {
       class EnterEvent: public Event {
         public:
 
-          EnterEvent(const utils::Vector2f& coordinates);
+          EnterEvent(const utils::Vector2f& coordinates,
+                     EngineObject* receiver = nullptr);
 
           ~EnterEvent();
 

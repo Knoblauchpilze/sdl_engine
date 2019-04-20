@@ -9,7 +9,7 @@ namespace sdl {
 
       inline
       QuitEvent::QuitEvent():
-        Event(Event::Type::Quit, std::string("quit_event")),
+        Event(Event::Type::Quit, nullptr, std::string("quit_event")),
         m_quit(SDL_QuitEvent{
           SDL_QUIT,
           SDL_GetTicks()
@@ -18,7 +18,7 @@ namespace sdl {
 
       inline
       QuitEvent::QuitEvent(const SDL_QuitEvent& event):
-        Event(Event::Type::None, std::string("quit_event")),
+        Event(Event::Type::None, nullptr, std::string("quit_event")),
         m_quit(event)
       {
         init();

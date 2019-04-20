@@ -9,7 +9,7 @@ namespace sdl {
 
       inline
       WindowEvent::WindowEvent(const SDL_WindowEvent& event):
-        Event(Event::Type::None, std::string("window_event_") + std::to_string(event.windowID)),
+        Event(Event::Type::None, nullptr, std::string("window_event_") + std::to_string(event.windowID)),
         m_window(event),
         m_winID()
       {
