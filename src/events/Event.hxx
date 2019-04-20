@@ -28,26 +28,26 @@ namespace sdl {
 
       inline
       void
-      Event::accept() noexcept {
+      Event::accept() const noexcept {
         setAccepted(true);
       }
 
       inline
       void
-      Event::ignore() noexcept {
+      Event::ignore() const noexcept {
         setAccepted(false);
-      }
-
-      inline
-      void
-      Event::setAccepted(const bool accepted) noexcept {
-        m_accepted = accepted;
       }
 
       inline
       Event::Type
       Event::getType() const noexcept {
         return m_type;
+      }
+
+      inline
+      void
+      Event::setAccepted(const bool accepted) const noexcept {
+        m_accepted = accepted;
       }
 
       inline

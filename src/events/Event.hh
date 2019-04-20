@@ -16,16 +16,19 @@ namespace sdl {
           // Describes the available type of events.
           enum class Type {
             None,                //<! - Not an event
+            Enter,               //<! - Mouse enter object's boundaries.
+            FocusIn,             //<! - Object gains keyboard focus.
+            FocusOut,            //<! - Object loses keyboard focus.
+            GeometryUpdate,      //<! - The geometry of a component should be updated.
             KeyPress,            //<! - One of the keyboard's keys has been pressed.
             KeyRelease,          //<! - One of the keyboard's keys has been released.
+            Leave,               //<! - Mouse leaves the object's boundaries.
             MouseButtonPress,    //<! - One of the mouse button has been pressed.
             MouseButtonRelease,  //<! - One of the mouse button has been released.
             MouseMove,           //<! - The mouse cursor has been moved.
             MouseWheel,          //<! - The mouse wheel has been used.
-            Enter,               //<! - Mouse enter object's boundaries.
-            FocusIn,             //<! - Object gains keyboard focus.
-            FocusOut,            //<! - Object loses keyboard focus.
-            Leave,               //<! - Mouse leaves the object's boundaries.
+            Refresh,             //<! - Trigger a refrech operation for a component.
+            Repaint,             //<! - Trigger a repaint operation for a component.
             WindowEnter,         //<! - Mouse leaves the window's boundaries.
             WindowLeave,         //<! - Mouse leaves the window's boundaries.
             WindowResize,        //<! - Size of window has been modified.
@@ -35,19 +38,19 @@ namespace sdl {
 
         public:
 
+          Event(const Type& type = Type::None,
+                const std::string& name = std::string("event"));
+
           ~Event();
 
           bool
           isAccepted() const noexcept;
 
           void
-          accept() noexcept;
+          accept() const noexcept;
 
           void
-          ignore() noexcept;
-
-          void
-          setAccepted(const bool accepted) noexcept;
+          ignore() const noexcept;
 
           Type
           getType() const noexcept;
@@ -57,15 +60,15 @@ namespace sdl {
 
         protected:
 
-          Event(const Type& type = Type::None,
-                const std::string& name = std::string("event"));
+          void
+          setAccepted(const bool accepted) const noexcept;
 
           void
           setType(const Type& type) noexcept;
 
         private:
 
-          bool m_accepted;
+          mutable bool m_accepted;
           Type m_type;
 
       };
