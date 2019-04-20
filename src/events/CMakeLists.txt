@@ -10,6 +10,7 @@ set (SOURCES
   ${CMAKE_CURRENT_SOURCE_DIR}/MouseEvent.cc
   ${CMAKE_CURRENT_SOURCE_DIR}/PaintEvent.cc
   ${CMAKE_CURRENT_SOURCE_DIR}/QuitEvent.cc
+  ${CMAKE_CURRENT_SOURCE_DIR}/ResizeEvent.cc
   ${CMAKE_CURRENT_SOURCE_DIR}/WindowEvent.cc
   PARENT_SCOPE
   )
