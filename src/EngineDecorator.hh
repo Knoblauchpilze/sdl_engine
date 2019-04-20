@@ -109,7 +109,13 @@ namespace sdl {
           populateEvent(MouseEvent& event) override;
 
           void
+          populateEvent(PaintEvent& event) override;
+
+          void
           populateEvent(QuitEvent& event) override;
+
+          void
+          populateEvent(ResizeEvent& event) override;
 
           void
           populateEvent(WindowEvent& event) override;

@@ -184,7 +184,19 @@ namespace sdl {
 
       inline
       void
+      EngineDecorator::populateEvent(PaintEvent& event) {
+        m_engine->populateEvent(event);
+      }
+
+      inline
+      void
       EngineDecorator::populateEvent(QuitEvent& event) {
+        m_engine->populateEvent(event);
+      }
+
+      inline
+      void
+      EngineDecorator::populateEvent(ResizeEvent& event) {
         m_engine->populateEvent(event);
       }
 

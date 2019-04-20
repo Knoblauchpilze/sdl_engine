@@ -14,7 +14,9 @@
 # include "EnterEvent.hh"
 # include "KeyEvent.hh"
 # include "MouseEvent.hh"
+# include "PaintEvent.hh"
 # include "QuitEvent.hh"
+# include "ResizeEvent.hh"
 # include "WindowEvent.hh"
 
 namespace sdl {
@@ -115,7 +117,13 @@ namespace sdl {
           populateEvent(MouseEvent& event);
 
           virtual void
+          populateEvent(PaintEvent& event);
+
+          virtual void
           populateEvent(QuitEvent& event);
+
+          virtual void
+          populateEvent(ResizeEvent& event);
 
           virtual void
           populateEvent(WindowEvent& event);

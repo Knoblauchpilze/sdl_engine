@@ -5,7 +5,7 @@ namespace sdl {
   namespace core {
     namespace engine {
 
-      EngineDecorator::EngineDecorator(core::engine::EngineShPtr engine,
+      EngineDecorator::EngineDecorator(EngineShPtr engine,
                                       const std::string& name):
         utils::CoreObject(name),
         m_engine(nullptr)

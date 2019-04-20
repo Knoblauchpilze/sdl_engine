@@ -33,7 +33,19 @@ namespace sdl {
 
       inline
       void
+      Engine::populateEvent(PaintEvent& /*event*/) {
+        // Empty implementation.
+      }
+
+      inline
+      void
       Engine::populateEvent(QuitEvent& /*event*/) {
+        // Empty implementation.
+      }
+
+      inline
+      void
+      Engine::populateEvent(ResizeEvent& /*event*/) {
         // Empty implementation.
       }
 
