@@ -11,8 +11,13 @@ r: release
 
 d: debug
 
-install: r
+copyRelease:
 	sudo cp build/Release/lib/libsdl_engine.so /usr/local/lib
+
+copyDebug:
+	sudo cp build/Debug/lib/libsdl_engine.so /usr/local/lib
+
+copyHeaders:
 	sudo mkdir -p /usr/local/include/sdl_engine
 	sudo cp src/*.hh /usr/local/include/sdl_engine
 	sudo cp src/*.hxx /usr/local/include/sdl_engine
@@ -21,3 +26,6 @@ install: r
 	sudo cp src/fonts/*.hh /usr/local/include/sdl_engine
 	sudo cp src/fonts/*.hxx /usr/local/include/sdl_engine
 
+install: r copyRelease copyHeaders
+
+installD: d copyDebug copyHeaders
