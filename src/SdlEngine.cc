@@ -299,8 +299,11 @@ namespace sdl {
           // Create this event.
           EventShPtr event = EventFactory::create(sdlEvent);
 
-          // Populate additional data for this event if needed.
-          event->populateFromEngineData(*this);
+          // Check whether the event could be created.
+          if (event != nullptr) {
+            // Populate additional data for this event if needed.
+            event->populateFromEngineData(*this);
+          }
 
           // Return this event.
           return event;
