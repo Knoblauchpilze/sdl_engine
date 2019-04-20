@@ -60,13 +60,13 @@ namespace sdl {
           clean();
 
           // Render the input text using the internal font.
-          SDL_Texture* textTex = m_font->render(text, m_size, renderer, m_palette.getWindowTextColor());
-          if (textTex == nullptr) {
+          SDL_Surface* textSurface = m_font->render(text, m_size, m_palette.getWindowTextColor());
+          if (textSurface == nullptr) {
             error(std::string("Could not render text \"") + text + "\"");
           }
 
           // Build a texture from this raw SDL texture pointer.
-          m_text = std::make_shared<Texture>(textTex, Palette::ColorRole::WindowText);
+          m_text = std::make_shared<Texture>(textSurface, renderer, Palette::ColorRole::WindowText);
 
           // The texture has been cached for furhter usage.
           m_dirty = false;

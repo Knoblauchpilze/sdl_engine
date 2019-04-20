@@ -22,10 +22,9 @@ namespace sdl {
 
           virtual ~Font();
 
-          SDL_Texture*
+          SDL_Surface*
           render(const std::string& text,
                  const int& size,
-                 SDL_Renderer* renderer,
                  const Color& color = Color::NamedColor::Black);
 
         private:
