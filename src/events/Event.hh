@@ -9,6 +9,7 @@ namespace sdl {
     namespace engine {
 
       class Engine;
+      class EngineObject;
 
       class Event: public utils::CoreObject {
         public:
@@ -29,6 +30,7 @@ namespace sdl {
             MouseWheel,          //<! - The mouse wheel has been used.
             Refresh,             //<! - Trigger a refrech operation for a component.
             Repaint,             //<! - Trigger a repaint operation for a component.
+            Resize,              //<! - Size of the component has been modified.
             WindowEnter,         //<! - Mouse leaves the window's boundaries.
             WindowLeave,         //<! - Mouse leaves the window's boundaries.
             WindowResize,        //<! - Size of window has been modified.
@@ -38,6 +40,7 @@ namespace sdl {
         public:
 
           Event(const Type& type = Type::None,
+                EngineObject* receiver = nullptr,
                 const std::string& name = std::string("event"));
 
           ~Event();
@@ -54,6 +57,22 @@ namespace sdl {
           Type
           getType() const noexcept;
 
+          /**
+           * @brief - An event is considered spontaneous when there's no associated receiver,
+           *          which means it should be transmitted to all receivers.
+           *          Kinda equivalent to `getReceiver() == nullptr`.
+           * @return - true if this event should be sent to a specific receiver or broadcasted
+           *           to any listener.
+           */
+          bool
+          isSpontaneous() const noexcept;
+
+          EngineObject*
+          getReceiver() const noexcept;
+
+          void
+          setReceiver(EngineObject* receiver) noexcept;
+
           virtual void
           populateFromEngineData(Engine& engine);
 
@@ -69,6 +88,7 @@ namespace sdl {
 
           mutable bool m_accepted;
           Type m_type;
+          EngineObject* m_receiver;
 
       };
 

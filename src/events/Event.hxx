@@ -9,10 +9,12 @@ namespace sdl {
 
       inline
       Event::Event(const Type& type,
+                   EngineObject* receiver,
                    const std::string& name):
         utils::CoreObject(name),
         m_accepted(false),
-        m_type(type)
+        m_type(type),
+        m_receiver(receiver)
       {
         setService(std::string("event"));
       }
@@ -42,6 +44,24 @@ namespace sdl {
       Event::Type
       Event::getType() const noexcept {
         return m_type;
+      }
+
+      inline
+      bool
+      Event::isSpontaneous() const noexcept {
+        return m_receiver == nullptr;
+      }
+
+      inline
+      EngineObject*
+      Event::getReceiver() const noexcept {
+        return m_receiver;
+      }
+
+      inline
+      void
+      Event::setReceiver(EngineObject* receiver) noexcept {
+        m_receiver = receiver;
       }
 
       inline
