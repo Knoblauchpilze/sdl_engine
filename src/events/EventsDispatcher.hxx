@@ -90,6 +90,7 @@ namespace sdl {
         std::lock_guard<std::mutex> guard(m_eventsLocker);
 
         // Push this event in the queue.
+        // TODO: Handle queue per listener (at least when a receiver is assigned).
         m_eventsQueue.push_back(event);
       }
 

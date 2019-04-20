@@ -114,26 +114,37 @@ namespace sdl {
         // Start time measurement.
         auto start = std::chrono::steady_clock::now();
 
-        // Acquire the events lock.
-        std::lock_guard<std::mutex> guard(m_eventsLocker);
-
         // Handle the events registered in the queue.
-        while (!m_eventsQueue.empty()) {
-          // Handle this event.
-          EventShPtr event = m_eventsQueue.back();
+        // As some events might generate new ones, we need
+        // to keep looping until no more events are produced.
+        do {
+          // Retrieve the queue into an internal variable so
+          // that we can release the lock and allow components
+          // to post new events.
+          std::vector<EventShPtr> events;
 
-          // Event with type `None` are discarded right away.
-          if (event->getType() != Event::Type::None) {
-            withSafetyNet(
-              [&event, this]() {
-                dispatchEvent(event);
-              },
-              std::string("dispatchEvent")
-            );
+          {
+            std::lock_guard<std::mutex> guard(m_eventsLocker);
+            events.swap(m_eventsQueue);
           }
 
-          m_eventsQueue.pop_back();
-        }
+          // Process each event.
+          for (unsigned idEvent = 0u ; idEvent < events.size() ; ++idEvent) {
+            // Handle this event.
+            EventShPtr event = events[idEvent];
+
+            // Event with type `None` are discarded right away.
+            if (event->getType() != Event::Type::None) {
+              withSafetyNet(
+                [&event, this]() {
+                  dispatchEvent(event);
+                },
+                std::string("dispatchEvent")
+              );
+            }
+          }
+
+        } while (!m_eventsQueue.empty());
 
         // Return the elapsed time.
         return std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now() - start).count();
@@ -166,7 +177,17 @@ namespace sdl {
           // Continue to standard processing.
         }
 
-        // Transmit the event to all listeners.
+        // Transmit the event to all listeners or to only the receiver if the event
+        // is spontaneous.
+        if (!event->isSpontaneous()) {
+          // Dispatch the event to the receiver.
+          log("Handling event of type " + std::to_string(static_cast<int>(event->getType())) + " for " + event->getReceiver()->getName());
+          event->getReceiver()->event(event);
+          return;
+        }
+
+        // The event is not spontaneous, transmit it to all listeners.
+        log("Dispatching event with type " + std::to_string(static_cast<int>(event->getType())));
         for (std::vector<EngineObject*>::iterator listener = m_listeners.begin() ;
             listener != m_listeners.end() ;
             ++listener)
