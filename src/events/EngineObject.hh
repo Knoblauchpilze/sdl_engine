@@ -9,6 +9,7 @@
 # include "KeyEvent.hh"
 # include "MouseEvent.hh"
 # include "PaintEvent.hh"
+# include "ResizeEvent.hh"
 # include "QuitEvent.hh"
 # include "WindowEvent.hh"
 
@@ -49,8 +50,18 @@ namespace sdl {
 
         protected:
 
+          /**
+           * @brief - Post an event to the underlying events queue.
+           * @param e - the event to post.
+           * @param autosetReceiver - defines whether the input event `e`
+           *                          should be assigned this object as a
+           *                          receiver. Default value is true (meaning
+           *                          that the event will be set to be received
+           *                          by this object).
+           */
           void
-          postEvent(EventShPtr e) noexcept;
+          postEvent(EventShPtr e,
+                    bool autosetReceiver = true) noexcept;
 
           // Note that the return value it is true only if the event `e` has been recognized.
           // To check whether the event has been accepted, use the `e->isAccepted()` method.
@@ -95,6 +106,9 @@ namespace sdl {
 
           virtual bool
           repaintEvent(const engine::PaintEvent& e);
+
+          virtual bool
+          resizeEvent(const engine::ResizeEvent& e);
 
           virtual bool
           windowEnterEvent(const engine::WindowEvent& e);

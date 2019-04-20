@@ -131,6 +131,13 @@ namespace sdl {
 
       inline
       bool
+      EngineObject::resizeEvent(const engine::ResizeEvent& /*e*/) {
+        // Empty implementation.
+        return true;
+      }
+
+      inline
+      bool
       EngineObject::windowEnterEvent(const engine::WindowEvent& /*e*/) {
         // Empty implementation.
         return true;

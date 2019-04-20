@@ -65,7 +65,8 @@ namespace sdl {
       }
 
       void
-      EngineObject::postEvent(EventShPtr e) noexcept {
+      EngineObject::postEvent(EventShPtr e,
+                              bool autosetReceiver) noexcept {
         // Check event coherence.
         if (e == nullptr) {
           log(
@@ -84,6 +85,12 @@ namespace sdl {
           return;
         }
 
+        // Assign the receiver to `this` if asked.
+        if (autosetReceiver) {
+          e->setReceiver(this);
+        }
+
+        // Post the event.
         m_queue->postEvent(e);
       }
 
@@ -98,40 +105,42 @@ namespace sdl {
 
         // Check the event type and dispatch to the corresponding handler.
         switch (e->getType()) {
-          case core::engine::Event::Type::Enter:
-            return enterEvent(*std::dynamic_pointer_cast<core::engine::EnterEvent>(e));
-          case core::engine::Event::Type::FocusIn:
+          case Event::Type::Enter:
+            return enterEvent(*std::dynamic_pointer_cast<EnterEvent>(e));
+          case Event::Type::FocusIn:
             return focusInEvent(*e);
-          case core::engine::Event::Type::FocusOut:
+          case Event::Type::FocusOut:
             return focusOutEvent(*e);
-          case core::engine::Event::Type::GeometryUpdate:
+          case Event::Type::GeometryUpdate:
             return geometryUpdateEvent(*e);
-          case core::engine::Event::Type::KeyPress:
-            return keyPressEvent(*std::dynamic_pointer_cast<core::engine::KeyEvent>(e));
-          case core::engine::Event::Type::KeyRelease:
-            return keyReleaseEvent(*std::dynamic_pointer_cast<core::engine::KeyEvent>(e));
-          case core::engine::Event::Type::Leave:
+          case Event::Type::KeyPress:
+            return keyPressEvent(*std::dynamic_pointer_cast<KeyEvent>(e));
+          case Event::Type::KeyRelease:
+            return keyReleaseEvent(*std::dynamic_pointer_cast<KeyEvent>(e));
+          case Event::Type::Leave:
             return leaveEvent(*e);
-          case core::engine::Event::Type::MouseButtonPress:
-            return mouseButtonPressEvent(*std::dynamic_pointer_cast<core::engine::MouseEvent>(e));
-          case core::engine::Event::Type::MouseButtonRelease:
-            return mouseButtonReleaseEvent(*std::dynamic_pointer_cast<core::engine::MouseEvent>(e));
-          case core::engine::Event::Type::MouseMove:
-            return mouseMoveEvent(*std::dynamic_pointer_cast<core::engine::MouseEvent>(e));
-          case core::engine::Event::Type::MouseWheel:
-            return mouseWheelEvent(*std::dynamic_pointer_cast<core::engine::MouseEvent>(e));
-          case core::engine::Event::Type::Refresh:
-            return refreshEvent(*std::dynamic_pointer_cast<core::engine::PaintEvent>(e));
-          case core::engine::Event::Type::Repaint:
-            return repaintEvent(*std::dynamic_pointer_cast<core::engine::PaintEvent>(e));
-          case core::engine::Event::Type::WindowEnter:
-            return windowEnterEvent(*std::dynamic_pointer_cast<core::engine::WindowEvent>(e));
-          case core::engine::Event::Type::WindowLeave:
-            return windowLeaveEvent(*std::dynamic_pointer_cast<core::engine::WindowEvent>(e));
-          case core::engine::Event::Type::WindowResize:
-            return windowResizeEvent(*std::dynamic_pointer_cast<core::engine::WindowEvent>(e));
-          case core::engine::Event::Type::Quit:
-            return quitEvent(*std::dynamic_pointer_cast<core::engine::QuitEvent>(e));
+          case Event::Type::MouseButtonPress:
+            return mouseButtonPressEvent(*std::dynamic_pointer_cast<MouseEvent>(e));
+          case Event::Type::MouseButtonRelease:
+            return mouseButtonReleaseEvent(*std::dynamic_pointer_cast<MouseEvent>(e));
+          case Event::Type::MouseMove:
+            return mouseMoveEvent(*std::dynamic_pointer_cast<MouseEvent>(e));
+          case Event::Type::MouseWheel:
+            return mouseWheelEvent(*std::dynamic_pointer_cast<MouseEvent>(e));
+          case Event::Type::Refresh:
+            return refreshEvent(*std::dynamic_pointer_cast<PaintEvent>(e));
+          case Event::Type::Repaint:
+            return repaintEvent(*std::dynamic_pointer_cast<PaintEvent>(e));
+          case Event::Type::Resize:
+            return resizeEvent(*std::dynamic_pointer_cast<ResizeEvent>(e));
+          case Event::Type::WindowEnter:
+            return windowEnterEvent(*std::dynamic_pointer_cast<WindowEvent>(e));
+          case Event::Type::WindowLeave:
+            return windowLeaveEvent(*std::dynamic_pointer_cast<WindowEvent>(e));
+          case Event::Type::WindowResize:
+            return windowResizeEvent(*std::dynamic_pointer_cast<WindowEvent>(e));
+          case Event::Type::Quit:
+            return quitEvent(*std::dynamic_pointer_cast<QuitEvent>(e));
           default:
             // Event type is not handled, continue the process.
             break;
