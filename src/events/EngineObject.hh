@@ -5,6 +5,12 @@
 # include <core_utils/CoreObject.hh>
 # include "Event.hh"
 # include "EventsQueue.hh"
+# include "EnterEvent.hh"
+# include "KeyEvent.hh"
+# include "MouseEvent.hh"
+# include "PaintEvent.hh"
+# include "QuitEvent.hh"
+# include "WindowEvent.hh"
 
 namespace sdl {
   namespace core {
@@ -43,13 +49,64 @@ namespace sdl {
 
         protected:
 
+          void
+          postEvent(EventShPtr e) noexcept;
+
           // Note that the return value it is true only if the event `e` has been recognized.
           // To check whether the event has been accepted, use the `e->isAccepted()` method.
           virtual bool
           handleEvent(EventShPtr e);
 
-          void
-          postEvent(EventShPtr e) noexcept;
+          virtual bool
+          enterEvent(const engine::EnterEvent& e);
+
+          virtual bool
+          focusInEvent(const engine::Event& e);
+
+          virtual bool
+          focusOutEvent(const engine::Event& e);
+
+          virtual bool
+          geometryUpdateEvent(const engine::Event& e);
+
+          virtual bool
+          keyPressEvent(const engine::KeyEvent& e);
+
+          virtual bool
+          keyReleaseEvent(const engine::KeyEvent& e);
+
+          virtual bool
+          leaveEvent(const engine::Event& e);
+
+          virtual bool
+          mouseButtonPressEvent(const engine::MouseEvent& e);
+
+          virtual bool
+          mouseButtonReleaseEvent(const engine::MouseEvent& e);
+
+          virtual bool
+          mouseMoveEvent(const engine::MouseEvent& e);
+
+          virtual bool
+          mouseWheelEvent(const engine::MouseEvent& e);
+
+          virtual bool
+          refreshEvent(const engine::PaintEvent& e);
+
+          virtual bool
+          repaintEvent(const engine::PaintEvent& e);
+
+          virtual bool
+          windowEnterEvent(const engine::WindowEvent& e);
+
+          virtual bool
+          windowLeaveEvent(const engine::WindowEvent& e);
+
+          virtual bool
+          windowResizeEvent(const engine::WindowEvent& e);
+
+          virtual bool
+          quitEvent(const engine::QuitEvent& e);
 
         private:
 

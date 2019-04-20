@@ -64,6 +64,83 @@ namespace sdl {
         m_filters.push_back(filter);
       }
 
+      void
+      EngineObject::postEvent(EventShPtr e) noexcept {
+        // Check event coherence.
+        if (e == nullptr) {
+          log(
+            std::string("Cannot post empty event in queue"),
+            utils::Level::Warning
+          );
+          return;
+        }
+
+        // Check whether a queue is provided.
+        if (m_queue == nullptr) {
+          log(
+            std::string("Cannot post event of type ") + std::to_string(static_cast<int>(e->getType())) + ", no queue provided",
+            utils::Level::Warning
+          );
+          return;
+        }
+
+        m_queue->postEvent(e);
+      }
+
+      bool
+      EngineObject::handleEvent(EventShPtr e) {
+        // Check for degenerate event.
+        if (e == nullptr) {
+          log(std::string("Dropping invalid null event"), utils::Level::Warning);
+          // The event was not recognized.
+          return false;
+        }
+
+        // Check the event type and dispatch to the corresponding handler.
+        switch (e->getType()) {
+          case core::engine::Event::Type::Enter:
+            return enterEvent(*std::dynamic_pointer_cast<core::engine::EnterEvent>(e));
+          case core::engine::Event::Type::FocusIn:
+            return focusInEvent(*e);
+          case core::engine::Event::Type::FocusOut:
+            return focusOutEvent(*e);
+          case core::engine::Event::Type::GeometryUpdate:
+            return geometryUpdateEvent(*e);
+          case core::engine::Event::Type::KeyPress:
+            return keyPressEvent(*std::dynamic_pointer_cast<core::engine::KeyEvent>(e));
+          case core::engine::Event::Type::KeyRelease:
+            return keyReleaseEvent(*std::dynamic_pointer_cast<core::engine::KeyEvent>(e));
+          case core::engine::Event::Type::Leave:
+            return leaveEvent(*e);
+          case core::engine::Event::Type::MouseButtonPress:
+            return mouseButtonPressEvent(*std::dynamic_pointer_cast<core::engine::MouseEvent>(e));
+          case core::engine::Event::Type::MouseButtonRelease:
+            return mouseButtonReleaseEvent(*std::dynamic_pointer_cast<core::engine::MouseEvent>(e));
+          case core::engine::Event::Type::MouseMove:
+            return mouseMoveEvent(*std::dynamic_pointer_cast<core::engine::MouseEvent>(e));
+          case core::engine::Event::Type::MouseWheel:
+            return mouseWheelEvent(*std::dynamic_pointer_cast<core::engine::MouseEvent>(e));
+          case core::engine::Event::Type::Refresh:
+            return refreshEvent(*std::dynamic_pointer_cast<core::engine::PaintEvent>(e));
+          case core::engine::Event::Type::Repaint:
+            return repaintEvent(*std::dynamic_pointer_cast<core::engine::PaintEvent>(e));
+          case core::engine::Event::Type::WindowEnter:
+            return windowEnterEvent(*std::dynamic_pointer_cast<core::engine::WindowEvent>(e));
+          case core::engine::Event::Type::WindowLeave:
+            return windowLeaveEvent(*std::dynamic_pointer_cast<core::engine::WindowEvent>(e));
+          case core::engine::Event::Type::WindowResize:
+            return windowResizeEvent(*std::dynamic_pointer_cast<core::engine::WindowEvent>(e));
+          case core::engine::Event::Type::Quit:
+            return quitEvent(*std::dynamic_pointer_cast<core::engine::QuitEvent>(e));
+          default:
+            // Event type is not handled, continue the process.
+            break;
+        }
+
+        // Not recognized event.
+        return false;
+      }
+
     }
   }
 }

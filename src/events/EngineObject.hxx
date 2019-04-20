@@ -40,33 +40,121 @@ namespace sdl {
 
       inline
       bool
-      EngineObject::handleEvent(EventShPtr /*e*/) {
-        // No handling provided, assume the event has been recognized.
+      EngineObject::enterEvent(const engine::EnterEvent& /*e*/) {
+        // Empty implementation.
         return true;
       }
 
       inline
-      void
-      EngineObject::postEvent(EventShPtr e) noexcept {
-        // Check event coherence.
-        if (e == nullptr) {
-          log(
-            std::string("Cannot post empty event in queue"),
-            utils::Level::Warning
-          );
-          return;
-        }
+      bool
+      EngineObject::focusInEvent(const engine::Event& /*e*/) {
+        // Empty implementation.
+        return true;
+      }
 
-        // Check whether a queue is provided.
-        if (m_queue == nullptr) {
-          log(
-            std::string("Cannot post event of type ") + std::to_string(static_cast<int>(e->getType())) + ", no queue provided",
-            utils::Level::Warning
-          );
-          return;
-        }
+      inline
+      bool
+      EngineObject::focusOutEvent(const engine::Event& /*e*/) {
+        // Empty implementation.
+        return true;
+      }
 
-        m_queue->postEvent(e);
+      inline
+      bool
+      EngineObject::geometryUpdateEvent(const engine::Event& /*e*/) {
+        // Empty implementation.
+        return true;
+      }
+
+      inline
+      bool
+      EngineObject::keyPressEvent(const engine::KeyEvent& /*e*/) {
+        // Empty implementation.
+        return true;
+      }
+
+      inline
+      bool
+      EngineObject::keyReleaseEvent(const engine::KeyEvent& /*e*/) {
+        // Empty implementation.
+        return true;
+      }
+
+      inline
+      bool
+      EngineObject::leaveEvent(const engine::Event& /*e*/) {
+        // Empty implementation.
+        return true;
+      }
+
+      inline
+      bool
+      EngineObject::mouseButtonPressEvent(const engine::MouseEvent& /*e*/) {
+        // Empty implementation.
+        return true;
+      }
+
+      inline
+      bool
+      EngineObject::mouseButtonReleaseEvent(const engine::MouseEvent& /*e*/) {
+        // Empty implementation.
+        return true;
+      }
+
+      inline
+      bool
+      EngineObject::mouseMoveEvent(const engine::MouseEvent& /*e*/) {
+        // Empty implementation.
+        return true;
+      }
+
+      inline
+      bool
+      EngineObject::mouseWheelEvent(const engine::MouseEvent& /*e*/) {
+        // Empty implementation.
+        return true;
+      }
+
+      inline
+      bool
+      EngineObject::refreshEvent(const engine::PaintEvent& /*e*/) {
+        // Empty implementation.
+        return true;
+      }
+
+      inline
+      bool
+      EngineObject::repaintEvent(const engine::PaintEvent& /*e*/) {
+        // Empty implementation.
+        return true;
+      }
+
+      inline
+      bool
+      EngineObject::windowEnterEvent(const engine::WindowEvent& /*e*/) {
+        // Empty implementation.
+        return true;
+      }
+
+      inline
+      bool
+      EngineObject::windowLeaveEvent(const engine::WindowEvent& /*e*/) {
+        // Empty implementation.
+        return true;
+      }
+
+      inline
+      bool
+      EngineObject::windowResizeEvent(const engine::WindowEvent& /*e*/) {
+        // Empty implementation.
+        return true;
+      }
+
+      inline
+      bool
+      EngineObject::quitEvent(const engine::QuitEvent& /*e*/) {
+        // Empty implementation.
+        return true;
       }
 
       inline
