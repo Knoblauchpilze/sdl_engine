@@ -64,11 +64,13 @@ namespace sdl {
           virtual utils::Uuid
           createTextureFromText(const utils::Uuid& win,
                                 const std::string& text,
-                                const utils::Uuid& font) = 0;
+                                const utils::Uuid& font,
+                                const Palette::ColorRole& role) = 0;
 
           virtual utils::Uuid
           createTextureFromText(const std::string& text,
-                                const utils::Uuid& font) = 0;
+                                const utils::Uuid& font,
+                                const Palette::ColorRole& role) = 0;
 
           virtual void
           fillTexture(const utils::Uuid& uuid,

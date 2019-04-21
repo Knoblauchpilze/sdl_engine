@@ -35,8 +35,8 @@ namespace sdl {
 
           TextureShPtr
           render(const std::string& text,
-                 const Palette::ColorRole& role,
-                 SDL_Renderer* renderer);
+                 SDL_Renderer* renderer,
+                 const Palette::ColorRole& role);
 
         private:
 

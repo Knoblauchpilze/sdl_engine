@@ -119,7 +119,8 @@ namespace sdl {
       utils::Uuid
       SdlEngine::createTextureFromText(const utils::Uuid& win,
                                        const std::string& text,
-                                       const utils::Uuid& font)
+                                       const utils::Uuid& font,
+                                       const Palette::ColorRole& role)
       {
         // Acquire the lock so that we do not create multiple textures at the
         // same time.
@@ -132,7 +133,7 @@ namespace sdl {
         ColoredFontShPtr coloredFont = getFontOrThrow(font);
 
         // Create the desired texture.
-        utils::Uuid tex = parentWin->createTextureFromText(text, coloredFont);
+        utils::Uuid tex = parentWin->createTextureFromText(text, coloredFont, role);
 
         // Register it into the internal table and return it.
         return registerTextureForWindow(tex, win);

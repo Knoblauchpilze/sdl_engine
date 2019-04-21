@@ -73,7 +73,8 @@ namespace sdl {
       inline
       utils::Uuid
       SdlEngine::createTextureFromText(const std::string& text,
-                                       const utils::Uuid& /*font*/)
+                                       const utils::Uuid& /*font*/,
+                                       const Palette::ColorRole& /*role*/)
       {
         // Not handled in here, we need a window ID.
         error(std::string("Cannot create texture from text \"") + text + "\" without an active window");

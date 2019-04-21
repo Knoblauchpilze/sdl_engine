@@ -59,10 +59,11 @@ namespace sdl {
       inline
       utils::Uuid
       Window::createTextureFromText(const std::string& text,
-                                    ColoredFontShPtr font)
+                                    ColoredFontShPtr font,
+                                    const Palette::ColorRole& role)
       {
         // Create the texture.
-        TextureShPtr tex = font->render(text, tex->getRole(), m_renderer);
+        TextureShPtr tex = font->render(text, m_renderer, role);
 
         // Register and return it.
         return registerTexture(tex);

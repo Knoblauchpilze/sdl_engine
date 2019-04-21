@@ -62,11 +62,13 @@ namespace sdl {
           utils::Uuid
           createTextureFromText(const utils::Uuid& win,
                                 const std::string& text,
-                                const utils::Uuid& font) override;
+                                const utils::Uuid& font,
+                                const Palette::ColorRole& role) override;
 
           utils::Uuid
           createTextureFromText(const std::string& text,
-                                const utils::Uuid& font) override;
+                                const utils::Uuid& font,
+                                const Palette::ColorRole& role) override;
 
           void
           fillTexture(const utils::Uuid& uuid,

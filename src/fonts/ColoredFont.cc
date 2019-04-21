@@ -19,8 +19,8 @@ namespace sdl {
 
       TextureShPtr
       ColoredFont::render(const std::string& text,
-                          const Palette::ColorRole& role,
-                          SDL_Renderer* renderer)
+                          SDL_Renderer* renderer,
+                          const Palette::ColorRole& role)
       {
         // Use the internal font to render the input text.
         SDL_Surface* textSurface = m_font->render(
@@ -35,7 +35,7 @@ namespace sdl {
         }
 
         // Build and return a texture from this raw SDL texture pointer.
-        return std::make_shared<SurfaceTexture>(renderer, Palette::ColorRole::WindowText, textSurface);
+        return std::make_shared<SurfaceTexture>(renderer, role, textSurface);
       }
 
     }

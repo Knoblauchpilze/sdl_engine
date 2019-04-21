@@ -41,7 +41,8 @@ namespace sdl {
 
           utils::Uuid
           createTextureFromText(const std::string& text,
-                                ColoredFontShPtr font);
+                                ColoredFontShPtr font,
+                                const Palette::ColorRole& role);
 
           void
           fill(const utils::Uuid& uuid,
