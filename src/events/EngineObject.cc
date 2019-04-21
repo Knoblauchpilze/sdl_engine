@@ -79,7 +79,7 @@ namespace sdl {
         // Check whether a queue is provided.
         if (m_queue == nullptr) {
           log(
-            std::string("Cannot post event of type ") + std::to_string(static_cast<int>(e->getType())) + ", no queue provided",
+            std::string("Cannot post event ") + Event::getNameFromEvent(e) + ", no queue provided",
             utils::Level::Warning
           );
           return;
