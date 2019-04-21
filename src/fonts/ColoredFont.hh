@@ -19,7 +19,10 @@ namespace sdl {
                       const Palette& palette,
                       const int& size);
 
-          virtual ~ColoredFont();
+          ~ColoredFont();
+
+          const int&
+          getSize() const noexcept;
 
           void
           setSize(const int& size) noexcept;
@@ -32,22 +35,18 @@ namespace sdl {
 
           TextureShPtr
           render(const std::string& text,
+                 const Palette::ColorRole& role,
                  SDL_Renderer* renderer);
 
         private:
-
-          void
-          clean() noexcept;
 
         private:
 
           FontShPtr m_font;
           int m_size;
           Palette m_palette;
-          bool m_dirty;
 
-          std::string m_texText;
-          TextureShPtr m_text;
+          std::string m_text;
 
       };
 
