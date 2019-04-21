@@ -13,13 +13,16 @@ add_subdirectory(
 
 add_subdirectory(
   ${CMAKE_CURRENT_SOURCE_DIR}/fonts
-)
+  )
+
+add_subdirectory(
+  ${CMAKE_CURRENT_SOURCE_DIR}/textures
+  )
 
 set (SOURCES
   ${SOURCES}
   Color.cc
   Palette.cc
-  Texture.cc
   Window.cc
   SdlEngine.cc
   EngineDecorator.cc
@@ -43,6 +46,7 @@ target_include_directories (sdl_engine PUBLIC
   ${CMAKE_CURRENT_SOURCE_DIR}
   ${CMAKE_CURRENT_SOURCE_DIR}/events
   ${CMAKE_CURRENT_SOURCE_DIR}/fonts
+  ${CMAKE_CURRENT_SOURCE_DIR}/textures
   ${SDL2_INCLUDE_DIR}
   ${SDL2_TTF_INCLUDE_DIRS}
   )

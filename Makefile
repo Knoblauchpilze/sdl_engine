@@ -25,6 +25,8 @@ copyHeaders:
 	sudo cp src/events/*.hxx /usr/local/include/sdl_engine
 	sudo cp src/fonts/*.hh /usr/local/include/sdl_engine
 	sudo cp src/fonts/*.hxx /usr/local/include/sdl_engine
+	sudo cp src/textures/*.hh /usr/local/include/sdl_engine
+	sudo cp src/textures/*.hxx /usr/local/include/sdl_engine
 
 install: r copyRelease copyHeaders
 
