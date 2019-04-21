@@ -51,6 +51,20 @@ namespace sdl {
         protected:
 
           /**
+           * @brief - Used to register the input `other` object to the
+           *          same events queue as this object.
+           *          It allows not to break the encapsulation of the
+           *          events queue by exposing something like `getEventsQueue`.
+           *          Note that if no queue is defined for this object this
+           *          method does nothing and thus does not override any
+           *          existing queue in the `other` object.
+           * @param other - the object which should be registered to this
+           *                object's events queue.
+           */
+          void
+          registerToSameQueue(EngineObject* other);
+
+          /**
            * @brief - Post an event to the underlying events queue.
            * @param e - the event to post.
            * @param autosetReceiver - defines whether the input event `e`

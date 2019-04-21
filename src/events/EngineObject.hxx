@@ -39,6 +39,24 @@ namespace sdl {
       }
 
       inline
+      void
+      EngineObject::registerToSameQueue(EngineObject* other) {
+        // Check that the `other` object is valid.
+        if (other == nullptr) {
+          error(
+            std::string("Cannot register object to same events queue"),
+            std::string("Invalid null object")
+          );
+        }
+
+        // Register the `other` to the queue only if our own events queue is
+        // valid (i.e. not null).
+        if (m_queue != nullptr) {
+          other->m_queue = m_queue;
+        }
+      }
+
+      inline
       bool
       EngineObject::enterEvent(const engine::EnterEvent& /*e*/) {
         // Empty implementation.
