@@ -1,6 +1,8 @@
 #ifndef    FONT_HH
 # define   FONT_HH
 
+# include <mutex>
+# include <string>
 # include <memory>
 # include <unordered_map>
 # include <SDL2/SDL_ttf.h>
@@ -37,7 +39,7 @@ namespace sdl {
 
         private:
 
-          std::string m_name;
+          std::shared_ptr<std::mutex> m_cacheLocker;
           std::unordered_map<int, TTF_Font*> m_fonts;
 
       };

@@ -7,6 +7,7 @@ namespace sdl {
 
       Font::Font(const std::string& name):
         utils::CoreObject(name),
+        m_cacheLocker(std::make_shared<std::mutex>()),
         m_fonts()
       {
         setService(std::string("font"));
@@ -14,9 +15,10 @@ namespace sdl {
 
       Font::Font(const Font& other):
         utils::CoreObject(other.getName()),
+        m_cacheLocker(other.m_cacheLocker),
         m_fonts(other.m_fonts)
       {
-        // Nothing to do.
+        setService(std::string("font"));
       }
 
       SDL_Surface*
@@ -38,11 +40,41 @@ namespace sdl {
         if (textSurface == nullptr) {
           error(
             std::string("Could not render text \"") + text + "\"",
-            std::string("") + TTF_GetError()
+            TTF_GetError()
           );
         }
 
         return textSurface;
+      }
+
+      inline
+      TTF_Font*
+      Font::loadForSize(const int& size) {
+        // Acquire the lock to prevent concurrent addition of fonts.
+        std::lock_guard<std::mutex> guard(*m_cacheLocker);
+
+        // Check whether the font for the input `size` already exists in the local cache.
+        const std::unordered_map<int, TTF_Font*>::const_iterator font = m_fonts.find(size);
+        if (font != m_fonts.cend()) {
+          return font->second;
+        }
+
+        // The font for this `size` is not loaded yet: create it.
+        TTF_Font* newFont = TTF_OpenFont(getName().c_str(), size);
+
+        // Check that we could effectively load the font.
+        if (newFont == nullptr) {
+          error(
+            std::string("Could not load font with size ") + std::to_string(size),
+            TTF_GetError()
+          );
+        }
+
+        // Add this font to the cache.
+        m_fonts[size] = newFont;
+
+        // Return the loaded font.
+        return newFont;
       }
 
     }
