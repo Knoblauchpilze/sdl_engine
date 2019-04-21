@@ -32,7 +32,7 @@ namespace sdl {
         createOnce();
 
         // Retrieve the color to use to fill the texture from the palette.
-        SDL_Color color = palette.getColorForRole(m_role).toSDLColor();
+        SDL_Color color = palette.getColorForRole(getRole()).toSDLColor();
 
         // Save the current state of the renderer: this will automatically handle restoring
         // the state upon destroying this object.
@@ -43,14 +43,25 @@ namespace sdl {
         SDL_SetRenderTarget(getRenderer(), m_texture);
         SDL_SetRenderDrawColor(getRenderer(), color.r, color.g, color.b, SDL_ALPHA_OPAQUE);
         SDL_RenderClear(getRenderer());
+
+        // Also apply alpha modulation for this texture.
+        setAlpha(palette.getColorForRole(getRole()));
       }
 
       void
-      Texture::draw(utils::Boxf* box)
+      Texture::draw(utils::Boxf* box,
+                    SDL_Texture* on)
       {
         // Performs the creation of the texture using the dedicated handler
         // which will only create it once.
         createOnce();
+
+        // Save the renderer state so that we can restore the
+        // initial rendering target and properties (color, etc.).
+        RendererState state(getRenderer());
+
+        // Set the input texture as rendering target.
+        SDL_SetRenderTarget(getRenderer(), on);
 
         // Draw the input texture at the corresponding location.
         if (box == nullptr) {

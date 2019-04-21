@@ -25,7 +25,7 @@ namespace sdl {
         if (iconAsSurface == nullptr) {
           error(
             std::string("Could not load icon \"") + icon + "\"",
-            std::string("") + SDL_GetError()
+            SDL_GetError()
           );
         }
 
@@ -49,13 +49,6 @@ namespace sdl {
         // If `where` is set to nul, it only affects how the SDL
         // will process the blit operation internally but does not
         // really change anything at this level.
-        // The rendering process is delegated to the texture for the
-        // actual blitting part, but this window will perform all
-        // the rendering pipeline configuration beforehand.
-
-        // Save the renderer state so that we can restore the
-        // initial rendering target and properties (color, etc.).
-        RendererState state(m_renderer);
 
         // So the first thing to do is to assign a valid rendering target.
         // To do so, we should set the target to `on`, except if it is
@@ -69,15 +62,11 @@ namespace sdl {
           target = (*base)();
         }
 
-        // Set this texture as rendering target.
-        SDL_SetRenderTarget(m_renderer, target);
-
-        // Now that the rendering target is set, perform the drawing.
-
         // Retrieve the texture to draw.
         TextureShPtr layer = getTextureOrThrow(tex);
 
-        layer->draw(where);
+        // Draw the layer on the base.
+        layer->draw(where, target);
       }
 
       void
@@ -96,7 +85,7 @@ namespace sdl {
         if (m_window == nullptr) {
           error(
             std::string("Could not create SDL window"),
-            std::string("") + SDL_GetError()
+            SDL_GetError()
           );
         }
 
@@ -111,7 +100,7 @@ namespace sdl {
         if (m_renderer == nullptr) {
           error(
             std::string("Could not create SDL renderer for window"),
-            std::string("") + SDL_GetError()
+            SDL_GetError()
           );
         }
       }

@@ -29,7 +29,8 @@ namespace sdl {
           fill(const Palette& palette);
 
           void
-          draw(utils::Boxf* box);
+          draw(utils::Boxf* box,
+               SDL_Texture* on = nullptr);
 
           void
           setAlpha(const Color& color);
