@@ -325,7 +325,7 @@ namespace sdl {
         if (!SDL_WasInit(SDL_INIT_VIDEO) && SDL_Init(SDL_INIT_VIDEO) != 0) {
           error(
             std::string("Caught error while initializing SDL lib"),
-            std::string("") + SDL_GetError()
+            SDL_GetError()
           );
         }
       }

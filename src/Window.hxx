@@ -54,7 +54,6 @@ namespace sdl {
 
         // Register and return it.
         return registerTexture(tex);
-
       }
 
       inline

@@ -12,7 +12,7 @@ namespace sdl {
         if (imageAsSurface == nullptr) {
           error(
             std::string("Unable to create texture from file \"") + m_file + "\"",
-            std::string("") + SDL_GetError()
+            SDL_GetError()
           );
         }
 
