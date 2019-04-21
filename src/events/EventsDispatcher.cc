@@ -100,7 +100,7 @@ namespace sdl {
           EventShPtr event = m_engine->pollEvent(eventsStillInQueue);
 
           // Enqueue this event if it is relevant.
-          if (eventsStillInQueue && event != nullptr) {
+          if (eventsStillInQueue && event != nullptr && event->getType() != Event::Type::None) {
             postEvent(event);
           }
         }
