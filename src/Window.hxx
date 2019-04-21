@@ -2,6 +2,9 @@
 # define   WINDOW_HXX
 
 # include "Window.hh"
+# include "BasicTexture.hh"
+# include "FileTexture.hh"
+# include "SurfaceTexture.hh"
 
 namespace sdl {
   namespace core {
@@ -35,7 +38,7 @@ namespace sdl {
                             const Palette::ColorRole& role)
       {
         // Create the texture.
-        TextureShPtr tex = std::make_shared<Texture>(size, role, m_renderer);
+        TextureShPtr tex = std::make_shared<BasicTexture>(m_renderer, role, size);
 
         // Register and return it.
         return registerTexture(tex);
@@ -47,7 +50,7 @@ namespace sdl {
                                     const Palette::ColorRole& role)
       {
         // Create the texture.
-        TextureShPtr tex = std::make_shared<Texture>(file, role, m_renderer);
+        TextureShPtr tex = std::make_shared<FileTexture>(m_renderer, role, file);
 
         // Register and return it.
         return registerTexture(tex);
@@ -60,7 +63,7 @@ namespace sdl {
                                     ColoredFontShPtr font)
       {
         // Create the texture.
-        TextureShPtr tex = font->render(text, m_renderer);
+        TextureShPtr tex = font->render(text, tex->getRole(), m_renderer);
 
         // Register and return it.
         return registerTexture(tex);
@@ -75,7 +78,7 @@ namespace sdl {
         TextureShPtr tex = getTextureOrThrow(uuid);
 
         // Fill it using the internal renderer.
-        tex->fill(m_renderer, palette);
+        tex->fill(palette);
       }
 
       inline

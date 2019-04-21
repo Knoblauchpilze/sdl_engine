@@ -77,7 +77,7 @@ namespace sdl {
         // Retrieve the texture to draw.
         TextureShPtr layer = getTextureOrThrow(tex);
 
-        layer->draw(where, m_renderer);
+        layer->draw(where);
       }
 
       void
