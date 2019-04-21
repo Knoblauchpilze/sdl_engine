@@ -181,13 +181,13 @@ namespace sdl {
         // is spontaneous.
         if (!event->isSpontaneous()) {
           // Dispatch the event to the receiver.
-          log("Handling event of type " + std::to_string(static_cast<int>(event->getType())) + " for " + event->getReceiver()->getName());
+          log("Dispatching " + Event::getNameFromEvent(event) + " for " + event->getReceiver()->getName());
           event->getReceiver()->event(event);
           return;
         }
 
         // The event is not spontaneous, transmit it to all listeners.
-        log("Dispatching event with type " + std::to_string(static_cast<int>(event->getType())));
+        log("Dispatching " + Event::getNameFromEvent(event));
         for (std::vector<EngineObject*>::iterator listener = m_listeners.begin() ;
             listener != m_listeners.end() ;
             ++listener)

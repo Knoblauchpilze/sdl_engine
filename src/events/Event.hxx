@@ -8,6 +8,22 @@ namespace sdl {
     namespace engine {
 
       inline
+      std::string
+      Event::getNameFromEvent(const Event& e) noexcept {
+        return getNameFromType(e.getType());
+      }
+
+      inline
+      std::string
+      Event::getNameFromEvent(const std::shared_ptr<Event> e) noexcept {
+        if (e == nullptr) {
+          return getNameFromType(Type::None);
+        }
+
+        return getNameFromEvent(*e);
+      }
+
+      inline
       Event::Event(const Type& type,
                    EngineObject* receiver,
                    const std::string& name):

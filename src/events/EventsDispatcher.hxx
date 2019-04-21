@@ -89,6 +89,13 @@ namespace sdl {
         // Acquire the events lock.
         std::lock_guard<std::mutex> guard(m_eventsLocker);
 
+        if (event->isSpontaneous()) {
+          log("Broadcasting " + Event::getNameFromEvent(event));
+        }
+        else {
+          log("Queuing " + Event::getNameFromEvent(event) + " for " + event->getReceiver()->getName());
+        }
+
         // Push this event in the queue.
         // TODO: Handle queue per listener (at least when a receiver is assigned).
         m_eventsQueue.push_back(event);

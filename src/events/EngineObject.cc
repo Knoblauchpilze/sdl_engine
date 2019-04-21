@@ -103,6 +103,8 @@ namespace sdl {
           return false;
         }
 
+        log("Handling " + Event::getNameFromEvent(e));
+
         // Check the event type and dispatch to the corresponding handler.
         switch (e->getType()) {
           case Event::Type::Enter:

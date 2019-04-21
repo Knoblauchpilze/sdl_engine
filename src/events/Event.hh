@@ -37,6 +37,18 @@ namespace sdl {
             Quit                 //<! - Main application was closed.
           };
 
+          static
+          std::string
+          getNameFromType(const Type& type) noexcept;
+
+          static
+          std::string
+          getNameFromEvent(const Event& e) noexcept;
+
+          static
+          std::string
+          getNameFromEvent(const std::shared_ptr<Event> e) noexcept;
+
         public:
 
           Event(const Type& type = Type::None,
