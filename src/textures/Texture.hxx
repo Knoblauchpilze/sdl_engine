@@ -72,7 +72,7 @@ namespace sdl {
       Texture::createOnce() {
         // Create the texture if needed.
         if (!valid()) {
-          create();
+          m_texture = create();
 
           if (!valid()) {
             error(std::string("Could not create texture with type ") + std::to_string(static_cast<int>(m_type)));
