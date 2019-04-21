@@ -60,7 +60,7 @@ namespace sdl {
           virtual utils::Uuid
           createTextureFromFile(const std::string& file,
                                 const Palette::ColorRole& role) = 0;
-          
+
           virtual utils::Uuid
           createTextureFromText(const utils::Uuid& win,
                                 const std::string& text,

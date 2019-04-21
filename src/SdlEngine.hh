@@ -139,7 +139,7 @@ namespace sdl {
 
           // Textures are associated to their related window identifier.
           using TexturesMap = std::unordered_map<utils::Uuid, utils::Uuid>;
-          
+
           using FontsMap = std::unordered_map<utils::Uuid, ColoredFontShPtr>;
 
           std::mutex m_locker;
