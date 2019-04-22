@@ -52,7 +52,7 @@ namespace sdl {
         // Register the `other` to the queue only if our own events queue is
         // valid (i.e. not null).
         if (m_queue != nullptr) {
-          other->m_queue = m_queue;
+          other->setEventsQueue(m_queue);
         }
       }
 
