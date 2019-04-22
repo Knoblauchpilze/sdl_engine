@@ -28,6 +28,12 @@ namespace sdl {
       QuitEvent::~QuitEvent() {}
 
       inline
+      bool
+      QuitEvent::equal(const Event& other) const noexcept {
+        return Event::equal(other);
+      }
+
+      inline
       void
       QuitEvent::init() {
         // Check whether the event has a right type.

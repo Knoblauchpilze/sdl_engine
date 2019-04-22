@@ -23,6 +23,11 @@ namespace sdl {
           void
           populateFromEngineData(Engine& engine) override;
 
+        protected:
+
+          bool
+          equal(const Event& other) const noexcept override;
+
         private:
 
           utils::Boxf m_updateRegion;

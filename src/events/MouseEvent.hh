@@ -66,6 +66,11 @@ namespace sdl {
           int
           getYScroll() const noexcept;
 
+        protected:
+
+          bool
+          equal(const Event& other) const noexcept override;
+
         private:
 
           void

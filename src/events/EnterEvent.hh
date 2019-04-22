@@ -23,6 +23,11 @@ namespace sdl {
           const utils::Vector2f&
           getMousePosition() const noexcept;
 
+        protected:
+
+          bool
+          equal(const Event& other) const noexcept override;
+
         private:
 
           utils::Vector2f m_coordinates;

@@ -58,6 +58,13 @@ namespace sdl {
       }
 
       inline
+      bool
+      WindowEvent::equal(const Event& other) const noexcept {
+        const WindowEvent& e = dynamic_cast<const WindowEvent&>(other);
+        return Event::equal(other) && getWindID() == e.getWindID() && getSDLWinID() == e.getSDLWinID();
+      }
+
+      inline
       void
       WindowEvent::init() {
         // Check whether the event has a right type.

@@ -35,6 +35,11 @@ namespace sdl {
           void
           setWindowID(const utils::Uuid& uuid) noexcept;
 
+        protected:
+
+          bool
+          equal(const Event& other) const noexcept override;
+
         private:
 
           void

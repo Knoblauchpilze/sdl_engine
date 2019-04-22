@@ -44,6 +44,13 @@ namespace sdl {
       }
 
       inline
+      bool
+      KeyEvent::equal(const Event& other) const noexcept {
+        const KeyEvent& e = dynamic_cast<const KeyEvent&>(other);
+        return Event::equal(other) && getKey() == e.getKey();
+      }
+
+      inline
       void
       KeyEvent::init() {
         // Check whether the event has a right type.

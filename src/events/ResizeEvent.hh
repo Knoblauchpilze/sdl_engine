@@ -27,6 +27,11 @@ namespace sdl {
           const utils::Sizef&
           getOldSize() const noexcept;
 
+        protected:
+
+          bool
+          equal(const Event& other) const noexcept override;
+
         private:
 
           utils::Sizef m_new;

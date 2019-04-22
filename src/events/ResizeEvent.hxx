@@ -33,6 +33,13 @@ namespace sdl {
         return m_old;
       }
 
+      inline
+      bool
+      ResizeEvent::equal(const Event& other) const noexcept {
+        const ResizeEvent& e = dynamic_cast<const ResizeEvent&>(other);
+        return Event::equal(other) && getNewSize() == e.getNewSize() && getOldSize() == e.getOldSize();
+      }
+
     }
   }
 }

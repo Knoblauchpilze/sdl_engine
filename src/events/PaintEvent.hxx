@@ -25,6 +25,13 @@ namespace sdl {
         return m_updateRegion;
       }
 
+      inline
+      bool
+      PaintEvent::equal(const Event& other) const noexcept {
+        const PaintEvent& e = dynamic_cast<const PaintEvent&>(other);
+        return Event::equal(other) && getUpdateRegion() == e.getUpdateRegion();
+      }
+
     }
   }
 }

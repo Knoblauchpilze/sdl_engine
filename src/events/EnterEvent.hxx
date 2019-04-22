@@ -25,6 +25,13 @@ namespace sdl {
         return m_coordinates;
       }
 
+      inline
+      bool
+      EnterEvent::equal(const Event& other) const noexcept {
+        const EnterEvent& e = dynamic_cast<const EnterEvent&>(other);
+        return Event::equal(other) && getMousePosition() == e.getMousePosition();
+      }
+
     }
   }
 }

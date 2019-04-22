@@ -140,6 +140,22 @@ namespace sdl {
       }
 
       inline
+      bool
+      MouseEvent::equal(const Event& other) const noexcept {
+        const MouseEvent& e = dynamic_cast<const MouseEvent&>(other);
+        return
+          Event::equal(other) &&
+          getButton() == e.getButton() &&
+          getMousePosition() == e.getMousePosition() &&
+          getXRel() == e.getXRel() &&
+          getYRel() == e.getYRel() &&
+          getDirection() == e.getDirection() &&
+          getXScroll() == e.getXScroll() &&
+          getYScroll() == e.getYScroll()
+        ;
+      }
+
+      inline
       void
       MouseEvent::init() {
         initButton();
