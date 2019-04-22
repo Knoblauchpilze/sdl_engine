@@ -58,6 +58,9 @@ namespace sdl {
           ~Event();
 
           bool
+          operator==(const Event& other) const noexcept;
+
+          bool
           isAccepted() const noexcept;
 
           void
@@ -95,6 +98,9 @@ namespace sdl {
 
           void
           setType(const Type& type) noexcept;
+
+          virtual bool
+          equal(const Event& other) const noexcept;
 
         private:
 

@@ -8,6 +8,12 @@ namespace sdl {
     namespace engine {
 
       inline
+      bool
+      Event::operator==(const Event& other) const noexcept {
+        return typeid(*this) == typeid(other) && equal(other);
+      }
+
+      inline
       std::string
       Event::getNameFromEvent(const Event& e) noexcept {
         return getNameFromType(e.getType());
@@ -90,6 +96,16 @@ namespace sdl {
       void
       Event::setType(const Type& type) noexcept {
         m_type = type;
+      }
+
+      inline
+      bool
+      Event::equal(const Event& other) const noexcept {
+        return
+          m_type == other.m_type &&
+          m_receiver == other.m_receiver &&
+          m_accepted == other.m_accepted
+        ;
       }
 
     }

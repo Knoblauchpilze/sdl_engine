@@ -58,7 +58,15 @@ namespace sdl {
           void
           dispatchEvent(const EventShPtr event);
 
+          void
+          trimAndPostSpontaneousEvent(const EventShPtr event);
+
+          void
+          trimAndPostDirectedEvent(const EventShPtr event);
+
         private:
+
+        using Events = std::vector<EventShPtr>;
 
           float m_framerate;
           float m_frameDuration;
@@ -71,7 +79,8 @@ namespace sdl {
           std::shared_ptr<std::thread> m_executionThread;
 
           std::mutex m_eventsLocker;
-          std::vector<EventShPtr> m_eventsQueue;
+          Events m_directedEvents;
+          Events m_spontaneousEvents;
 
           std::vector<EngineObject*> m_listeners;
           std::mutex m_listenersLocker;

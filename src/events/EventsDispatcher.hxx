@@ -75,6 +75,18 @@ namespace sdl {
             return &*(listener) == &(*internalListener);
           }
         );
+
+        // We also need to remove all the events associated to this
+        // listener.
+        Events::const_iterator event = m_directedEvents.cbegin();
+        while (event != m_directedEvents.cend()) {
+          if ((*event)->getReceiver() == listener) {
+            event = m_directedEvents.erase(event);
+          }
+          else {
+            ++event;
+          }
+        }
       }
 
       inline
@@ -89,16 +101,16 @@ namespace sdl {
         // Acquire the events lock.
         std::lock_guard<std::mutex> guard(m_eventsLocker);
 
+        // Post the event in the relevant queue based on whether it is
+        // spontaneous or directed to a particular element.
+        // In order not to queue several events with similar content
+        // we use a dedicated handler.
         if (event->isSpontaneous()) {
-          log("Broadcasting " + Event::getNameFromEvent(event));
+          trimAndPostSpontaneousEvent(event);
         }
         else {
-          log("Queuing " + Event::getNameFromEvent(event) + " for " + event->getReceiver()->getName());
+          trimAndPostDirectedEvent(event);
         }
-
-        // Push this event in the queue.
-        // TODO: Handle queue per listener (at least when a receiver is assigned).
-        m_eventsQueue.push_back(event);
       }
 
     }
