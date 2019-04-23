@@ -2,6 +2,7 @@
 # define   EVENT_HH
 
 # include <memory>
+# include <chrono>
 # include <core_utils/CoreObject.hh>
 
 namespace sdl {
@@ -72,6 +73,9 @@ namespace sdl {
           Type
           getType() const noexcept;
 
+          std::chrono::time_point<std::chrono::steady_clock>
+          getTimestamp() const noexcept;
+
           /**
            * @brief - An event is considered spontaneous when there's no associated receiver,
            *          which means it should be transmitted to all receivers.
@@ -107,6 +111,8 @@ namespace sdl {
           mutable bool m_accepted;
           Type m_type;
           EngineObject* m_receiver;
+
+          std::chrono::time_point<std::chrono::steady_clock> m_timestamp;
 
       };
 

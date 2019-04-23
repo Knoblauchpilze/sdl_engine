@@ -36,7 +36,9 @@ namespace sdl {
         utils::CoreObject(name),
         m_accepted(false),
         m_type(type),
-        m_receiver(receiver)
+        m_receiver(receiver),
+
+        m_timestamp(std::chrono::steady_clock::now())
       {
         setService(std::string("event"));
       }
@@ -66,6 +68,12 @@ namespace sdl {
       Event::Type
       Event::getType() const noexcept {
         return m_type;
+      }
+
+      inline
+      std::chrono::time_point<std::chrono::steady_clock>
+      Event::getTimestamp() const noexcept {
+        return m_timestamp;
       }
 
       inline
