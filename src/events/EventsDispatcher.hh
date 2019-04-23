@@ -46,6 +46,10 @@ namespace sdl {
 
         private:
 
+          using Events = std::vector<EventShPtr>;
+          using EventsShPtr = std::shared_ptr<Events>;
+          using AllEvents = std::vector<std::pair<Event::Type, EventsShPtr>>;
+
           void
           fetchSystemEvents();
 
@@ -56,17 +60,24 @@ namespace sdl {
           dispatchEventsFromQueue();
 
           void
+          dispatchSpontaneousEvents();
+
+          void
+          dispatchEvents(const Events& events);
+
+          void
           dispatchEvent(const EventShPtr event);
 
           void
-          trimAndPostSpontaneousEvent(const EventShPtr event);
+          sortEventsByType(AllEvents& events);
 
           void
-          trimAndPostDirectedEvent(const EventShPtr event);
+          trimAndPostSpontaneousEvent(EventShPtr e);
+
+          void
+          trimAndPostDirectedEvent(EventShPtr e);
 
         private:
-
-        using Events = std::vector<EventShPtr>;
 
           float m_framerate;
           float m_frameDuration;
@@ -79,7 +90,7 @@ namespace sdl {
           std::shared_ptr<std::thread> m_executionThread;
 
           std::mutex m_eventsLocker;
-          Events m_directedEvents;
+          AllEvents m_directedEvents;
           Events m_spontaneousEvents;
 
           std::vector<EngineObject*> m_listeners;

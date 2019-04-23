@@ -78,13 +78,22 @@ namespace sdl {
 
         // We also need to remove all the events associated to this
         // listener.
-        Events::const_iterator event = m_directedEvents.cbegin();
-        while (event != m_directedEvents.cend()) {
-          if ((*event)->getReceiver() == listener) {
-            event = m_directedEvents.erase(event);
-          }
-          else {
-            ++event;
+
+        // Iterate over all events' types.
+        AllEvents::const_iterator eventsForType = m_directedEvents.cbegin();
+        while (eventsForType != m_directedEvents.cend()) {
+          // Iterate over the events for this type if any.
+          if (eventsForType->second != nullptr) {
+            Events::const_iterator event = eventsForType->second->cbegin();
+            while (event != eventsForType->second->cend()) {
+              // Remove this event if it is directed toward the listener to remove.
+              if ((*event)->getReceiver() == listener) {
+                event = eventsForType->second->erase(event);
+              }
+              else {
+                ++event;
+              }
+            }
           }
         }
       }
