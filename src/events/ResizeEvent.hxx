@@ -10,8 +10,8 @@ namespace sdl {
     namespace engine {
 
       inline
-      ResizeEvent::ResizeEvent(const utils::Sizef& newSize,
-                               const utils::Sizef& oldSize,
+      ResizeEvent::ResizeEvent(const utils::Boxf& newSize,
+                               const utils::Boxf& oldSize,
                                EngineObject* receiver):
         Event(Event::Type::Resize, receiver, std::string("resize_event")),
         m_new(newSize),
@@ -22,13 +22,13 @@ namespace sdl {
       ResizeEvent::~ResizeEvent() {}
 
       inline
-      const utils::Sizef&
+      const utils::Boxf&
       ResizeEvent::getNewSize() const noexcept {
         return m_new;
       }
 
       inline
-      const utils::Sizef&
+      const utils::Boxf&
       ResizeEvent::getOldSize() const noexcept {
         return m_old;
       }

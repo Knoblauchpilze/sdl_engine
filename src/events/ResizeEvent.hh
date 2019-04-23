@@ -3,7 +3,7 @@
 
 # include "Event.hh"
 # include <core_utils/Uuid.hh>
-# include <maths_utils/Size.hh>
+# include <maths_utils/Box.hh>
 
 namespace sdl {
   namespace core {
@@ -12,8 +12,8 @@ namespace sdl {
       class ResizeEvent: public Event {
         public:
 
-          ResizeEvent(const utils::Sizef& newSize,
-                      const utils::Sizef& oldSize,
+          ResizeEvent(const utils::Boxf& newSize,
+                      const utils::Boxf& oldSize,
                       EngineObject* receiver = nullptr);
 
           ~ResizeEvent();
@@ -21,10 +21,10 @@ namespace sdl {
           void
           populateFromEngineData(Engine& engine) override;
 
-          const utils::Sizef&
+          const utils::Boxf&
           getNewSize() const noexcept;
 
-          const utils::Sizef&
+          const utils::Boxf&
           getOldSize() const noexcept;
 
         protected:
@@ -34,8 +34,8 @@ namespace sdl {
 
         private:
 
-          utils::Sizef m_new;
-          utils::Sizef m_old;
+          utils::Boxf m_new;
+          utils::Boxf m_old;
 
       };
 
