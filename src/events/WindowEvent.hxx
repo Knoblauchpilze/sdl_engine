@@ -20,23 +20,16 @@ namespace sdl {
       WindowEvent::~WindowEvent() {}
 
       inline
-      float
-      WindowEvent::getWidth() const noexcept {
-        if (getType() == Event::Type::WindowResize) {
-          return 1.0f * m_window.data1;
+      utils::Sizef
+      WindowEvent::getSize() const noexcept {
+        if (getType() != Event::Type::WindowResize) {
+          return utils::Sizef();
         }
 
-        return 0.0f;
-      }
-
-      inline
-      float
-      WindowEvent::getHeight() const noexcept {
-        if (getType() == Event::Type::WindowResize) {
-          return 1.0f * m_window.data2;
-        }
-
-        return 0.0f;
+        return utils::Sizef(
+          m_window.data1,
+          m_window.data2
+        );
       }
 
       inline
@@ -75,10 +68,10 @@ namespace sdl {
         Event::Type type = Event::Type::None;
         switch (m_window.event) {
           case SDL_WINDOWEVENT_LEAVE:
-            type = Event::Type::WindowEnter;
+            type = Event::Type::WindowLeave;
             break;
           case SDL_WINDOWEVENT_ENTER:
-            type = Event::Type::WindowLeave;
+            type = Event::Type::WindowEnter;
             break;
           case SDL_WINDOWEVENT_RESIZED:
             type = Event::Type::WindowResize;

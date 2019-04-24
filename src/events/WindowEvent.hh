@@ -5,6 +5,7 @@
 # include <cstdint>
 # include <SDL2/SDL.h>
 # include <core_utils/Uuid.hh>
+# include <maths_utils/Size.hh>
 
 namespace sdl {
   namespace core {
@@ -20,11 +21,8 @@ namespace sdl {
           void
           populateFromEngineData(Engine& engine) override;
 
-          float
-          getWidth() const noexcept;
-
-          float
-          getHeight() const noexcept;
+          utils::Sizef
+          getSize() const noexcept;
 
           std::uint32_t
           getSDLWinID() const noexcept;
