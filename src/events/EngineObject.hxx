@@ -58,6 +58,12 @@ namespace sdl {
 
       inline
       bool
+      EngineObject::isReceiver(const Event& e) const noexcept {
+        return e.getReceiver() == this;
+      }
+
+      inline
+      bool
       EngineObject::enterEvent(const engine::EnterEvent& /*e*/) {
         // Empty implementation.
         return true;

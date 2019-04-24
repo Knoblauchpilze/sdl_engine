@@ -77,6 +77,16 @@ namespace sdl {
           postEvent(EventShPtr e,
                     bool autosetReceiver = true) noexcept;
 
+          /**
+           * @brief - Returns true whenever the input event `e` has this object has
+           *          unique receiver and false otherwise.
+           * @param e - the event for which the receiver should be checked.
+           * @return - true if the event `e` has this object has receiver and false
+           *           otherwise.
+           */
+          bool
+          isReceiver(const Event& e) const noexcept;
+
           // Note that the return value it is true only if the event `e` has been recognized.
           // To check whether the event has been accepted, use the `e->isAccepted()` method.
           virtual bool
