@@ -70,7 +70,15 @@ namespace sdl {
       }
 
       void
-      Window::create(const utils::Sizei& size) {
+      Window::create(const utils::Sizei& size,
+                     const bool resizable)
+      {
+        // Compute the flags from the input properties.
+        std::uint32_t flags = SDL_WINDOW_SHOWN;
+        if (resizable) {
+          flags |= SDL_WINDOW_RESIZABLE;
+        }
+
         // Attempt to create the underlying SDL window.
         m_window = SDL_CreateWindow(
           getName().c_str(),
@@ -78,7 +86,7 @@ namespace sdl {
           SDL_WINDOWPOS_CENTERED,
           size.w(),
           size.h(),
-          SDL_WINDOW_SHOWN
+          flags
         );
 
         // Check whether the window could successfully be created.

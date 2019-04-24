@@ -8,6 +8,7 @@ namespace sdl {
 
       utils::Uuid
       SdlEngine::createWindow(const utils::Sizei& size,
+                              const bool resizable,
                               const std::string& title)
       {
         // Acquire the lock so that we do not create multiple windows at the
@@ -15,7 +16,7 @@ namespace sdl {
         std::lock_guard<std::mutex> guard(m_locker);
 
         // Attempt to create a window with the specified dimensions.
-        WindowShPtr window = std::make_shared<Window>(size, title);
+        WindowShPtr window = std::make_shared<Window>(size, resizable, title);
 
         // Register this window in the internal tables.
         utils::Uuid uuid = utils::Uuid::create();

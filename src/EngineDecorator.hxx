@@ -10,9 +10,10 @@ namespace sdl {
       inline
       utils::Uuid
       EngineDecorator::createWindow(const utils::Sizei& size,
+                                    const bool resizable,
                                     const std::string& title)
       {
-        return m_engine->createWindow(size, title);
+        return m_engine->createWindow(size, resizable, title);
       }
 
       inline

@@ -20,6 +20,7 @@ namespace sdl {
 
           utils::Uuid
           createWindow(const utils::Sizei& size,
+                       const bool resizable = true,
                        const std::string& title = std::string("Default SDL window"));
 
           void

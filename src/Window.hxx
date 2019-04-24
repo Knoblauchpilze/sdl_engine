@@ -12,6 +12,7 @@ namespace sdl {
 
       inline  
       Window::Window(const utils::Sizei& size,
+                     const bool resizable,
                      const std::string& title):
         utils::CoreObject(title),
         m_window(nullptr),
@@ -20,7 +21,7 @@ namespace sdl {
       {
         setService(std::string("window"));
 
-        create(size);
+        create(size, resizable);
       }
 
       inline

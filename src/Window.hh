@@ -21,6 +21,7 @@ namespace sdl {
         public:
 
           Window(const utils::Sizei& size,
+                 const bool resizable = true,
                  const std::string& title = std::string("Default SDL window"));
 
           ~Window();
@@ -78,7 +79,8 @@ namespace sdl {
           using TexturesMap = std::unordered_map<utils::Uuid, TextureShPtr>;
 
           void
-          create(const utils::Sizei& size);
+          create(const utils::Sizei& size,
+                 const bool resizable);
 
           void
           clean();
