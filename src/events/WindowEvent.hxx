@@ -22,14 +22,13 @@ namespace sdl {
       inline
       utils::Sizef
       WindowEvent::getSize() const noexcept {
-        if (getType() != Event::Type::WindowResize) {
-          return utils::Sizef();
-        }
+        return m_size;
+      }
 
-        return utils::Sizef(
-          m_window.data1,
-          m_window.data2
-        );
+      inline
+      void
+      WindowEvent::setSize(const utils::Sizef& size) noexcept {
+        m_size = size;
       }
 
       inline
@@ -76,9 +75,20 @@ namespace sdl {
           case SDL_WINDOWEVENT_RESIZED:
             type = Event::Type::WindowResize;
             break;
+          case SDL_WINDOWEVENT_MAXIMIZED:
+            type = Event::Type::WindowResize;
+            break;
           default:
             // Not handled event for now.
             break;
+        }
+
+        // Assign the size from the input event if any.
+        if (type == Event::Type::WindowResize) {
+          m_size = utils::Sizef(
+            m_window.data1,
+            m_window.data2
+          );
         }
 
         setType(type);

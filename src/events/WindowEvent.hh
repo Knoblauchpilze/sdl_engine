@@ -24,6 +24,9 @@ namespace sdl {
           utils::Sizef
           getSize() const noexcept;
 
+          void
+          setSize(const utils::Sizef& size) noexcept;
+
           std::uint32_t
           getSDLWinID() const noexcept;
 
@@ -47,6 +50,7 @@ namespace sdl {
 
           SDL_WindowEvent m_window;
           utils::Uuid m_winID;
+          utils::Sizef m_size;
 
       };
 
