@@ -18,6 +18,24 @@ namespace sdl {
         return SDL_GetWindowID(m_window);
       }
 
+      utils::Sizef
+      Window::getSize() const {
+        if (m_window == nullptr) {
+          error(
+            std::string("Cannot retrieve dimensions of window"),
+            std::string("Invalid internal SDL window")
+          );
+        }
+
+        // Query the underlying API to get the window's size.
+        int w = 0;
+        int h = 0;
+        SDL_GetWindowSize(m_window, &w, &h);
+
+        // Return the built-in value.
+        return utils::Sizef(w, h);
+      }
+
       void
       Window::setIcon(const std::string& icon) {
         // Load this icon.

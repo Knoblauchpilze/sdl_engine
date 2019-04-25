@@ -29,6 +29,9 @@ namespace sdl {
           std::uint32_t
           getSDLID() const;
 
+          utils::Sizef
+          getSize() const;
+
           void
           setIcon(const std::string& icon);
 
