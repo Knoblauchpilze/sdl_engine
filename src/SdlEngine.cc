@@ -317,8 +317,23 @@ namespace sdl {
 
       void
       SdlEngine::populateEvent(WindowEvent& event) {
-        // We need to assign the window event from the SDL window ID of the event.
-        event.setWindowID(getWindowUuidFromSDLWinID(event.getSDLWinID()));
+        // We need to assign the window uuid from the SDL window ID of the event.
+
+        // Retreieve the internal window uuid from the corresponding SDL uuid.
+        utils::Uuid winID = getWindowUuidFromSDLWinID(event.getSDLWinID());
+
+        // Assign it to the event.
+        event.setWindowID(winID);
+
+        // Also we can assign the size of the window by retrieving it directly
+        // from the underlying object: this helps in case of a maximize event
+        // where the new maximum size is not specified in the event.
+
+        // Retrieve the window object from its uuid.
+        WindowShPtr win = getWindowOrThrow(winID);
+
+        // Assign the corresponding size.
+        event.setSize(win->getSize());
       }
 
       void
