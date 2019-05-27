@@ -72,6 +72,8 @@ namespace sdl {
            *                          receiver. Default value is true (meaning
            *                          that the event will be set to be received
            *                          by this object).
+           *                          Note that this flag is ignored if a
+           *                          receiver is already set for the event.
            */
           void
           postEvent(EventShPtr e,

@@ -85,8 +85,9 @@ namespace sdl {
           return;
         }
 
-        // Assign the receiver to `this` if asked.
-        if (autosetReceiver) {
+        // Assign the receiver to `this` if asked and if no receiver
+        // is provided in the input event.
+        if (autosetReceiver && e->isSpontaneous()) {
           e->setReceiver(this);
         }
 
