@@ -34,21 +34,28 @@ namespace sdl {
           bool
           isRunning();
 
-          // TODO: Add specific kind of listeners ? Like WindowListener for example.
           void
-          addListener(EngineObject* listener);
+          postEvent(EventShPtr event) override;
+
+          /**
+           * @brief - Performs the insertion of the input object as listeners of this queue.
+           *          This allows the `listener` to receive all the events processed by this
+           *          queue and to be scheduled regularly for events processing.
+           *          Note that an error is raised if the listener is not valid or already
+           *          existing in this queue.
+           *          TODO: Add specific kind of listeners ? Like `WindowListener` for example.
+           * @param listener - the object which should be added as a listener of this queue.
+           */
+          void
+          addListener(EngineObject* listener) override;
 
           void
           removeListener(EngineObject* listener) override;
 
-          void
-          postEvent(EventShPtr event) override;
-
         private:
 
           using Events = std::vector<EventShPtr>;
-          using EventsShPtr = std::shared_ptr<Events>;
-          using AllEvents = std::vector<std::pair<Event::Type, EventsShPtr>>;
+          using Listeners = std::vector<EngineObject*>;
 
           void
           fetchSystemEvents();
@@ -69,9 +76,6 @@ namespace sdl {
           dispatchEvent(const EventShPtr event);
 
           void
-          sortEventsByType(AllEvents& events);
-
-          void
           trimAndPostSpontaneousEvent(EventShPtr e);
 
           void
@@ -90,11 +94,10 @@ namespace sdl {
           std::shared_ptr<std::thread> m_executionThread;
 
           std::mutex m_eventsLocker;
-          AllEvents m_directedEvents;
           Events m_spontaneousEvents;
 
-          std::vector<EngineObject*> m_listeners;
           std::mutex m_listenersLocker;
+          Listeners m_listeners;
       };
 
       using EventsDispatcherShPtr = std::shared_ptr<EventsDispatcher>;

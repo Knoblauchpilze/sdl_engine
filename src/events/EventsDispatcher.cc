@@ -4,6 +4,8 @@
 # include "KeyEvent.hh"
 # include "QuitEvent.hh"
 
+# include <iostream>
+
 namespace sdl {
   namespace core {
     namespace engine {
@@ -25,11 +27,10 @@ namespace sdl {
         m_executionThread(nullptr),
 
         m_eventsLocker(),
-        m_directedEvents(),
         m_spontaneousEvents(),
 
-        m_listeners(),
-        m_listenersLocker()
+        m_listenersLocker(),
+        m_listeners()
       {
         setService("events");
 
@@ -136,47 +137,48 @@ namespace sdl {
         // First handle `spontaneous` events.
         dispatchSpontaneousEvents();
 
-        // Now handle the `directed` events. We need to keep looping
-        // until no more events are registered. This includes processing
-        // newly generated ones.
-        std::pair<Event::Type, EventsShPtr> events;
+        // Now handle the `directed` events: as each listener is able to
+        // handle directly the events which are directed towards it, we
+        // in fact need to loop through all listeners and trigger the
+        // processing of events with the internal method.
+        // As listeners may generate new events during this processing,
+        // we need to keep looping as long as all events have not been
+        // consumed.
+        // We can determine whether some listeners still need to process
+        // some events with the dedicated `hasEvents` method.
+        bool allDone = false;
 
         do {
-          // Retrieve the queue into an internal variable so
-          // that we can release the lock and allow components
-          // to post new events.
+          // Loop over the listeners and trigger the processing method
+          // for each one of them.
+          std::lock_guard<std::mutex> guard(m_listenersLocker);
+
+          // In a first approach we assume that we're done. If this is
+          // not the case and a listener still has events to process
+          // we will change our minds.
+          allDone = true;
+
+          for (Listeners::iterator listener = m_listeners.begin() ;
+              listener != m_listeners.end() ;
+              ++listener)
           {
-            // Clear previously processed events if any.
-            if (events.second != nullptr) {
-              events.second->clear();
-            }
-
-            // Try to retrieve the first 
-            std::lock_guard<std::mutex> guard(m_eventsLocker);
-
-            if (!m_directedEvents.empty()) {
-
-              events.swap(m_directedEvents[0]);
-              m_directedEvents.erase(m_directedEvents.begin());
-            }
-          }
-
-          // Now that events are sorted, we can dispatch each type.
-          // We discard `None` events right away.
-          if (events.first != Event::Type::None) {
-            // Dispatch the events of this type.
-            if (events.second != nullptr) {
+            if ((*listener)->hasEvents()) {
               withSafetyNet(
-                [&events, this]() {
-                  dispatchEvents(*events.second);
+                [&listener]() {
+                  (*listener)->processEvents();
                 },
-                std::string("dispatchEvent")
+                std::string("processEvents")
               );
+              allDone = false;
             }
+
+            char c;
+            std::cout << "[ENTER] Key: ";
+            std::cin >> c;
           }
 
-          // Loop until no more events are fetched from the `directed` pool.
-        } while (events.second != nullptr && !events.second->empty());
+          // Loop until no more events are pending in any of the listeners.
+        } while (!allDone);
 
         // Return the elapsed time.
         return std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now() - start).count();
@@ -192,8 +194,8 @@ namespace sdl {
         // and then iterate on it.
         // In addition to allowing the system to still produce events while we're
         // processing some (even though we should ideally aim at controlling this
-        // fact not to be drown in events), it also has the double advantage to
-        // allow listeners to react the events by posting some more events.
+        // fact not to drown in events), it also has the double advantage to
+        // allow listeners to react to the events by posting some more events.
 
         // Copy the events to process into a local variable.
         Events spontaneous;
@@ -204,20 +206,7 @@ namespace sdl {
         }
 
         // Process each event.
-        for (Events::const_iterator event = spontaneous.cbegin() ;
-             event != spontaneous.cend() ;
-             ++event)
-        {
-          // Event with type `None` are discarded right away.
-          if ((*event)->getType() != Event::Type::None) {
-              withSafetyNet(
-                [&event, this]() {
-                  dispatchEvent(*event);
-                },
-                std::string("dispatchEvent")
-              );
-          }
-        }
+        dispatchEvents(spontaneous);
       }
 
       void
@@ -227,7 +216,12 @@ namespace sdl {
              event != events.cend() ;
              ++event)
         {
-          dispatchEvent(*event);
+          withSafetyNet(
+            [&event, this]() {
+              dispatchEvent(*event);
+            },
+            std::string("dispatchEvent")
+          );
         }
       }
 
@@ -238,6 +232,11 @@ namespace sdl {
         // and the internal `m_exitOnEscape` status is ticked: in this case we want
         // to bypass the regular event processing and allow the creation of a quit
         // event and process it as usual.
+
+        // Discard events with `None` type.
+        if (event->getType() == Event::Type::None) {
+          return;
+        }
 
         // Check for key released.
         if (event->getType() == Event::Type::KeyRelease) {
@@ -267,86 +266,13 @@ namespace sdl {
         }
 
         // The event is not spontaneous, transmit it to all listeners.
-        // log("Dispatching " + Event::getNameFromEvent(event));
-        for (std::vector<EngineObject*>::iterator listener = m_listeners.begin() ;
+        std::lock_guard<std::mutex> guard(m_listenersLocker);
+        for (Listeners::iterator listener = m_listeners.begin() ;
             listener != m_listeners.end() ;
             ++listener)
         {
           (*listener)->event(event);
         }
-      }
-
-      void
-      EventsDispatcher::sortEventsByType(AllEvents& events) {
-        // Sorting events focues on assigning some kind of priority
-        // to the directed events.
-        // We only handle some events which we know are considered
-        // prioritary in the sense that they can generate some other
-        // types of events.
-        // For example a `resize` event triggers a `geometry update`.
-        // So from the queue perspective it makes sense to process
-        // the `resize` event first so the `geometry update` which
-        // will be generated get a chance to override any existing
-        // instance of such an event.
-        // We rely on the sort algorithm provided by the standard
-        // library with our custom comparison operator.
-        // In order to easily process events 
-
-        // Among all the possible events types, we set the following
-        // precedence:
-        // None               Not defined
-        // Enter              3
-        // FocusIn            5
-        // FocusOut           6
-        // GeometryUpdate     2
-        // KeyPress           Not defined
-        // KeyRelease         Not defined
-        // Leave              4
-        // MouseButtonPress   Not defined
-        // MouseButtonRelease Not defined
-        // MouseMove          Not defined
-        // MouseWheel         Not defined
-        // Refresh            Not defined
-        // Repaint            7
-        // Resize             1
-        // WindowEnter        Not defined
-        // WindowLeave        Not defined
-        // WindowResize       Not defined
-        // Quit               Not defined
-        // Not that if a type has no associated number it means that
-        // it is not compared (and thus set equal to all other non
-        // defined types).
-
-        auto getID = [](const Event::Type& type) {
-          switch (type) {
-            case Event::Type::Resize:
-              return 1;
-            case Event::Type::GeometryUpdate:
-              return 2;
-            case Event::Type::Enter:
-              return 3;
-            case Event::Type::Leave:
-              return 4;
-            case Event::Type::FocusIn:
-              return 5;
-            case Event::Type::FocusOut:
-              return 6;
-            case Event::Type::Repaint:
-              return 7;
-            default:
-              return 8;
-          }
-        };
-
-        std::sort(
-          events.begin(),
-          events.end(),
-          [&getID](const std::pair<Event::Type, EventsShPtr>& lhs,
-             const std::pair<Event::Type, EventsShPtr>& rhs)
-          {
-            return getID(lhs.first) < getID(rhs.first);
-          }
-        );
       }
 
       void
@@ -360,71 +286,26 @@ namespace sdl {
 
       void
       EventsDispatcher::trimAndPostDirectedEvent(EventShPtr e) {
-        // We need to check whether a similar event already exists with the same
-        // receiver and the same data already exists.
-        // If this is the case, we can drop this event as it would result in a
-        // duplicated processing.
+        // We know that this event is directed to a specific receiver.
+        // We just have to call the dedicated handler on the receiver
+        // and we're done.
+        // Some high level checks are also performed.
 
-        // Traverse the directed events queue and check for existing elements.
-        bool duplicated = false;
-
-        AllEvents::const_iterator existingType = m_directedEvents.cbegin();
-        while (!duplicated && existingType != m_directedEvents.cend()) {
-          // Check whether this type corresponds to the type of the input event.
-          if (existingType->first != e->getType()) {
-            ++existingType;
-          }
-          else {
-            // Traverse the list of events existing for this type and try to find one corresponding
-            // to the input one.
-            Events::iterator event = existingType->second->begin();
-            while (!duplicated && event != existingType->second->end()) {
-              duplicated = ((**event) == *e);
-              if (!duplicated) {
-                ++event;
-              }
-            }
-
-            // Check whether this event is duplicated.
-            if (duplicated) {
-              // Erase with the new event if it is more recent.
-              if ((*event)->getTimestamp() < e->getTimestamp()) {
-                log("Dropping " + Event::getNameFromEvent(e) + " for " + e->getReceiver()->getName());
-                return;
-              }
-              event->swap(e);
-            }
-            else {
-              // Move on to the next type.
-              ++existingType;
-            }
-          }
+        if (e == nullptr || e->getType() == Event::Type::None) {
+          // Do not bother with this event.
+          return;
         }
 
-        // Queue the event. We need to account for the fact that we either did not found any
-        // event matching the input one even though some events already existed for this type
-        // or that there's no events for this type at all.
-        log("Queuing " + Event::getNameFromEvent(e) + " for " + e->getReceiver()->getName());
-
-        // Check whether no events of this type already exist.
-        if (existingType == m_directedEvents.cend()) {
-          m_directedEvents.push_back(
-            std::make_pair(e->getType(), std::make_shared<Events>(1u, e))
+        // Check whether the event actually has a receiver.
+        if (e->getReceiver() == nullptr) {
+          error(
+            std::string("Could not post directed event of type \"") + Event::getNameFromEvent(e) + "\"",
+            std::string("Invalid null receiver")
           );
         }
-        else {
-          existingType->second->push_back(e);
-        }
 
-        // Sort these events so that we process the most basic ones
-        // first: this allows not to waste some processing time to
-        // handle a cycle like so:
-        // repaint -> geometry -> repaint (generated).
-        // The order in the input `events` array is only chronological
-        // with no consideration about the real meaning of events.
-        // This queue can make sense of such events and thus speed up
-        // the processing.
-        sortEventsByType(m_directedEvents);
+        // Post the event to the correct receiver.
+        e->getReceiver()->postLocalEvent(e);
       }
 
     }
