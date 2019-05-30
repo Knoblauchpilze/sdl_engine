@@ -4,8 +4,6 @@
 # include "KeyEvent.hh"
 # include "QuitEvent.hh"
 
-# include <iostream>
-
 namespace sdl {
   namespace core {
     namespace engine {
@@ -171,10 +169,6 @@ namespace sdl {
               );
               allDone = false;
             }
-
-            char c;
-            std::cout << "[ENTER] Key: ";
-            std::cin >> c;
           }
 
           // Loop until no more events are pending in any of the listeners.
