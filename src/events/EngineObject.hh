@@ -2,6 +2,7 @@
 # define   ENGINE_OBJECT_HH
 
 # include <vector>
+# include <mutex>
 # include <core_utils/CoreObject.hh>
 # include "Event.hh"
 # include "EventsQueue.hh"
@@ -28,10 +29,18 @@ namespace sdl {
 
           virtual ~EngineObject();
 
-          // Note that this function returns `true` if the event has been recognized,
-          // and false if this is not the case.
-          // To determine whether the event should be sent to children one should check
-          // the `e->isAccepted()` result.
+          /**
+           * @brief - Performs the processing of the input event `e`.
+           *          Note that this function returns `true` if the event has been
+           *          recognized, and false if this is not the case.
+           *          To determine whether the event should be sent to children or
+           *          (any other object for that matter) one should check the result
+           *          of the `e->isAccepted()` method.
+           * @param e - the event to process.
+           * @return - true if the event has been recognized and false otherwise.
+           *           Sets the field `e->isAccepted()` if the event should not be
+           *           propagated further.
+           */
           bool
           event(EventShPtr e);
 
@@ -47,6 +56,47 @@ namespace sdl {
 
           void
           setEventsQueue(EventsQueue* queue) noexcept;
+
+          /**
+           * @brief - Contrary to the `postEvent` method, which will only send the event
+           *          to the associated events queue (if any), this method actually tries
+           *          to insert the input event `e` into the internal events array. This
+           *          will allow a processing of this event in the next call to the
+           *          `processEvents` method.
+           *          Upon inserting the event this method first checks that no other event
+           *          of this type is registered in the internal queue and if this is the
+           *          case it handles it correctly.
+           * @param e - the event to insert in the internal array.
+           */
+          void
+          postLocalEvent(EventShPtr e);
+
+          /**
+           * @brief - Returns true if this object contains internal events to process, false
+           *          otherwise.
+           *          Note that to ensure concurrency safety this method uses a mutex and can
+           *          thus not return immediately.
+           * @return - true if this object does have events to process, false otherwise.
+           */
+          bool
+          hasEvents();
+
+          /**
+           * @brief - Performs a cleaning of all the internal events registered for this
+           *          object.
+           *          Note that none of the removed events will be processed, each one is
+           *          ĵust trashed without further processing.
+           */
+          void
+          clearEvents();
+
+          /**
+           * @brief - Used to perform the processing of all internal events registered for
+           *          this object. Note that process will loop until no more events are
+           *          produced for this object.
+           */
+          void
+          processEvents();
 
         protected:
 
@@ -151,8 +201,8 @@ namespace sdl {
         private:
 
           using Filters = std::vector<EngineObjectShPtr>;
-
           using Filter = Filters::const_iterator;
+          using Events = std::vector<EventShPtr>;
 
           Filter
           findFilter(EngineObjectShPtr filter) const;
@@ -163,10 +213,16 @@ namespace sdl {
           void
           removeFilter(const Filter& filter);
 
+          void
+          sortLocalEvents();
+
         private:
 
           Filters m_filters;
           EventsQueue* m_queue;
+
+          std::mutex m_eventsLocker;
+          Events m_events;
 
       };
 

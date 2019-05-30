@@ -35,7 +35,20 @@ namespace sdl {
       inline
       void
       EngineObject::setEventsQueue(EventsQueue* queue) noexcept {
+        // Register the queue in the internal attribute.
         m_queue = queue;
+
+        // Add this object as listener of the queue.
+        if (m_queue != nullptr) {
+          m_queue->addListener(this);
+        }
+      }
+
+      inline
+      bool
+      EngineObject::hasEvents() {
+        std::lock_guard<std::mutex> guard(m_eventsLocker);
+        return !m_events.empty();
       }
 
       inline
@@ -50,8 +63,9 @@ namespace sdl {
         }
 
         // Register the `other` to the queue only if our own events queue is
-        // valid (i.e. not null).
-        if (m_queue != nullptr) {
+        // valid (i.e. not null) and if it is not already the queue of the
+        // other object.
+        if (m_queue != nullptr && m_queue != other->m_queue) {
           other->setEventsQueue(m_queue);
         }
       }
