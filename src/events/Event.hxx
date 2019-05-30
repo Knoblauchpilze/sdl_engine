@@ -14,6 +14,12 @@ namespace sdl {
       }
 
       inline
+      bool
+      Event::operator!=(const Event& other) const noexcept {
+        return !operator==(other);
+      }
+
+      inline
       std::string
       Event::getNameFromEvent(const Event& e) noexcept {
         return getNameFromType(e.getType());

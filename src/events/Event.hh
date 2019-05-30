@@ -62,6 +62,9 @@ namespace sdl {
           operator==(const Event& other) const noexcept;
 
           bool
+          operator!=(const Event& other) const noexcept;
+
+          bool
           isAccepted() const noexcept;
 
           void
