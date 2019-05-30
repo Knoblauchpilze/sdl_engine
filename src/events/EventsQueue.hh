@@ -17,6 +17,9 @@ namespace sdl {
           postEvent(EventShPtr event) = 0;
 
           virtual void
+          addListener(EngineObject* listener) = 0;
+
+          virtual void
           removeListener(EngineObject* listener) = 0;
 
       };
