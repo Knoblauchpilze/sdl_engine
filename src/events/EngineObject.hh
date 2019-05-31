@@ -54,7 +54,7 @@ namespace sdl {
           filterEvent(EngineObject* watched,
                       EventShPtr e);
 
-          void
+          virtual void
           setEventsQueue(EventsQueue* queue) noexcept;
 
           /**
@@ -68,7 +68,7 @@ namespace sdl {
            *          case it handles it correctly.
            * @param e - the event to insert in the internal array.
            */
-          void
+          virtual void
           postLocalEvent(EventShPtr e);
 
           /**
@@ -111,11 +111,11 @@ namespace sdl {
            * @param other - the object which should be registered to this
            *                object's events queue.
            */
-          void
+          virtual void
           registerToSameQueue(EngineObject* other);
 
           /**
-           * @brief - Post an event to the underlying events queue.
+           * @brief - Posts an event to the underlying events queue.
            * @param e - the event to post.
            * @param autosetReceiver - defines whether the input event `e`
            *                          should be assigned this object as a
