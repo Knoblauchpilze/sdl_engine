@@ -1,6 +1,7 @@
 #ifndef    RESIZE_EVENT_HH
 # define   RESIZE_EVENT_HH
 
+# include <memory>
 # include "Event.hh"
 # include <core_utils/Uuid.hh>
 # include <maths_utils/Box.hh>
@@ -39,6 +40,7 @@ namespace sdl {
 
       };
 
+      using ResizeEventShPtr = std::shared_ptr<ResizeEvent>;
     }
   }
 }
