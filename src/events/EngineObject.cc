@@ -65,7 +65,7 @@ namespace sdl {
         // which is equal to the input one.
         bool unique = true;
         Events::iterator event = m_events.begin();
-        
+
         while (unique && event != m_events.end()) {
           unique = ((**event) != *e);
           if (unique) {
