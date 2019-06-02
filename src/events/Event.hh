@@ -22,6 +22,7 @@ namespace sdl {
             FocusIn,             //<! - Object gains keyboard focus.
             FocusOut,            //<! - Object loses keyboard focus.
             GeometryUpdate,      //<! - The geometry of a component should be updated.
+            Hide,                //<! - Object has been hidden.
             KeyPress,            //<! - One of the keyboard's keys has been pressed.
             KeyRelease,          //<! - One of the keyboard's keys has been released.
             Leave,               //<! - Mouse leaves the object's boundaries.
@@ -32,6 +33,7 @@ namespace sdl {
             Refresh,             //<! - Trigger a refrech operation for a component.
             Repaint,             //<! - Trigger a repaint operation for a component.
             Resize,              //<! - Size of the component has been modified.
+            Show,                //<! - Object is now visible.
             WindowEnter,         //<! - Mouse leaves the window's boundaries.
             WindowLeave,         //<! - Mouse leaves the window's boundaries.
             WindowResize,        //<! - Size of window has been modified.

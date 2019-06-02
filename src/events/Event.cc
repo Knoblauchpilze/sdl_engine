@@ -26,6 +26,9 @@ namespace sdl {
           case Type::GeometryUpdate:
             name = std::string("\"geometry_update\"");
             break;
+          case Type::Hide:
+            name = std::string("\"hide\"");
+            break;
           case Type::KeyPress:
             name = std::string("\"key_press\"");
             break;
@@ -55,6 +58,9 @@ namespace sdl {
             break;
           case Type::Resize:
             name = std::string("\"resize\"");
+            break;
+          case Type::Show:
+            name = std::string("\"show\"");
             break;
           case Type::WindowEnter:
             name = std::string("\"window_enter\"");
