@@ -139,8 +139,20 @@ namespace sdl {
           bool
           isReceiver(const Event& e) const noexcept;
 
-          // Note that the return value it is true only if the event `e` has been recognized.
-          // To check whether the event has been accepted, use the `e->isAccepted()` method.
+          /**
+           * @brief - Performs the handling of the input event `e` through calling the
+           *          adequate method based on the type of the event. The input event
+           *          is also casted into its dynamic type so that it is easier for
+           *          handler methods to work with.
+           *          Inheriting classes are encouraged to reimplement the individual
+           *          handler methods instead of this specific method.
+           *          Note that this method will by default accept the event (through
+           *          calling the `accept` method) if the receiver is set to this object.
+           *          Also note that the return value does not indicate whether the event
+           *          was accepted but whether it was recognized by this object.
+           * @param e - the event to handle.
+           * @return - true if the event was recognized, false otherwise.
+           */
           virtual bool
           handleEvent(EventShPtr e);
 
