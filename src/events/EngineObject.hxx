@@ -106,6 +106,13 @@ namespace sdl {
 
       inline
       bool
+      EngineObject::hideEvent(const engine::Event& /*e*/) {
+        // Empty implementation.
+        return true;
+      }
+
+      inline
+      bool
       EngineObject::keyPressEvent(const engine::KeyEvent& /*e*/) {
         // Empty implementation.
         return true;
@@ -170,6 +177,13 @@ namespace sdl {
       inline
       bool
       EngineObject::resizeEvent(const engine::ResizeEvent& /*e*/) {
+        // Empty implementation.
+        return true;
+      }
+
+      inline
+      bool
+      EngineObject::showEvent(const engine::Event& /*e*/) {
         // Empty implementation.
         return true;
       }

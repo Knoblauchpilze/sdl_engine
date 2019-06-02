@@ -157,6 +157,9 @@ namespace sdl {
           geometryUpdateEvent(const engine::Event& e);
 
           virtual bool
+          hideEvent(const engine::Event& e);
+
+          virtual bool
           keyPressEvent(const engine::KeyEvent& e);
 
           virtual bool
@@ -185,6 +188,9 @@ namespace sdl {
 
           virtual bool
           resizeEvent(const engine::ResizeEvent& e);
+
+          virtual bool
+          showEvent(const engine::Event& e);
 
           virtual bool
           windowEnterEvent(const engine::WindowEvent& e);
