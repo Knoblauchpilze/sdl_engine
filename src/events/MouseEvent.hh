@@ -51,20 +51,14 @@ namespace sdl {
           utils::Vector2f
           getMousePosition() const noexcept;
 
-          int
-          getXRel() const noexcept;
-
-          int
-          getYRel() const noexcept;
+          utils::Vector2i
+          getMove() const noexcept;
 
           Direction
           getDirection() const noexcept;
 
-          int
-          getXScroll() const noexcept;
-
-          int
-          getYScroll() const noexcept;
+          utils::Vector2i
+          getScroll() const noexcept;
 
         protected:
 

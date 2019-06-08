@@ -85,33 +85,23 @@ namespace sdl {
       }
 
       inline
-      int
-      MouseEvent::getXRel() const noexcept {
+      utils::Vector2i
+      MouseEvent::getMove() const noexcept {
         if (m_motion != nullptr) {
-          return m_motion->xrel;
+          return utils::Vector2i(m_motion->xrel, m_motion->yrel);
         }
 
-        return 0;
-      }
-
-      inline
-      int
-      MouseEvent::getYRel() const noexcept {
-        if (m_motion != nullptr) {
-          return m_motion->yrel;
-        }
-
-        return 0;
+        return utils::Vector2i();
       }
 
       inline
       MouseEvent::Direction
       MouseEvent::getDirection() const noexcept {
         if (m_wheel != nullptr) {
-          if (getYScroll() > 0) {
+          if (getScroll().y() > 0) {
             return Direction::Up;
           }
-          if (getYScroll() < 0) {
+          if (getScroll().y() < 0) {
             return Direction::Down;
           }
         }
@@ -120,23 +110,13 @@ namespace sdl {
       }
 
       inline
-      int
-      MouseEvent::getXScroll() const noexcept {
+      utils::Vector2i
+      MouseEvent::getScroll() const noexcept {
         if (m_wheel != nullptr) {
-          return m_wheel->x;
+          return utils::Vector2i(m_wheel->x, m_wheel->y);
         }
 
-        return 0;
-      }
-
-      inline
-      int
-      MouseEvent::getYScroll() const noexcept {
-        if (m_wheel != nullptr) {
-          return m_wheel->y;
-        }
-
-        return 0;
+        return utils::Vector2i();
       }
 
       inline
@@ -147,11 +127,9 @@ namespace sdl {
           Event::equal(other) &&
           getButton() == e.getButton() &&
           getMousePosition() == e.getMousePosition() &&
-          getXRel() == e.getXRel() &&
-          getYRel() == e.getYRel() &&
+          getMove() == e.getMove() &&
           getDirection() == e.getDirection() &&
-          getXScroll() == e.getXScroll() &&
-          getYScroll() == e.getYScroll()
+          getScroll() == e.getScroll()
         ;
       }
 
