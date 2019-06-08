@@ -10,7 +10,7 @@ namespace sdl {
   namespace core {
     namespace engine {
 
-      inline  
+      inline
       Window::Window(const utils::Sizei& size,
                      const bool resizable,
                      const std::string& title):

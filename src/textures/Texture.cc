@@ -66,7 +66,7 @@ namespace sdl {
         // Draw the input texture at the corresponding location.
         if (box == nullptr) {
           SDL_RenderCopy(getRenderer(), m_texture, nullptr, nullptr);
-        } 
+        }
         else {
           SDL_Rect dstArea = toSDLRect(*box);
           SDL_RenderCopy(getRenderer(), m_texture, nullptr, &dstArea);
