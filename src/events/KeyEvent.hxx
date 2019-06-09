@@ -64,6 +64,8 @@ namespace sdl {
         }
 
         setType(type);
+
+        setSDLWinID(m_key.windowID);
       }
 
     }
