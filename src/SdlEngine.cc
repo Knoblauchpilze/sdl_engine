@@ -316,14 +316,97 @@ namespace sdl {
       }
 
       void
+      SdlEngine::populateEvent(Event& event) {
+        // Populate the window id.
+        populateWindowIDEvent(event);
+      }
+
+      void
+      SdlEngine::populateEvent(EnterEvent& event) {
+        // Populate the window id.
+        populateWindowIDEvent(event);
+      }
+
+      void
+      SdlEngine::populateEvent(KeyEvent& event) {
+        // Populate the window id.
+        populateWindowIDEvent(event);
+      }
+
+      void
+      SdlEngine::populateEvent(MouseEvent& event) {
+        // Populate the window id.
+        utils::Uuid winID = populateWindowIDEvent(event);
+
+        // We need to convert the coordinates of the mouse event based on the dimensions
+        // of the window it's related to.
+        // Basically the coordinates of the mouse are provided using a coordinate frame
+        // like below:
+        //
+        //   O            x
+        //    +---------->
+        //    |
+        //    |
+        //    |
+        //    |
+        //  y v
+        //
+        // Where `x` ranges from `[0; window_width]` and `y` ranges from `[0; window_height]`.
+        //
+        // But we want to express the coordinates in a coordinate frame similar to the
+        // following:
+        //
+        //            y ^
+        //              |
+        //              |
+        //              |
+        //              |
+        //            O +---------->
+        //                         x
+        //
+        // With `x`ranging from `[-window_width / 2, window_width / 2]` and `y` ranging from
+        // `[-window_height / 2; window_height / 2]`.
+        //
+        // To do so we first need to retrieve the dimensions of the window which generated the
+        // event and transform the coordinates.
+
+        // Retrieve the window object from its uuid and transform the coordinates of the event.
+        WindowShPtr win = getWindowOrThrow(winID);
+
+        const utils::Sizef size = win->getSize();
+
+        event.transformForWindow(size);
+      }
+
+      void
+      SdlEngine::populateEvent(PaintEvent& event) {
+        // Populate the window id.
+        populateWindowIDEvent(event);
+      }
+
+      void
+      SdlEngine::populateEvent(QuitEvent& event) {
+        // Populate the window id.
+        populateWindowIDEvent(event);
+      }
+
+      void
+      SdlEngine::populateEvent(ResizeEvent& event) {
+        // Populate the window id.
+        populateWindowIDEvent(event);
+      }
+
+      void
       SdlEngine::populateEvent(WindowEvent& event) {
-        // We need to assign the window uuid from the SDL window ID of the event.
+        // Populate the window id.
+        utils::Uuid winID = populateWindowIDEvent(event);
 
-        // Retreieve the internal window uuid from the corresponding SDL uuid.
-        utils::Uuid winID = getWindowUuidFromSDLWinID(event.getSDLWinID());
-
-        // Assign it to the event.
-        event.setWindowID(winID);
+        if (!winID.valid()) {
+          error(
+            std::string("Could not populate data for window event"),
+            std::string("Cannot find corresponding internal window id")
+          );
+        }
 
         // Also we can assign the size of the window by retrieving it directly
         // from the underlying object: this helps in case of a maximize event
@@ -352,6 +435,28 @@ namespace sdl {
         if (SDL_WasInit(SDL_INIT_VIDEO)) {
           SDL_Quit();
         }
+      }
+
+      utils::Uuid
+      SdlEngine::populateWindowIDEvent(Event& event) {
+        // We need to assign the window uuid from the SDL window ID of the event.
+        // This can only be done if the window id provided by the event itself is
+        // valid.
+
+        if (!event.hasSDLWinID()) {
+          // Return early.
+          return utils::Uuid();
+        }
+
+        // Retrieve the internal window id from its SDL counterpart.
+
+        // Retreieve the internal window uuid from the corresponding SDL uuid.
+        utils::Uuid winID = getWindowUuidFromSDLWinID(event.getSDLWinID());
+
+        // Assign it to the event.
+        event.setWindowID(winID);
+
+        return winID;
       }
 
     }

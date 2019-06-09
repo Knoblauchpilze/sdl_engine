@@ -106,6 +106,27 @@ namespace sdl {
           pollEvent(bool& moreEvents) override;
 
           void
+          populateEvent(Event& event) override;
+
+          void
+          populateEvent(EnterEvent& event) override;
+
+          void
+          populateEvent(KeyEvent& event) override;
+
+          void
+          populateEvent(MouseEvent& event) override;
+
+          void
+          populateEvent(PaintEvent& event) override;
+
+          void
+          populateEvent(QuitEvent& event) override;
+
+          void
+          populateEvent(ResizeEvent& event) override;
+
+          void
           populateEvent(WindowEvent& event) override;
 
         private:
@@ -115,6 +136,17 @@ namespace sdl {
 
           void
           releaseSDLLib();
+
+          /**
+           * @brief - Used to populate the window's internal uuid from the
+           *          window uuid provided by the SDL.
+           * @param event - the event for which the id should be populated.
+           * @return - the window id if any. Note that if the window if
+           *           does not exist for some reason an invalid uuid is
+           *           returned.
+           */
+          utils::Uuid
+          populateWindowIDEvent(Event& event);
 
           utils::Uuid
           registerTextureForWindow(const utils::Uuid& tex,
