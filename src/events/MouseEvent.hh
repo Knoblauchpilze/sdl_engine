@@ -3,6 +3,7 @@
 
 # include <memory>
 # include <SDL2/SDL.h>
+# include <maths_utils/Size.hh>
 # include <maths_utils/Vector2.hh>
 # include "Event.hh"
 
@@ -60,6 +61,18 @@ namespace sdl {
           utils::Vector2i
           getScroll() const noexcept;
 
+          /**
+           * @brief - Used to transform the internal mouse position to
+           *          valid coordinates given the size of the window in
+           *          input.
+           *          Basically transfrom from a top left corner based
+           *          coordinate frame to a centered one.
+           * @param size - the total size of the window for which this
+           *               event is associated.
+           */
+          void
+          transformForWindow(const utils::Sizef& size) noexcept;
+
         protected:
 
           bool
@@ -84,6 +97,8 @@ namespace sdl {
           std::shared_ptr<SDL_MouseButtonEvent> m_button;
           std::shared_ptr<SDL_MouseMotionEvent> m_motion;
           std::shared_ptr<SDL_MouseWheelEvent> m_wheel;
+
+          utils::Vector2f m_mousePosition;
 
       };
 

@@ -12,7 +12,8 @@ namespace sdl {
         Event(Event::Type::None, nullptr, std::string("mouse_button_") + std::to_string(event.button)),
         m_button(std::make_shared<SDL_MouseButtonEvent>(event)),
         m_motion(nullptr),
-        m_wheel(nullptr)
+        m_wheel(nullptr),
+        m_mousePosition()
       {
         init();
       }
@@ -22,7 +23,8 @@ namespace sdl {
         Event(Event::Type::None, nullptr, std::string("mouse_motion_") + std::to_string(event.state)),
         m_button(nullptr),
         m_motion(std::make_shared<SDL_MouseMotionEvent>(event)),
-        m_wheel(nullptr)
+        m_wheel(nullptr),
+        m_mousePosition()
       {
         init();
       }
@@ -32,7 +34,8 @@ namespace sdl {
         Event(Event::Type::None, nullptr, std::string("mouse_wheel_") + std::to_string(event.direction)),
         m_button(nullptr),
         m_motion(nullptr),
-        m_wheel(std::make_shared<SDL_MouseWheelEvent>(event))
+        m_wheel(std::make_shared<SDL_MouseWheelEvent>(event)),
+        m_mousePosition()
       {
         init();
       }
@@ -73,15 +76,7 @@ namespace sdl {
       inline
       utils::Vector2f
       MouseEvent::getMousePosition() const noexcept {
-        if (m_motion != nullptr) {
-          return utils::Vector2f(m_motion->x, m_motion->y);
-        }
-
-        if (m_button != nullptr) {
-          return utils::Vector2f(m_button->x, m_button->y);
-        }
-
-        return utils::Vector2f(0.0f, 0.0f);
+        return m_mousePosition;
       }
 
       inline
@@ -117,6 +112,37 @@ namespace sdl {
         }
 
         return utils::Vector2i();
+      }
+
+      inline
+      void
+      MouseEvent::transformForWindow(const utils::Sizef& size) noexcept {
+        // Can only do that if the event is related to a mouse position at all.
+        // This excludes _de facto_ the mouse wheel event.
+        //
+        // The center of the coordinate frame to use in the window is given by
+        // the center of the rectangle defined by the input `size`. We then
+        // compute the offset to reach the mouse position defined by the event
+        // and this constitutes the final position to use.
+
+        const utils::Vector2f center(size.w() / 2.0f, size.h() / 2.0f);
+
+        if (m_button != nullptr) {
+          m_mousePosition = utils::Vector2f(
+            static_cast<float>(m_button->x) - center.x(),
+            center.y() - static_cast<float>(m_button->y)
+          );
+        }
+        else if (m_motion != nullptr) {
+          m_mousePosition = utils::Vector2f(
+            static_cast<float>(m_motion->x) - center.x(),
+            center.y() - static_cast<float>(m_motion->y)
+          );
+        }
+        else {
+          // Default position.
+          m_mousePosition = utils::Vector2f();
+        }
       }
 
       inline
@@ -160,6 +186,8 @@ namespace sdl {
         }
 
         setType(type);
+
+        setSDLWinID(m_button->windowID);
       }
 
       inline
@@ -176,6 +204,8 @@ namespace sdl {
         }
 
         setType(Event::Type::MouseMove);
+
+        setSDLWinID(m_motion->windowID);
       }
 
       inline
@@ -192,6 +222,8 @@ namespace sdl {
         }
 
         setType(Event::Type::MouseWheel);
+
+        setSDLWinID(m_wheel->windowID);
       }
 
     }
