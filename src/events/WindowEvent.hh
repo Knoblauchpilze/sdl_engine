@@ -4,7 +4,6 @@
 # include "Event.hh"
 # include <cstdint>
 # include <SDL2/SDL.h>
-# include <core_utils/Uuid.hh>
 # include <maths_utils/Size.hh>
 
 namespace sdl {
@@ -27,15 +26,6 @@ namespace sdl {
           void
           setSize(const utils::Sizef& size) noexcept;
 
-          std::uint32_t
-          getSDLWinID() const noexcept;
-
-          const utils::Uuid&
-          getWindID() const noexcept;
-
-          void
-          setWindowID(const utils::Uuid& uuid) noexcept;
-
         protected:
 
           bool
@@ -49,7 +39,6 @@ namespace sdl {
         private:
 
           SDL_WindowEvent m_window;
-          utils::Uuid m_winID;
           utils::Sizef m_size;
 
       };

@@ -10,8 +10,7 @@ namespace sdl {
       inline
       WindowEvent::WindowEvent(const SDL_WindowEvent& event):
         Event(Event::Type::None, nullptr, std::string("window_event_") + std::to_string(event.windowID)),
-        m_window(event),
-        m_winID()
+        m_window(event)
       {
         init();
       }
@@ -32,28 +31,9 @@ namespace sdl {
       }
 
       inline
-      std::uint32_t
-      WindowEvent::getSDLWinID() const noexcept {
-        return m_window.windowID;
-      }
-
-      inline
-      const utils::Uuid&
-      WindowEvent::getWindID() const noexcept {
-        return m_winID;
-      }
-
-      inline
-      void
-      WindowEvent::setWindowID(const utils::Uuid& uuid) noexcept {
-        m_winID = uuid;
-      }
-
-      inline
       bool
       WindowEvent::equal(const Event& other) const noexcept {
-        const WindowEvent& e = dynamic_cast<const WindowEvent&>(other);
-        return Event::equal(other) && getWindID() == e.getWindID() && getSDLWinID() == e.getSDLWinID();
+        return Event::equal(other);
       }
 
       inline
@@ -92,6 +72,8 @@ namespace sdl {
         }
 
         setType(type);
+
+        setSDLWinID(m_window.windowID);
       }
 
     }
