@@ -3,6 +3,7 @@
 
 # include <memory>
 # include <chrono>
+# include <core_utils/Uuid.hh>
 # include <core_utils/CoreObject.hh>
 
 namespace sdl {
@@ -97,6 +98,18 @@ namespace sdl {
           void
           setReceiver(EngineObject* receiver) noexcept;
 
+          bool
+          hasSDLWinID() const noexcept;
+
+          std::uint32_t
+          getSDLWinID() const noexcept;
+
+          const utils::Uuid&
+          getWindID() const noexcept;
+
+          void
+          setWindowID(const utils::Uuid& uuid) noexcept;
+
           virtual void
           populateFromEngineData(Engine& engine);
 
@@ -108,6 +121,9 @@ namespace sdl {
           void
           setType(const Type& type) noexcept;
 
+          void
+          setSDLWinID(const std::uint32_t& sdlWinID) noexcept;
+
           virtual bool
           equal(const Event& other) const noexcept;
 
@@ -115,6 +131,9 @@ namespace sdl {
 
           mutable bool m_accepted;
           Type m_type;
+          bool m_hasWinID;
+          utils::Uuid m_winID;
+          std::uint32_t m_sdlWinID;
           EngineObject* m_receiver;
 
           std::chrono::time_point<std::chrono::steady_clock> m_timestamp;

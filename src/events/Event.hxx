@@ -42,6 +42,9 @@ namespace sdl {
         utils::CoreObject(name),
         m_accepted(false),
         m_type(type),
+        m_hasWinID(false),
+        m_winID(),
+        m_sdlWinID(),
         m_receiver(receiver),
 
         m_timestamp(std::chrono::steady_clock::now())
@@ -101,6 +104,30 @@ namespace sdl {
       }
 
       inline
+      bool
+      Event::hasSDLWinID() const noexcept {
+        return m_hasWinID;
+      }
+
+      inline
+      std::uint32_t
+      Event::getSDLWinID() const noexcept {
+        return m_sdlWinID;
+      }
+
+      inline
+      const utils::Uuid&
+      Event::getWindID() const noexcept {
+        return m_winID;
+      }
+
+      inline
+      void
+      Event::setWindowID(const utils::Uuid& uuid) noexcept {
+        m_winID = uuid;
+      }
+
+      inline
       void
       Event::setAccepted(const bool accepted) const noexcept {
         m_accepted = accepted;
@@ -113,12 +140,22 @@ namespace sdl {
       }
 
       inline
+      void
+      Event::setSDLWinID(const std::uint32_t& sdlWinID) noexcept {
+        m_sdlWinID = sdlWinID;
+        m_hasWinID = true;
+      }
+
+      inline
       bool
       Event::equal(const Event& other) const noexcept {
         return
           m_type == other.m_type &&
           m_receiver == other.m_receiver &&
-          m_accepted == other.m_accepted
+          m_accepted == other.m_accepted &&
+          m_hasWinID == other.m_hasWinID &&
+          m_sdlWinID == other.m_sdlWinID &&
+          m_winID == other.m_winID
         ;
       }
 
