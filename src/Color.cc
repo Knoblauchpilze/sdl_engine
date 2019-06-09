@@ -60,14 +60,12 @@ namespace sdl {
           case NamedColor::Navy:
             r = 0.0f; g = 0.0f; b = 0.5f;
             break;
-          case NamedColor::CorneFlowerBlue:
-            r = 0.3922f; g = 0.0f; b = 0.0f;
-            break;
           case NamedColor::Black:
             r = 0.0f; g = 0.0f; b = 0.0f;
             break;
+          case NamedColor::CorneFlowerBlue:
           default:
-            r = 0.0f; g = 0.5843f; b = 0.9294f;
+            r = 0.3922f; g = 0.5843f; b = 0.9294f;
             break;
         }
       }
