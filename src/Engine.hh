@@ -81,6 +81,9 @@ namespace sdl {
           setTextureAlpha(const utils::Uuid& uuid,
                           const Color& color) = 0;
 
+          virtual Palette::ColorRole
+          getTextureRole(const utils::Uuid& uuid) = 0;
+
           virtual void
           setTextureRole(const utils::Uuid& uuid,
                          const Palette::ColorRole& role) = 0;
