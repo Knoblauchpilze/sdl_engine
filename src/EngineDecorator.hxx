@@ -112,6 +112,12 @@ namespace sdl {
       }
 
       inline
+      Palette::ColorRole
+      EngineDecorator::getTextureRole(const utils::Uuid& uuid) {
+        return m_engine->getTextureRole(uuid);
+      }
+
+      inline
       void
       EngineDecorator::setTextureRole(const utils::Uuid& uuid,
                                       const Palette::ColorRole& role)
