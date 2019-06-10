@@ -95,6 +95,16 @@ namespace sdl {
       }
 
       inline
+      Palette::ColorRole
+      Window::getTextureRole(const utils::Uuid& uuid) {
+        // Try to retrieve the corresponding texture.
+        TextureShPtr tex = getTextureOrThrow(uuid);
+
+        // Update the role from the input argument.
+        return tex->getRole();
+      }
+
+      inline
       void
       Window::setTextureRole(const utils::Uuid& uuid,
                              const Palette::ColorRole& role)
