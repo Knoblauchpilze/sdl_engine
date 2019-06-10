@@ -21,7 +21,7 @@ namespace sdl {
         // The `Background` color is identical to the input button's color.
         Color bg = color;
 
-        // The `Button` color is obviously equal to the niput color.
+        // The `Button` color is obviously equal to the input color.
         Color button = color;
 
         // The `WindowText` and `Base` color are set to `Black` and `White`
