@@ -78,140 +78,140 @@ namespace sdl {
 
       inline
       bool
-      EngineObject::enterEvent(const engine::EnterEvent& /*e*/) {
+      EngineObject::enterEvent(const EnterEvent& /*e*/) {
         // Empty implementation.
         return true;
       }
 
       inline
       bool
-      EngineObject::focusInEvent(const engine::Event& /*e*/) {
+      EngineObject::focusInEvent(const Event& /*e*/) {
         // Empty implementation.
         return true;
       }
 
       inline
       bool
-      EngineObject::focusOutEvent(const engine::Event& /*e*/) {
+      EngineObject::focusOutEvent(const Event& /*e*/) {
         // Empty implementation.
         return true;
       }
 
       inline
       bool
-      EngineObject::geometryUpdateEvent(const engine::Event& /*e*/) {
+      EngineObject::geometryUpdateEvent(const Event& /*e*/) {
         // Empty implementation.
         return true;
       }
 
       inline
       bool
-      EngineObject::hideEvent(const engine::Event& /*e*/) {
+      EngineObject::hideEvent(const Event& /*e*/) {
         // Empty implementation.
         return true;
       }
 
       inline
       bool
-      EngineObject::keyPressEvent(const engine::KeyEvent& /*e*/) {
+      EngineObject::keyPressEvent(const KeyEvent& /*e*/) {
         // Empty implementation.
         return true;
       }
 
       inline
       bool
-      EngineObject::keyReleaseEvent(const engine::KeyEvent& /*e*/) {
+      EngineObject::keyReleaseEvent(const KeyEvent& /*e*/) {
         // Empty implementation.
         return true;
       }
 
       inline
       bool
-      EngineObject::leaveEvent(const engine::Event& /*e*/) {
+      EngineObject::leaveEvent(const Event& /*e*/) {
         // Empty implementation.
         return true;
       }
 
       inline
       bool
-      EngineObject::mouseButtonPressEvent(const engine::MouseEvent& /*e*/) {
+      EngineObject::mouseButtonPressEvent(const MouseEvent& /*e*/) {
         // Empty implementation.
         return true;
       }
 
       inline
       bool
-      EngineObject::mouseButtonReleaseEvent(const engine::MouseEvent& /*e*/) {
+      EngineObject::mouseButtonReleaseEvent(const MouseEvent& /*e*/) {
         // Empty implementation.
         return true;
       }
 
       inline
       bool
-      EngineObject::mouseMoveEvent(const engine::MouseEvent& /*e*/) {
+      EngineObject::mouseMoveEvent(const MouseEvent& /*e*/) {
         // Empty implementation.
         return true;
       }
 
       inline
       bool
-      EngineObject::mouseWheelEvent(const engine::MouseEvent& /*e*/) {
+      EngineObject::mouseWheelEvent(const MouseEvent& /*e*/) {
         // Empty implementation.
         return true;
       }
 
       inline
       bool
-      EngineObject::refreshEvent(const engine::PaintEvent& /*e*/) {
+      EngineObject::refreshEvent(const PaintEvent& /*e*/) {
         // Empty implementation.
         return true;
       }
 
       inline
       bool
-      EngineObject::repaintEvent(const engine::PaintEvent& /*e*/) {
+      EngineObject::repaintEvent(const PaintEvent& /*e*/) {
         // Empty implementation.
         return true;
       }
 
       inline
       bool
-      EngineObject::resizeEvent(const engine::ResizeEvent& /*e*/) {
+      EngineObject::resizeEvent(const ResizeEvent& /*e*/) {
         // Empty implementation.
         return true;
       }
 
       inline
       bool
-      EngineObject::showEvent(const engine::Event& /*e*/) {
+      EngineObject::showEvent(const Event& /*e*/) {
         // Empty implementation.
         return true;
       }
 
       inline
       bool
-      EngineObject::windowEnterEvent(const engine::WindowEvent& /*e*/) {
+      EngineObject::windowEnterEvent(const WindowEvent& /*e*/) {
         // Empty implementation.
         return true;
       }
 
       inline
       bool
-      EngineObject::windowLeaveEvent(const engine::WindowEvent& /*e*/) {
+      EngineObject::windowLeaveEvent(const WindowEvent& /*e*/) {
         // Empty implementation.
         return true;
       }
 
       inline
       bool
-      EngineObject::windowResizeEvent(const engine::WindowEvent& /*e*/) {
+      EngineObject::windowResizeEvent(const WindowEvent& /*e*/) {
         // Empty implementation.
         return true;
       }
 
       inline
       bool
-      EngineObject::quitEvent(const engine::QuitEvent& /*e*/) {
+      EngineObject::quitEvent(const QuitEvent& /*e*/) {
         // Empty implementation.
         return true;
       }

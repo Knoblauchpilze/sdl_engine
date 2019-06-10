@@ -157,64 +157,64 @@ namespace sdl {
           handleEvent(EventShPtr e);
 
           virtual bool
-          enterEvent(const engine::EnterEvent& e);
+          enterEvent(const EnterEvent& e);
 
           virtual bool
-          focusInEvent(const engine::Event& e);
+          focusInEvent(const Event& e);
 
           virtual bool
-          focusOutEvent(const engine::Event& e);
+          focusOutEvent(const Event& e);
 
           virtual bool
-          geometryUpdateEvent(const engine::Event& e);
+          geometryUpdateEvent(const Event& e);
 
           virtual bool
-          hideEvent(const engine::Event& e);
+          hideEvent(const Event& e);
 
           virtual bool
-          keyPressEvent(const engine::KeyEvent& e);
+          keyPressEvent(const KeyEvent& e);
 
           virtual bool
-          keyReleaseEvent(const engine::KeyEvent& e);
+          keyReleaseEvent(const KeyEvent& e);
 
           virtual bool
-          leaveEvent(const engine::Event& e);
+          leaveEvent(const Event& e);
 
           virtual bool
-          mouseButtonPressEvent(const engine::MouseEvent& e);
+          mouseButtonPressEvent(const MouseEvent& e);
 
           virtual bool
-          mouseButtonReleaseEvent(const engine::MouseEvent& e);
+          mouseButtonReleaseEvent(const MouseEvent& e);
 
           virtual bool
-          mouseMoveEvent(const engine::MouseEvent& e);
+          mouseMoveEvent(const MouseEvent& e);
 
           virtual bool
-          mouseWheelEvent(const engine::MouseEvent& e);
+          mouseWheelEvent(const MouseEvent& e);
 
           virtual bool
-          refreshEvent(const engine::PaintEvent& e);
+          refreshEvent(const PaintEvent& e);
 
           virtual bool
-          repaintEvent(const engine::PaintEvent& e);
+          repaintEvent(const PaintEvent& e);
 
           virtual bool
-          resizeEvent(const engine::ResizeEvent& e);
+          resizeEvent(const ResizeEvent& e);
 
           virtual bool
-          showEvent(const engine::Event& e);
+          showEvent(const Event& e);
 
           virtual bool
-          windowEnterEvent(const engine::WindowEvent& e);
+          windowEnterEvent(const WindowEvent& e);
 
           virtual bool
-          windowLeaveEvent(const engine::WindowEvent& e);
+          windowLeaveEvent(const WindowEvent& e);
 
           virtual bool
-          windowResizeEvent(const engine::WindowEvent& e);
+          windowResizeEvent(const WindowEvent& e);
 
           virtual bool
-          quitEvent(const engine::QuitEvent& e);
+          quitEvent(const QuitEvent& e);
 
         private:
 
