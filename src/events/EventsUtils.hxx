@@ -27,6 +27,12 @@ namespace sdl {
         // if the `resize` event was handled first: this way we could
         // merge the two `repaint` events generated and perform the
         // processing only once.
+        // An even more prioritary event is the couple `hide`/`show`
+        // events, which will prevent any processing of events (in the
+        // case of `hide` events) or resume the processing of all of
+        // them (in the case of a `show` event). We choose to make Show
+        // event less prioritary so that this is the last operation
+        // applied in case both event are sent in a single frame.
         //
         // To perform the sorting, we rely on the sort algorithm provided
         // by the standard library with our custom comparison operator.
@@ -34,20 +40,22 @@ namespace sdl {
         // Among all the possible events types, we set the following
         // precedence:
         // None               Not defined
-        // Enter              3
-        // FocusIn            5
-        // FocusOut           6
-        // GeometryUpdate     2
+        // Enter              5
+        // FocusIn            7
+        // FocusOut           8
+        // GeometryUpdate     4
+        // Hide               1
         // KeyPress           Not defined
         // KeyRelease         Not defined
-        // Leave              4
+        // Leave              6
         // MouseButtonPress   Not defined
         // MouseButtonRelease Not defined
         // MouseMove          Not defined
         // MouseWheel         Not defined
         // Refresh            Not defined
-        // Repaint            7
-        // Resize             1
+        // Repaint            9
+        // Resize             3
+        // Show               2
         // WindowEnter        Not defined
         // WindowLeave        Not defined
         // WindowResize       Not defined
@@ -56,22 +64,26 @@ namespace sdl {
         // it is not compared (and thus set equal to all other non
         // defined types).
         switch (type) {
-          case Event::Type::Resize:
+          case Event::Type::Hide:
             return 1;
-          case Event::Type::GeometryUpdate:
+          case Event::Type::Show:
             return 2;
-          case Event::Type::Enter:
+          case Event::Type::Resize:
             return 3;
-          case Event::Type::Leave:
+          case Event::Type::GeometryUpdate:
             return 4;
-          case Event::Type::FocusIn:
+          case Event::Type::Enter:
             return 5;
-          case Event::Type::FocusOut:
+          case Event::Type::Leave:
             return 6;
-          case Event::Type::Repaint:
+          case Event::Type::FocusIn:
             return 7;
-          default:
+          case Event::Type::FocusOut:
             return 8;
+          case Event::Type::Repaint:
+            return 9;
+          default:
+            return 10;
         }
       }
 
