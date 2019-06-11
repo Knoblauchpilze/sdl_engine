@@ -18,7 +18,7 @@ namespace sdl {
 
       inline
       void
-      EngineObject::removeEventFilter(EngineObjectShPtr filter) {
+      EngineObject::removeEventFilter(EngineObject* filter) {
         // Use the dedicated handler.
         removeFilter(findFilter(filter));
       }
@@ -74,6 +74,12 @@ namespace sdl {
       bool
       EngineObject::isReceiver(const Event& e) const noexcept {
         return e.getReceiver() == this;
+      }
+
+      inline
+      void
+      EngineObject::trimEvents(std::vector<EventShPtr>& /*events*/) {
+        // Empty implementation.
       }
 
       inline
@@ -218,7 +224,7 @@ namespace sdl {
 
       inline
       EngineObject::Filter
-      EngineObject::findFilter(EngineObjectShPtr filter) const {
+      EngineObject::findFilter(EngineObject* filter) const {
         // Traverse the registered filter and try to find the input `filter`.
         Filter internalFilter = m_filters.cbegin();
 

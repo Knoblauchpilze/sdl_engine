@@ -45,11 +45,22 @@ namespace sdl {
           event(EventShPtr e);
 
           void
-          installEventFilter(EngineObjectShPtr filter);
+          installEventFilter(EngineObject* filter);
 
           void
-          removeEventFilter(EngineObjectShPtr filter);
+          removeEventFilter(EngineObject* filter);
 
+          /**
+           * @brief - Performs the filtering of the input event `e` for the object `watched`.
+           *          Returns true if the event is filtered and should be discarded, false
+           *          otherwise.
+           *          Note that this method does not actually filter anything but inheriting
+           *          classes are encouraged to specialize this behavior.
+           * @param watched - the object for which the filter should be applied.
+           * @param e - the event to filter.
+           * @return - true if the event should be filtered (i.e. not transmitted to the
+           *           `watched` object) and false otherwise.
+           */
           virtual bool
           filterEvent(EngineObject* watched,
                       EventShPtr e);
@@ -140,6 +151,20 @@ namespace sdl {
           isReceiver(const Event& e) const noexcept;
 
           /**
+           * @brief - Interface method which is called upon inserting any event to the
+           *          local events queue. This gives a chance to inheriting classes to
+           *          process the events currently registered to the queue (including
+           *          the one which triggered this call) in order to trim some if they
+           *          are not needed anymore.
+           *          The precise behavior on this method is dependent on each child
+           *          class.
+           * @param events - the array containing all the events currently registered
+           *                 into the internal events queue.
+           */
+          virtual void
+          trimEvents(std::vector<EventShPtr>& events);
+
+          /**
            * @brief - Performs the handling of the input event `e` through calling the
            *          adequate method based on the type of the event. The input event
            *          is also casted into its dynamic type so that it is easier for
@@ -218,12 +243,12 @@ namespace sdl {
 
         private:
 
-          using Filters = std::vector<EngineObjectShPtr>;
+          using Filters = std::vector<EngineObject*>;
           using Filter = Filters::const_iterator;
           using Events = std::vector<EventShPtr>;
 
           Filter
-          findFilter(EngineObjectShPtr filter) const;
+          findFilter(EngineObject* filter) const;
 
           bool
           validFilter(const Filter& filter) const noexcept;

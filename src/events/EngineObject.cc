@@ -50,7 +50,7 @@ namespace sdl {
           return;
         }
 
-        // Now that we know that we have a valid event, we might ask the questio
+        // Now that we know that we have a valid event, we might ask the question
         // of how we will insert it into the internal array of events.
         // Indeed it might be useful to keep only one event of some type: for example
         // there's no need to keep two events indicating that the mouse left the
@@ -177,7 +177,7 @@ namespace sdl {
       }
 
       void
-      EngineObject::installEventFilter(EngineObjectShPtr filter) {
+      EngineObject::installEventFilter(EngineObject* filter) {
         // Check filter validity.
         if (filter == nullptr) {
           log(
@@ -214,19 +214,36 @@ namespace sdl {
           return;
         }
 
-        // Check whether a queue is provided.
-        if (m_queue == nullptr) {
-          log(
-            std::string("Cannot post event ") + Event::getNameFromEvent(e) + ", no queue provided",
-            utils::Level::Warning
-          );
-          return;
-        }
-
         // Assign the receiver to `this` if asked and if no receiver
         // is provided in the input event.
         if (autosetReceiver && e->isSpontaneous()) {
           e->setReceiver(this);
+        }
+
+        // Check whether a queue is provided: if this is not the case
+        // we might still be ok if the event is set to be directed for
+        // this object.
+        if (m_queue == nullptr) {
+          // Check whether the event is directed towards this object.
+          if (isReceiver(*e)) {
+            // Post directly onto the local queue. The event will not
+            // be processed until a queue is assigned anyway but at
+            // least we will not lose information.
+            postLocalEvent(e);
+
+            // Return to avoid posting the event using the null queue
+            // anyway.
+            return;
+          }
+          else {
+            // We cannot direct the event to the suited object as no
+            // queue is provided.
+            log(
+              std::string("Cannot post event ") + Event::getNameFromEvent(e) + ", no queue provided",
+              utils::Level::Warning
+            );
+            return;
+          }
         }
 
         // The event is now completely built. We need to either insert it into the
@@ -258,6 +275,8 @@ namespace sdl {
             return focusOutEvent(*e);
           case Event::Type::GeometryUpdate:
             return geometryUpdateEvent(*e);
+          case Event::Type::Hide:
+            return hideEvent(*e);
           case Event::Type::KeyPress:
             return keyPressEvent(*std::dynamic_pointer_cast<KeyEvent>(e));
           case Event::Type::KeyRelease:
@@ -276,6 +295,8 @@ namespace sdl {
             return refreshEvent(*std::dynamic_pointer_cast<PaintEvent>(e));
           case Event::Type::Repaint:
             return repaintEvent(*std::dynamic_pointer_cast<PaintEvent>(e));
+          case Event::Type::Show:
+            return showEvent(*e);
           case Event::Type::Resize:
             return resizeEvent(*std::dynamic_pointer_cast<ResizeEvent>(e));
           case Event::Type::WindowEnter:
@@ -313,6 +334,9 @@ namespace sdl {
             return getEventID(lhs) < getEventID(rhs);
           }
         );
+
+        // Now let's proceed to trimming the events based on their content.
+        trimEvents(m_events);
       }
 
     }
