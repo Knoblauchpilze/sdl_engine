@@ -112,6 +112,30 @@ namespace sdl {
         protected:
 
           /**
+           * @brief - Determine whether this object is able to receiver and process events.
+           *          This can be used to completely cut-off the element from events processing
+           *          until the `setActive` method is called again. This might be useful for
+           *          example to prevent hidden or deactivated elements from processing some
+           *          events.
+           *          Note that a deactivated object still accepts events directed towards it
+           *          but do not process them in any way.
+           * @return - true if this item is able to handle events, false otherwise.
+           */
+          virtual bool
+          isActive() const noexcept;
+
+          /**
+           * @brief - Used to de/activate this item so that it can handle events. Any call to
+           *          this method will either activate events handling or deactivate it.
+           *          Note that a deactivated element still accepts events directed towards it
+           *          and that this method has effect immediately (meaning for example that any
+           *          remaining events in the loop will be discarded).
+           * @param active - the activation status for this widget regarding events.
+           */
+          void
+          setActive(const bool active) noexcept;
+
+          /**
            * @brief - Used to register the input `other` object to the
            *          same events queue as this object.
            *          It allows not to break the encapsulation of the
@@ -266,6 +290,8 @@ namespace sdl {
 
           std::mutex m_eventsLocker;
           Events m_events;
+
+          bool m_active;
 
       };
 

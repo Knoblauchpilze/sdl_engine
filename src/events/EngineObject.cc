@@ -13,7 +13,9 @@ namespace sdl {
         m_queue(nullptr),
 
         m_eventsLocker(),
-        m_events()
+        m_events(),
+
+        m_active(true)
       {
         setService(std::string("object"));
       }
@@ -263,53 +265,56 @@ namespace sdl {
           return false;
         }
 
-        log("Handling " + Event::getNameFromEvent(e), utils::Level::Info);
+        // Handle the event if this element is active.
+        if (isActive()) {
+          log("Handling " + Event::getNameFromEvent(e), utils::Level::Info);
 
-        // Check the event type and dispatch to the corresponding handler.
-        switch (e->getType()) {
-          case Event::Type::Enter:
-            return enterEvent(*std::dynamic_pointer_cast<EnterEvent>(e));
-          case Event::Type::FocusIn:
-            return focusInEvent(*e);
-          case Event::Type::FocusOut:
-            return focusOutEvent(*e);
-          case Event::Type::GeometryUpdate:
-            return geometryUpdateEvent(*e);
-          case Event::Type::Hide:
-            return hideEvent(*e);
-          case Event::Type::KeyPress:
-            return keyPressEvent(*std::dynamic_pointer_cast<KeyEvent>(e));
-          case Event::Type::KeyRelease:
-            return keyReleaseEvent(*std::dynamic_pointer_cast<KeyEvent>(e));
-          case Event::Type::Leave:
-            return leaveEvent(*e);
-          case Event::Type::MouseButtonPress:
-            return mouseButtonPressEvent(*std::dynamic_pointer_cast<MouseEvent>(e));
-          case Event::Type::MouseButtonRelease:
-            return mouseButtonReleaseEvent(*std::dynamic_pointer_cast<MouseEvent>(e));
-          case Event::Type::MouseMove:
-            return mouseMoveEvent(*std::dynamic_pointer_cast<MouseEvent>(e));
-          case Event::Type::MouseWheel:
-            return mouseWheelEvent(*std::dynamic_pointer_cast<MouseEvent>(e));
-          case Event::Type::Refresh:
-            return refreshEvent(*std::dynamic_pointer_cast<PaintEvent>(e));
-          case Event::Type::Repaint:
-            return repaintEvent(*std::dynamic_pointer_cast<PaintEvent>(e));
-          case Event::Type::Show:
-            return showEvent(*e);
-          case Event::Type::Resize:
-            return resizeEvent(*std::dynamic_pointer_cast<ResizeEvent>(e));
-          case Event::Type::WindowEnter:
-            return windowEnterEvent(*std::dynamic_pointer_cast<WindowEvent>(e));
-          case Event::Type::WindowLeave:
-            return windowLeaveEvent(*std::dynamic_pointer_cast<WindowEvent>(e));
-          case Event::Type::WindowResize:
-            return windowResizeEvent(*std::dynamic_pointer_cast<WindowEvent>(e));
-          case Event::Type::Quit:
-            return quitEvent(*std::dynamic_pointer_cast<QuitEvent>(e));
-          default:
-            // Event type is not handled, continue the process.
-            break;
+          // Check the event type and dispatch to the corresponding handler.
+          switch (e->getType()) {
+            case Event::Type::Enter:
+              return enterEvent(*std::dynamic_pointer_cast<EnterEvent>(e));
+            case Event::Type::FocusIn:
+              return focusInEvent(*e);
+            case Event::Type::FocusOut:
+              return focusOutEvent(*e);
+            case Event::Type::GeometryUpdate:
+              return geometryUpdateEvent(*e);
+            case Event::Type::Hide:
+              return hideEvent(*e);
+            case Event::Type::KeyPress:
+              return keyPressEvent(*std::dynamic_pointer_cast<KeyEvent>(e));
+            case Event::Type::KeyRelease:
+              return keyReleaseEvent(*std::dynamic_pointer_cast<KeyEvent>(e));
+            case Event::Type::Leave:
+              return leaveEvent(*e);
+            case Event::Type::MouseButtonPress:
+              return mouseButtonPressEvent(*std::dynamic_pointer_cast<MouseEvent>(e));
+            case Event::Type::MouseButtonRelease:
+              return mouseButtonReleaseEvent(*std::dynamic_pointer_cast<MouseEvent>(e));
+            case Event::Type::MouseMove:
+              return mouseMoveEvent(*std::dynamic_pointer_cast<MouseEvent>(e));
+            case Event::Type::MouseWheel:
+              return mouseWheelEvent(*std::dynamic_pointer_cast<MouseEvent>(e));
+            case Event::Type::Refresh:
+              return refreshEvent(*std::dynamic_pointer_cast<PaintEvent>(e));
+            case Event::Type::Repaint:
+              return repaintEvent(*std::dynamic_pointer_cast<PaintEvent>(e));
+            case Event::Type::Show:
+              return showEvent(*e);
+            case Event::Type::Resize:
+              return resizeEvent(*std::dynamic_pointer_cast<ResizeEvent>(e));
+            case Event::Type::WindowEnter:
+              return windowEnterEvent(*std::dynamic_pointer_cast<WindowEvent>(e));
+            case Event::Type::WindowLeave:
+              return windowLeaveEvent(*std::dynamic_pointer_cast<WindowEvent>(e));
+            case Event::Type::WindowResize:
+              return windowResizeEvent(*std::dynamic_pointer_cast<WindowEvent>(e));
+            case Event::Type::Quit:
+              return quitEvent(*std::dynamic_pointer_cast<QuitEvent>(e));
+            default:
+              // Event type is not handled, continue the process.
+              break;
+          }
         }
 
         // Handle accepted status for this event: if we are the unique receiver we

@@ -52,6 +52,18 @@ namespace sdl {
       }
 
       inline
+      bool
+      EngineObject::isActive() const noexcept {
+        return m_active;
+      }
+
+      inline
+      void
+      EngineObject::setActive(const bool active) noexcept {
+        m_active = active;
+      }
+
+      inline
       void
       EngineObject::registerToSameQueue(EngineObject* other) {
         // Check that the `other` object is valid.
