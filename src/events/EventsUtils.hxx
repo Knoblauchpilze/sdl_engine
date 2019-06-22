@@ -60,6 +60,7 @@ namespace sdl {
         // WindowLeave        Not defined
         // WindowResize       Not defined
         // Quit               Not defined
+        // ZOrderChanged      Not defined
         // Not that if a type has no associated number it means that
         // it is not compared (and thus set equal to all other non
         // defined types).

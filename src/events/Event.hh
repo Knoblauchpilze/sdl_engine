@@ -38,7 +38,8 @@ namespace sdl {
             WindowEnter,         //<! - Mouse leaves the window's boundaries.
             WindowLeave,         //<! - Mouse leaves the window's boundaries.
             WindowResize,        //<! - Size of window has been modified.
-            Quit                 //<! - Main application was closed.
+            Quit,                //<! - Main application was closed.
+            ZOrderChanged        //<! - The z order for a component has changed.
           };
 
           static

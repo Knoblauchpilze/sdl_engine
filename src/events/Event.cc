@@ -74,6 +74,9 @@ namespace sdl {
           case Type::Quit:
             name = std::string("\"quit\"");
             break;
+          case Type::ZOrderChanged:
+            name = std::string("\"z_order_change\"");
+            break;
           default:
             break;
         }
