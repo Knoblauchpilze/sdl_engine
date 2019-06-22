@@ -311,6 +311,8 @@ namespace sdl {
               return windowResizeEvent(*std::dynamic_pointer_cast<WindowEvent>(e));
             case Event::Type::Quit:
               return quitEvent(*std::dynamic_pointer_cast<QuitEvent>(e));
+            case Event::Type::ZOrderChanged:
+              return zOrderChanged(*e);
             default:
               // Event type is not handled, continue the process.
               break;

@@ -235,6 +235,13 @@ namespace sdl {
       }
 
       inline
+      bool
+      EngineObject::zOrderChanged(const Event& /*e*/) {
+        // Empty implementation.
+        return true;
+      }
+
+      inline
       EngineObject::Filter
       EngineObject::findFilter(EngineObject* filter) const {
         // Traverse the registered filter and try to find the input `filter`.

@@ -265,6 +265,9 @@ namespace sdl {
           virtual bool
           quitEvent(const QuitEvent& e);
 
+          virtual bool
+          zOrderChanged(const Event& e);
+
         private:
 
           using Filters = std::vector<EngineObject*>;
