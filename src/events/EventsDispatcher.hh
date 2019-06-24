@@ -96,7 +96,13 @@ namespace sdl {
           std::mutex m_eventsLocker;
           Events m_spontaneousEvents;
 
-          std::mutex m_listenersLocker;
+          /**
+           * @brief - This mutex is meant to protect the access to the `m_listeners` array. We need
+           *          to make this mutex recursive so that whenever we dispatch some event to the
+           *          array, some listeners might still be able to register new listeners (typically
+           *          when creating new widgets) to this dispatcher.
+           */
+          std::recursive_mutex m_listenersLocker;
 
           /**
            * @brief - Holds all the registered listeners of this dispatcher. Note that the fact that

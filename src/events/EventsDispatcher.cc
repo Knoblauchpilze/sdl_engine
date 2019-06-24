@@ -149,7 +149,7 @@ namespace sdl {
         do {
           // Loop over the listeners and trigger the processing method
           // for each one of them.
-          std::lock_guard<std::mutex> guard(m_listenersLocker);
+          std::lock_guard<std::recursive_mutex> guard(m_listenersLocker);
 
           // In a first approach we assume that we're done. If this is
           // not the case and a listener still has events to process
@@ -260,7 +260,7 @@ namespace sdl {
         }
 
         // The event is not spontaneous, transmit it to all listeners.
-        std::lock_guard<std::mutex> guard(m_listenersLocker);
+        std::lock_guard<std::recursive_mutex> guard(m_listenersLocker);
         for (Listeners::iterator listener = m_listeners.begin() ;
             listener != m_listeners.end() ;
             ++listener)
