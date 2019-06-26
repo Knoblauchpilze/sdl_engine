@@ -46,6 +46,7 @@ namespace sdl {
         m_winID(),
         m_sdlWinID(),
         m_receiver(receiver),
+        m_emitter(nullptr),
 
         m_timestamp(std::chrono::steady_clock::now())
       {
@@ -86,12 +87,6 @@ namespace sdl {
       }
 
       inline
-      bool
-      Event::isSpontaneous() const noexcept {
-        return m_receiver == nullptr;
-      }
-
-      inline
       EngineObject*
       Event::getReceiver() const noexcept {
         return m_receiver;
@@ -101,6 +96,30 @@ namespace sdl {
       void
       Event::setReceiver(EngineObject* receiver) noexcept {
         m_receiver = receiver;
+      }
+
+      inline
+      bool
+      Event::isDirected() const noexcept {
+        return m_receiver != nullptr;
+      }
+
+      inline
+      EngineObject*
+      Event::getEmitter() const noexcept {
+        return m_emitter;
+      }
+
+      inline
+      void
+      Event::setEmitter(EngineObject* emitter) noexcept {
+        m_emitter = emitter;
+      }
+
+      inline
+      bool
+      Event::isSpontaneous() const noexcept {
+        return m_emitter == nullptr;
       }
 
       inline
