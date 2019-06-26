@@ -67,7 +67,7 @@ namespace sdl {
           dispatchEventsFromQueue();
 
           void
-          dispatchSpontaneousEvents();
+          dispatchBroadcastEvents();
 
           void
           dispatchEvents(const Events& events);
@@ -76,7 +76,7 @@ namespace sdl {
           dispatchEvent(const EventShPtr event);
 
           void
-          trimAndPostSpontaneousEvent(EventShPtr e);
+          trimAndPostBroadcastEvent(EventShPtr e);
 
           void
           trimAndPostDirectedEvent(EventShPtr e);
@@ -94,7 +94,7 @@ namespace sdl {
           std::shared_ptr<std::thread> m_executionThread;
 
           std::mutex m_eventsLocker;
-          Events m_spontaneousEvents;
+          Events m_broadcastEvents;
 
           /**
            * @brief - This mutex is meant to protect the access to the `m_listeners` array. We need

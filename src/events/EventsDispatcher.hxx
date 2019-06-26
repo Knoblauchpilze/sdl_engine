@@ -65,11 +65,11 @@ namespace sdl {
         // spontaneous or directed to a particular element.
         // In order not to queue several events with similar content
         // we use a dedicated handler.
-        if (event->isSpontaneous()) {
-          trimAndPostSpontaneousEvent(event);
+        if (event->isDirected()) {
+          trimAndPostDirectedEvent(event);
         }
         else {
-          trimAndPostDirectedEvent(event);
+          trimAndPostBroadcastEvent(event);
         }
       }
 
