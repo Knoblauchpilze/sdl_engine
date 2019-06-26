@@ -165,14 +165,24 @@ namespace sdl {
                     bool autosetReceiver = true) noexcept;
 
           /**
-           * @brief - Returns true whenever the input event `e` has this object has
+           * @brief - Returns true whenever the input event `e` has this object as
            *          unique receiver and false otherwise.
            * @param e - the event for which the receiver should be checked.
-           * @return - true if the event `e` has this object has receiver and false
+           * @return - true if the event `e` has this object as receiver and false
            *           otherwise.
            */
           bool
           isReceiver(const Event& e) const noexcept;
+
+          /**
+           * @brief - Returns true whenever the input event `e` has this object as
+           *          emitter and false otherwise.
+           * @param e - the event for which the emitter should be checked.
+           * @return - true if the event `e` has this object as emitter and false
+           *           otherwise.
+           */
+          bool
+          isEmitter(const Event& e) const noexcept;
 
           /**
            * @brief - Interface method which is called upon inserting any event to the
@@ -248,7 +258,7 @@ namespace sdl {
           repaintEvent(const PaintEvent& e);
 
           virtual bool
-          resizeEvent(const ResizeEvent& e);
+          resizeEvent(ResizeEvent& e);
 
           virtual bool
           showEvent(const Event& e);

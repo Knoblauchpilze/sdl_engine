@@ -89,6 +89,12 @@ namespace sdl {
       }
 
       inline
+      bool
+      EngineObject::isEmitter(const Event& e) const noexcept {
+        return e.getEmitter() == this;
+      }
+
+      inline
       void
       EngineObject::trimEvents(std::vector<EventShPtr>& /*events*/) {
         // Empty implementation.
@@ -194,7 +200,7 @@ namespace sdl {
 
       inline
       bool
-      EngineObject::resizeEvent(const ResizeEvent& /*e*/) {
+      EngineObject::resizeEvent(ResizeEvent& /*e*/) {
         // Empty implementation.
         return true;
       }

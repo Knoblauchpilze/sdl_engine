@@ -161,7 +161,7 @@ namespace sdl {
             }
 
             // Check whether this event is actually directed towards us.
-            if (!(*eventPtr)->isSpontaneous() && !isReceiver(**eventPtr)) {
+            if ((*eventPtr)->isDirected() && !isReceiver(**eventPtr)) {
               // Requeue this event.
               log(
                 std::string("Could not process event \"") + Event::getNameFromEvent(*eventPtr) +
@@ -218,9 +218,12 @@ namespace sdl {
 
         // Assign the receiver to `this` if asked and if no receiver
         // is provided in the input event.
-        if (autosetReceiver && e->isSpontaneous()) {
+        if (autosetReceiver && !e->isDirected()) {
           e->setReceiver(this);
         }
+
+        // Assign this object as emitter of this event.
+        e->setEmitter(this);
 
         // Check whether a queue is provided: if this is not the case
         // we might still be ok if the event is set to be directed for
