@@ -28,6 +28,9 @@ namespace sdl {
           const utils::Boxf&
           getOldSize() const noexcept;
 
+          void
+          setNewSize(const utils::Boxf& newSize) noexcept;
+
         protected:
 
           bool

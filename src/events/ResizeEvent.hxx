@@ -34,6 +34,12 @@ namespace sdl {
       }
 
       inline
+      void
+      ResizeEvent::setNewSize(const utils::Boxf& newSize) noexcept {
+        m_new = newSize;
+      }
+
+      inline
       bool
       ResizeEvent::equal(const Event& other) const noexcept {
         const ResizeEvent& e = dynamic_cast<const ResizeEvent&>(other);
