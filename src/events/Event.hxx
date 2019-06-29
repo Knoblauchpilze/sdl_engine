@@ -171,6 +171,7 @@ namespace sdl {
         return
           m_type == other.m_type &&
           m_receiver == other.m_receiver &&
+          m_emitter == other.m_emitter &&
           m_accepted == other.m_accepted &&
           m_hasWinID == other.m_hasWinID &&
           m_sdlWinID == other.m_sdlWinID &&
