@@ -8,6 +8,14 @@ namespace sdl {
     namespace engine {
 
       inline
+      PaintEvent::PaintEvent(EngineObject* receiver):
+        Event(Event::Type::Repaint,
+              receiver,
+              std::string("paint_event")),
+        m_updateRegion()
+      {}
+
+      inline
       PaintEvent::PaintEvent(const utils::Boxf& updateRegion,
                              EngineObject* receiver):
         Event(Event::Type::Repaint,
@@ -18,6 +26,12 @@ namespace sdl {
 
       inline
       PaintEvent::~PaintEvent() {}
+
+      inline
+      bool
+      PaintEvent::isGlobal() const noexcept {
+        return m_updateRegion.valid();
+      }
 
       inline
       const utils::Boxf&
