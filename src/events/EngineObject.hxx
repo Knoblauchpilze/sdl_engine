@@ -186,7 +186,7 @@ namespace sdl {
 
       inline
       bool
-      EngineObject::refreshEvent(const PaintEvent& /*e*/) {
+      EngineObject::refreshEvent(const Event& /*e*/) {
         // Empty implementation.
         return true;
       }
