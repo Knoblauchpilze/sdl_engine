@@ -137,45 +137,45 @@ namespace sdl {
         //    events as fast as possible.
         // 3. It provides better support for os events which are
         //    usually numerous.
-        Events toProcess;
+        EventShPtr toProcess = nullptr;
 
         // Start processing.
         do {
-          // Retrieve the queue into an internal variable so
-          // that we can release the lock and allow new events
-          // to be generated.
+          // Retrieve the first event of the queue so that we can
+          // prevent events from being generated as long as possible.
           {
             std::lock_guard<std::mutex> guard(m_eventsLocker);
-            toProcess.clear();
-            toProcess.swap(m_events);
+            // Check if at least one event can be retrieved.
+            if (m_events.empty()) {
+              toProcess = nullptr;
+            }
+            else {
+              toProcess = m_events[m_events.size() - 1];
+              m_events.pop_back();
+            }
           }
 
-          // Process all the events we retrieved.
-          for (Events::iterator eventPtr = toProcess.begin() ;
-              eventPtr != toProcess.end() ;
-              ++eventPtr)
-          {
-            // Disacrd invalid events.
-            if (*eventPtr == nullptr || (*eventPtr)->getType() == Event::Type::None) {
-              continue;
-            }
-
-            // Check whether this event is actually directed towards us.
-            if ((*eventPtr)->isDirected() && !isReceiver(**eventPtr)) {
-              // Requeue this event.
-              log(
-                std::string("Could not process event \"") + Event::getNameFromEvent(*eventPtr) +
-                "\" (invalid receiver \"" + (*eventPtr)->getReceiver()->getName() + "\"",
-                utils::Level::Warning
-              );
-
-              postEvent(*eventPtr);
-            }
-
-            // Process this event.
-            event(*eventPtr);
+          // Discard invalid events.
+          if (toProcess == nullptr || toProcess->getType() == Event::Type::None) {
+            continue;
           }
-        } while (!toProcess.empty());
+
+          // Check whether this event is actually directed towards us.
+          if (toProcess->isDirected() && !isReceiver(*toProcess)) {
+            // Requeue this event.
+            log(
+              std::string("Could not process event \"") + Event::getNameFromEvent(*toProcess) +
+              "\" (invalid receiver \"" + toProcess->getReceiver()->getName() + "\"",
+              utils::Level::Warning
+            );
+
+            postEvent(toProcess);
+          }
+
+          // Process this event.
+          event(toProcess);
+
+        } while (toProcess != nullptr);
       }
 
       void
@@ -341,7 +341,7 @@ namespace sdl {
           m_events.begin(),
           m_events.end(),
           [](const EventShPtr& lhs, const EventShPtr& rhs) {
-            return getEventID(lhs) < getEventID(rhs);
+            return getEventID(lhs) > getEventID(rhs);
           }
         );
 
