@@ -107,7 +107,7 @@ namespace sdl {
       }
 
       void
-      Event::merge(Event& e) {
+      Event::merge(const Event& e) {
         // Check that both `this` and `event` are of the same type.
         if (typeid(*this) != typeid(e)) {
           // This is a problem, we cannot merge events of different

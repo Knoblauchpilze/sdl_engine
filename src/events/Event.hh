@@ -199,7 +199,7 @@ namespace sdl {
            * @param e - the event to merge with `this`.
            */
           void
-          merge(Event& e);
+          merge(const Event& e);
 
         protected:
 
