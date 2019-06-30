@@ -64,12 +64,12 @@ namespace sdl {
         std::lock_guard<std::mutex> guard(m_eventsLocker);
 
         // Traverse the existing events and try to find a duplicate, i.e. an event
-        // which is equal to the input one.
+        // which has same type as the input one.
         bool unique = true;
         Events::iterator event = m_events.begin();
 
         while (unique && event != m_events.end()) {
-          unique = ((**event) != *e);
+          unique = ((*event)->getType() != e->getType());
           if (unique) {
             ++event;
           }
@@ -87,18 +87,17 @@ namespace sdl {
           m_events.push_back(e);
         }
         else {
-          // This event is not unique: erase the old event if the new one is
-          // more recent.
-          // TODO: Should probably provide a `merge` function for events.
-          if ((*event)->getTimestamp() < e->getTimestamp()) {
-            log("Dropping " + Event::getNameFromEvent(e) + " for " + e->getReceiver()->getName(), utils::Level::Warning);
-            // The only remaining operation here is a sort so that events are
-            // only ordered with the most basic first: as we did not modify
-            // the order of the internal `m_events` array we can return right
-            // away.
-            return;
-          }
-          event->swap(e);
+          // This event is not unique: use the dedicated merge function to
+          // merge both events into a single one.
+          log("Merging " + Event::getNameFromEvent(e) + " with more recent event", utils::Level::Warning);
+
+          (*event)->merge(*e);
+          
+          // The only remaining operation here is a sort so that events are
+          // only ordered with the most basic first: as we did not modify
+          // the order of the internal `m_events` array we can return right
+          // away.
+          return;
         }
 
         // Sort these events so that we process the most basic ones first:
