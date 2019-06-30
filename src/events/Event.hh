@@ -54,6 +54,11 @@ namespace sdl {
           std::string
           getNameFromEvent(const std::shared_ptr<Event> e) noexcept;
 
+          /**
+           * @brief - Convenience using which allows to refer to the timestamp of an event easily.
+           */
+          using Timestamp = std::chrono::time_point<std::chrono::steady_clock>;
+
         public:
 
           Event(const Type& type = Type::None,
@@ -68,19 +73,44 @@ namespace sdl {
           bool
           operator!=(const Event& other) const noexcept;
 
+          /**
+           * @brief - Returns true if this event has been marked accepted by at least
+           *          one of the object it has been transmitted. One can accept an event
+           *          by calling the `accept` method.
+           *          By default events are not accepted.
+           * @return - true if the `accept` method has been called on this event, false
+           *           otherwise.
+           */
           bool
           isAccepted() const noexcept;
 
+          /**
+           * @brief - Used to mark this event as accepted. Once this method is called
+           *          this event will not be transmitted to any other object.
+           */
           void
           accept() const noexcept;
 
+          /**
+           * @brief - Reset any accept flags previously set for this event. Marking an
+           *          event as ignored means that the object was not interested in
+           *          processing it.
+           */
           void
           ignore() const noexcept;
 
+          /**
+           * @brief - Retrieves the dynamic type for this event. Useful to know how to
+           *          downcast it into its actual type.
+           * @return - the type of this event.
+           */
           Type
           getType() const noexcept;
 
-          std::chrono::time_point<std::chrono::steady_clock>
+          /**
+           * @brief 
+           */
+          Timestamp
           getTimestamp() const noexcept;
 
           /**
@@ -157,19 +187,73 @@ namespace sdl {
           virtual void
           populateFromEngineData(Engine& engine);
 
+          /**
+           * @brief - Used to merge the input `e` with `this` event. Note that this
+           *          function only merges the common attribute of an event.
+           *          If the `e` is not of the same type as `this` an error is raised
+           *          as we cannot really determine what to do with the merge operation.
+           *          The internal `mergePrivate` method is called in the case both `this`
+           *          and `e` are of the same type.
+           *          Inheriting classes are encouraged to specialize the `mergePrivate`
+           *          rather than this `merge` method.
+           * @param e - the event to merge with `this`.
+           */
+          void
+          merge(Event& e);
+
         protected:
 
+          /**
+           * @brief - Sets this event as either accepted (if `accepted` is true) or ignored
+           *          (if `accepted` is false). Used internally by the `accept` and `ignore`
+           *          methods.
+           * @param accepted - true if the event should be accepted, false if it should be
+           *                   ignored.
+           */
           void
           setAccepted(const bool accepted) const noexcept;
 
+          /**
+           * @brief - Assign a new dynamic type for this event. This method should be used
+           *          with care as the type is used to downcast the event when needed. It
+           *          is meant to be used during the construction of any event if some checks
+           *          should be performed before determining the precise type of the event.
+           *          Typical examples include mouse event, where one must first determine
+           *          whether the mouse event corresponds to a mouse button click, a mouse
+           *          move and so on.
+           * @param type - the new dynamic type of the event.
+           */
           void
           setType(const Type& type) noexcept;
 
           void
           setSDLWinID(const std::uint32_t& sdlWinID) noexcept;
 
+          /**
+           * @brief - Used internally by the `operator==` method in case both events have
+           *          the same dynamic type. Inheriting classes are encouraged to overload
+           *          this method and perform the needed conversion and comparison between
+           *          the attributes of the `other` and `this` pointers.
+           *          We guarantee at this point that the input `other` can be casted into
+           *          a valid instance of the dynamic type of `this`.
+           * @param other - the event to compare with `this`.
+           */
           virtual bool
           equal(const Event& other) const noexcept;
+
+          /**
+           * @brief - Used internally by the `merge` method in case both events have the
+           *          same dynamic type. Similar in behavior to `equal` except it performs
+           *          the merging of the parameters defined by `other` into `this` event.
+           *          Note that each inheriting classes might perform its own merge semantic.
+           *          The return value indicates whether the `other` event could be merged.
+           *          This can be used by inheriting classes to determine whether their
+           *          custom merging stragegy should be performed or not.
+           * @param other - the event to merge with `this`.
+           * @return - true if `other` was merged with `this` event, false otherwise.
+           */
+          virtual bool
+          mergePrivate(const Event& other) noexcept;
 
         private:
 
@@ -181,7 +265,7 @@ namespace sdl {
           EngineObject* m_receiver;
           EngineObject* m_emitter;
 
-          std::chrono::time_point<std::chrono::steady_clock> m_timestamp;
+          Timestamp m_timestamp;
 
       };
 

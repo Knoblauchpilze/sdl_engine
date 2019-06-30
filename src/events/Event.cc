@@ -84,9 +84,82 @@ namespace sdl {
         return name;
       }
 
+      Event::Event(const Type& type,
+                   EngineObject* receiver,
+                   const std::string& name):
+        utils::CoreObject(name),
+        m_accepted(false),
+        m_type(type),
+        m_hasWinID(false),
+        m_winID(),
+        m_sdlWinID(),
+        m_receiver(receiver),
+        m_emitter(nullptr),
+
+        m_timestamp(std::chrono::steady_clock::now())
+      {
+        setService(std::string("event"));
+      }
+
       void
       Event::populateFromEngineData(Engine& engine) {
         engine.populateEvent(*this);
+      }
+
+      void
+      Event::merge(Event& e) {
+        // Check that both `this` and `event` are of the same type.
+        if (typeid(*this) != typeid(e)) {
+          // This is a problem, we cannot merge events of different
+          // type.
+          error(
+            std::string("Cannot merge event"),
+            std::string("Event types are \"") + getNameFromType(getType()) + "\" and \"" + getNameFromType(e.getType()) + "\""
+          );
+        }
+
+        // Use the internal handler.
+        mergePrivate(e);
+      }
+
+      bool
+      Event::equal(const Event& other) const noexcept {
+        return
+          m_type == other.m_type &&
+          m_receiver == other.m_receiver &&
+          m_emitter == other.m_emitter &&
+          m_accepted == other.m_accepted &&
+          m_hasWinID == other.m_hasWinID &&
+          m_sdlWinID == other.m_sdlWinID &&
+          m_winID == other.m_winID
+        ;
+      }
+
+      bool
+      Event::mergePrivate(const Event& other) noexcept {
+        // We assume that we want to copy the field only if `other` is more
+        // recent than `this` event.
+        if (m_timestamp >= other.m_timestamp) {
+          // Do nothing: `this` event is more recent than the `other`.
+          return false;
+        }
+
+        // Copy the fields from `other` to this event.
+        m_type = other.m_type;
+
+        m_receiver = other.m_receiver;
+        m_emitter = other.m_emitter;
+
+        m_accepted = other.m_accepted;
+
+        m_hasWinID = other.m_hasWinID;
+        m_sdlWinID = other.m_sdlWinID;
+        m_winID = other.m_winID;
+
+        m_timestamp = other.m_timestamp;
+
+        // Events could be merged.
+        return true;
       }
 
     }

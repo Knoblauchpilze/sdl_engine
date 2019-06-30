@@ -36,24 +36,6 @@ namespace sdl {
       }
 
       inline
-      Event::Event(const Type& type,
-                   EngineObject* receiver,
-                   const std::string& name):
-        utils::CoreObject(name),
-        m_accepted(false),
-        m_type(type),
-        m_hasWinID(false),
-        m_winID(),
-        m_sdlWinID(),
-        m_receiver(receiver),
-        m_emitter(nullptr),
-
-        m_timestamp(std::chrono::steady_clock::now())
-      {
-        setService(std::string("event"));
-      }
-
-      inline
       Event::~Event() {}
 
       inline
@@ -81,7 +63,7 @@ namespace sdl {
       }
 
       inline
-      std::chrono::time_point<std::chrono::steady_clock>
+      Event::Timestamp
       Event::getTimestamp() const noexcept {
         return m_timestamp;
       }
@@ -163,20 +145,6 @@ namespace sdl {
       Event::setSDLWinID(const std::uint32_t& sdlWinID) noexcept {
         m_sdlWinID = sdlWinID;
         m_hasWinID = true;
-      }
-
-      inline
-      bool
-      Event::equal(const Event& other) const noexcept {
-        return
-          m_type == other.m_type &&
-          m_receiver == other.m_receiver &&
-          m_emitter == other.m_emitter &&
-          m_accepted == other.m_accepted &&
-          m_hasWinID == other.m_hasWinID &&
-          m_sdlWinID == other.m_sdlWinID &&
-          m_winID == other.m_winID
-        ;
       }
 
     }
