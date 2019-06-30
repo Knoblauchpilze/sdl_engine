@@ -2,6 +2,7 @@
 # define   PAINT_EVENT_HH
 
 # include <memory>
+# include <vector>
 # include <maths_utils/Box.hh>
 # include "Event.hh"
 
@@ -11,16 +12,6 @@ namespace sdl {
 
       class PaintEvent: public Event {
         public:
-
-          /**
-           * @brief - Creates an event which is used to completely repaint the component.
-           *          In order to make it agnostic to the size of the component, we chose
-           *          to not provide any size: it is up to the component to retrieve its
-           *          internal size and to perform a repaint operation on all of it.
-           * @param receiver - the object which will receive this paint event. Leave it
-           *                   empty if it needs to be transmitted to all elements.
-           */
-          PaintEvent(EngineObject* receiver = nullptr);
 
           /**
            * @brief - Creates an event which is used to repaint the area defined by the
@@ -36,40 +27,51 @@ namespace sdl {
           ~PaintEvent();
 
           /**
-           * @brief - Used to determine whether this event is a global paint event or a
-           *          localized one. Paint operations might concern only a subset of the
-           *          element they should be applied onto, in which case a valid area is
-           *          provided during the construction.
-           *          But in some specific cases one might want to update the whole area
-           *          defined by a component: in this case the `isGlobal` method will
-           *          return true and the value provided by `getUpdateRegion` should be
-           *          ignored.
+           * @brief - Retrieves the regions to update as provided during the construction
+           *          of the object.
+           * @return - the update regions associated to this paint event.
            */
-          bool
-          isGlobal() const noexcept;
-
-          /**
-           * @brief - Retrieves the region to update as provided during the construction
-           *          of the object. One can check whether this area is valid using the
-           *          `isGlobal` method: if this method returns true the area retrieved
-           *          by this function will not be valid.
-           * @return - the update region associated to this paint event. Might be empty
-           *           based on the return value of the `isGlobal` method.
-           */
-          const utils::Boxf&
-          getUpdateRegion() const noexcept;
+          const std::vector<utils::Boxf>&
+          getUpdateRegions() const noexcept;
 
           void
           populateFromEngineData(Engine& engine) override;
 
         protected:
 
+          /**
+           * @brief - Reimplementation of the base `Event` method in order to provide
+           *          specific behavior to compare both the common attribute (using the
+           *          base handler) and the properties defined by this type of event.
+           * @param other - the `other` event to check for equality with `this`.
+           * @return - true if both `other` and `this` are equal, false otherwise.
+           */
           bool
           equal(const Event& other) const noexcept override;
 
+          /**
+           * @brief - Reimplementation of the base `Event` method in order to provide
+           *          specific merge strategy for this type of event. We will use the
+           *          base handler internally to merge common attributes of the event,
+           *          and then downcast the input `other` event to `this` dynamic type
+           *          to perform custom merging.
+           *          Note that the returnvalue of the base class will indicate whether
+           *          we should perform the custom merge strategy.
+           *          The return value of this method is indistinguishable from the
+           *          return value of the base `Event` method.
+           * @param other - the `other` event to merge with `this`.
+           * @return - true if the `other` event was merged with `this`, false otherwise.
+           */
+          bool
+          mergePrivate(const Event& other) noexcept override;
+
         private:
 
-          utils::Boxf m_updateRegion;
+          /**
+           * @brief - Contains all the regions to update when processing this event.
+           *          TODO: Should probably handle some kind of `join` method on boxes.
+           */
+          std::vector<utils::Boxf> m_updateRegions;
 
       };
 
