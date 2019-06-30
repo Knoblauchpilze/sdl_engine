@@ -23,7 +23,6 @@ namespace sdl {
         // comparison of each individual element.
         // Note that we're not robust to same areas in different order
         // but we do not want to handle this for now.
-        // TODO: Fix boxes order.
         const PaintEvent& e = dynamic_cast<const PaintEvent&>(other);
 
         return m_updateRegions != e.m_updateRegions;
