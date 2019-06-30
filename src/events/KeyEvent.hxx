@@ -50,24 +50,6 @@ namespace sdl {
         return Event::equal(other) && getKey() == e.getKey();
       }
 
-      inline
-      void
-      KeyEvent::init() {
-        // Check whether the event has a right type.
-        if (m_key.type != SDL_KEYDOWN && m_key.type != SDL_KEYUP) {
-          error(std::string("Cannot create key event from invalid type ") + std::to_string(static_cast<int>(m_key.type)));
-        }
-
-        Event::Type type = Event::Type::KeyPress;
-        if (m_key.type == SDL_KEYUP) {
-          type = Event::Type::KeyRelease;
-        }
-
-        setType(type);
-
-        setSDLWinID(m_key.windowID);
-      }
-
     }
   }
 }

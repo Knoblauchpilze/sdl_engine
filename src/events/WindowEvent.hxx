@@ -36,46 +36,6 @@ namespace sdl {
         return Event::equal(other);
       }
 
-      inline
-      void
-      WindowEvent::init() {
-        // Check whether the event has a right type.
-        if (m_window.type != SDL_WINDOWEVENT) {
-          error(std::string("Cannot create window event from invalid type ") + std::to_string(static_cast<int>(m_window.type)));
-        }
-
-        Event::Type type = Event::Type::None;
-        switch (m_window.event) {
-          case SDL_WINDOWEVENT_LEAVE:
-            type = Event::Type::WindowLeave;
-            break;
-          case SDL_WINDOWEVENT_ENTER:
-            type = Event::Type::WindowEnter;
-            break;
-          case SDL_WINDOWEVENT_RESIZED:
-            type = Event::Type::WindowResize;
-            break;
-          case SDL_WINDOWEVENT_MAXIMIZED:
-            type = Event::Type::WindowResize;
-            break;
-          default:
-            // Not handled event for now.
-            break;
-        }
-
-        // Assign the size from the input event if any.
-        if (type == Event::Type::WindowResize) {
-          m_size = utils::Sizef(
-            m_window.data1,
-            m_window.data2
-          );
-        }
-
-        setType(type);
-
-        setSDLWinID(m_window.windowID);
-      }
-
     }
   }
 }
