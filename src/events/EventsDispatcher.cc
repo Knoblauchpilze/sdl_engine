@@ -144,34 +144,75 @@ namespace sdl {
         // consumed.
         // We can determine whether some listeners still need to process
         // some events with the dedicated `hasEvents` method.
+        // In addition to that, events might generate new listeners to
+        // register in this dispatcher, which will modify the `m_listeners`
+        // lists. We have to copy the listeners in order to allow them to
+        // be added.
+        // The ordering is the following: when processing an event, we
+        // need to pass it to all the listeners created by this event.
+        // And when processing an event, we need to continue processing
+        // as long as some events have been generated.
+
         bool allDone = false;
 
+        // Process as long as some events have been added.
         do {
           // Loop over the listeners and trigger the processing method
           // for each one of them.
-          std::lock_guard<std::recursive_mutex> guard(m_listenersLocker);
-
           // In a first approach we assume that we're done. If this is
           // not the case and a listener still has events to process
           // we will change our minds.
           allDone = true;
 
-          for (Listeners::iterator listener = m_listeners.begin() ;
-              listener != m_listeners.end() ;
-              ++listener)
-          {
-            if ((*listener)->hasEvents()) {
-              withSafetyNet(
-                [&listener]() {
-                  (*listener)->processEvents();
-                },
-                std::string("processEvents")
-              );
-              allDone = false;
-            }
-          }
+          int offset = 0;
+          bool someListenersAdded = true;
 
-          // Loop until no more events are pending in any of the listeners.
+          do {
+
+            // Retrieve existing listeners.
+            Listeners existingListeners;
+            {
+              existingListeners.clear();
+              std::lock_guard<std::mutex> guard(m_listenersLocker);
+              existingListeners.swap(m_listeners);
+            }
+
+            // Process events for the listeners.
+            for (int id = offset ; id < static_cast<int>(existingListeners.size()) ; ++id) {
+              if (existingListeners[id]->hasEvents()) {
+                EngineObject* listener = existingListeners[id];
+
+                withSafetyNet(
+                  [&listener]() {
+                    listener->processEvents();
+                  },
+                  std::string("processEvents")
+                );
+                allDone = false;
+              }
+            }
+
+            // Check whether some listeners were added.
+            {
+              std::lock_guard<std::mutex> guard(m_listenersLocker);
+              someListenersAdded = !m_listeners.empty();
+
+              // If some listeners were added, merge them with the
+              // existing list and then swap it to the internal array
+              // so that they can be notified of events.
+              if (someListenersAdded) {
+                log("Added " + std::to_string(m_listeners.size()) + " listener(s), starting at " + std::to_string(existingListeners.size()) + " for next iteration");
+                offset = static_cast<int>(existingListeners.size());
+                existingListeners.insert(existingListeners.cend(), m_listeners.cbegin(), m_listeners.cend());
+              }
+
+              // Restore internal listeners with existing list to
+              // which newly registered have been added.
+              m_listeners.swap(existingListeners);
+            }
+
+          } while (someListenersAdded);
+
         } while (!allDone);
 
         // Return the elapsed time.
@@ -259,14 +300,49 @@ namespace sdl {
           return;
         }
 
-        // The event is not directed, transmit it to all listeners.
-        std::lock_guard<std::recursive_mutex> guard(m_listenersLocker);
-        for (Listeners::iterator listener = m_listeners.begin() ;
-            listener != m_listeners.end() ;
-            ++listener)
-        {
-          (*listener)->event(event);
-        }
+        // The event is not directed, transmite it to all listeners. As some new
+        // listeners might be added to this dispatcher, we cannot just loop through
+        // the internal `m_listeners` array. We have to copy its value into a new
+        // elements and then iterate over the copy.
+        // We continue looping as long as listeners have been added.
+        int offset = 0;
+        bool someListenersAdded = true;
+
+        do {
+
+          // Retrieve existing listeners.
+          Listeners existingListeners;
+          {
+            existingListeners.clear();
+            std::lock_guard<std::mutex> guard(m_listenersLocker);
+            existingListeners.swap(m_listeners);
+          }
+
+          // Process events for the listeners.
+          for (int id = offset ; id < static_cast<int>(existingListeners.size()) ; ++id) {
+            existingListeners[id]->event(event);
+          }
+
+          // Check whether some listeners were added.
+          {
+            std::lock_guard<std::mutex> guard(m_listenersLocker);
+            someListenersAdded = !m_listeners.empty();
+
+            // If some listeners were added, merge them with the
+            // existing list and then swap it to the internal array
+            // so that they can be notified of events.
+            if (someListenersAdded) {
+              log("Added " + std::to_string(m_listeners.size()) + " listener(s), starting at " + std::to_string(existingListeners.size()) + " for next iteration");
+              offset = static_cast<int>(existingListeners.size());
+              existingListeners.insert(existingListeners.cend(), m_listeners.cbegin(), m_listeners.cend());
+            }
+
+            // Restore internal listeners with existing list to
+            // which newly registered have been added.
+            m_listeners.swap(existingListeners);
+          }
+
+        } while (someListenersAdded);
       }
 
       void

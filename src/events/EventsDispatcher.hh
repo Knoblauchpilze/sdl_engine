@@ -102,7 +102,7 @@ namespace sdl {
            *          array, some listeners might still be able to register new listeners (typically
            *          when creating new widgets) to this dispatcher.
            */
-          std::recursive_mutex m_listenersLocker;
+          std::mutex m_listenersLocker;
 
           /**
            * @brief - Holds all the registered listeners of this dispatcher. Note that the fact that

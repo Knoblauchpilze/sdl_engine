@@ -84,7 +84,7 @@ namespace sdl {
           );
         }
 
-        std::lock_guard<std::recursive_mutex> guard(m_listenersLocker);
+        std::lock_guard<std::mutex> guard(m_listenersLocker);
 
         // Loop through existing listeners to detect whether this `listener`
         // is already registered for this queue.
@@ -114,7 +114,7 @@ namespace sdl {
           );
         }
 
-        std::lock_guard<std::recursive_mutex> guard(m_listenersLocker);
+        std::lock_guard<std::mutex> guard(m_listenersLocker);
         std::remove_if(m_listeners.begin(), m_listeners.end(),
           [&listener](EngineObject* internalListener) {
             return &*(listener) == &(*internalListener);
