@@ -269,7 +269,9 @@ namespace sdl {
 
         // Handle the event if this element is active or if it is a show event.
         if (isActive() || e->getType() == Event::Type::Show) {
-          log("Handling " + Event::getNameFromEvent(e), utils::Level::Info);
+          if (e->getType() != Event::Type::MouseMove) {
+            log("Handling " + Event::getNameFromEvent(e), utils::Level::Info);
+          }
 
           // Check the event type and dispatch to the corresponding handler.
           switch (e->getType()) {
