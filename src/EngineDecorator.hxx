@@ -129,10 +129,11 @@ namespace sdl {
       inline
       void
       EngineDecorator::drawTexture(const utils::Uuid& tex,
+                                   const utils::Boxf* from,
                                    const utils::Uuid* on,
                                    const utils::Boxf* where)
       {
-        m_engine->drawTexture(tex, on, where);
+        m_engine->drawTexture(tex, from, on, where);
       }
 
       inline

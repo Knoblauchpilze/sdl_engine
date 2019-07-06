@@ -196,6 +196,7 @@ namespace sdl {
 
       void
       SdlEngine::drawTexture(const utils::Uuid& tex,
+                             const utils::Boxf* from,
                              const utils::Uuid* on,
                              const utils::Boxf* where)
       {
@@ -211,7 +212,7 @@ namespace sdl {
           WindowShPtr win = getWindowFromTextureOrThrow(tex);
 
           // Perform the blit operation.
-          win->drawTexture(tex, on, where);
+          win->drawTexture(tex, from, on, where);
 
           // All set.
           return;
@@ -232,7 +233,7 @@ namespace sdl {
         // Both texture belong to the same window, pass on to the
         // window pointer associated to any of the texture.
         WindowShPtr win = getWindowOrThrow(win1);
-        win->drawTexture(tex, on, where);
+        win->drawTexture(tex, from, on, where);
       }
 
       utils::Sizei

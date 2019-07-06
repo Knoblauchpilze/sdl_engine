@@ -89,6 +89,7 @@ namespace sdl {
 
           void
           drawTexture(const utils::Uuid& tex,
+                      const utils::Boxf* from = nullptr,
                       const utils::Uuid* on = nullptr,
                       const utils::Boxf* where = nullptr) override;
 

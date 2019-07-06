@@ -56,6 +56,7 @@ namespace sdl {
 
       void
       Window::drawTexture(const utils::Uuid& tex,
+                          const utils::Boxf* from,
                           const utils::Uuid* on,
                           const utils::Boxf* where)
       {
@@ -84,7 +85,7 @@ namespace sdl {
         TextureShPtr layer = getTextureOrThrow(tex);
 
         // Draw the layer on the base.
-        layer->draw(where, target);
+        layer->draw(from, where, target);
       }
 
       void
