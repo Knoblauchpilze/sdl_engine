@@ -25,7 +25,8 @@ namespace sdl {
     namespace engine {
 
       void
-      Texture::fill(const Palette& palette)
+      Texture::fill(const Palette& palette,
+                    const utils::Boxf* area)
       {
         // Performs the creation of the texture using the dedicated handler
         // which will only create it once.
@@ -39,17 +40,29 @@ namespace sdl {
         RendererState state(getRenderer());
 
         // Configure the renderer to draw on the texture, apply the color and perform
-        // the filling.
+        // the filling. We also need to handle filling only part of the texture if the
+        // `area` argument is not null. In this case we will use a virtual viewport in
+        // order to allow clearing only part of the screen.
         SDL_SetRenderTarget(getRenderer(), m_texture);
+
+        if (area != nullptr) {
+          SDL_Rect viewport = toSDLRect(*area);
+          SDL_RenderSetViewport(getRenderer(), &viewport);
+        }
+
         SDL_SetRenderDrawColor(getRenderer(), color.r, color.g, color.b, SDL_ALPHA_OPAQUE);
         SDL_RenderClear(getRenderer());
+
+        if (area != nullptr) {
+          SDL_RenderSetViewport(getRenderer(), nullptr);
+        }
 
         // Also apply alpha modulation for this texture.
         setAlpha(palette.getColorForRole(getRole()));
       }
 
       void
-      Texture::draw(utils::Boxf* box,
+      Texture::draw(const utils::Boxf* box,
                     SDL_Texture* on)
       {
         // Performs the creation of the texture using the dedicated handler

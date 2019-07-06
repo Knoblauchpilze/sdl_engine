@@ -75,7 +75,8 @@ namespace sdl {
 
           virtual void
           fillTexture(const utils::Uuid& uuid,
-                      const Palette& palette) = 0;
+                      const Palette& palette,
+                      const utils::Boxf* area = nullptr) = 0;
 
           virtual void
           setTextureAlpha(const utils::Uuid& uuid,
@@ -91,7 +92,7 @@ namespace sdl {
           virtual void
           drawTexture(const utils::Uuid& tex,
                       const utils::Uuid* on = nullptr,
-                      utils::Boxf* where = nullptr) = 0;
+                      const utils::Boxf* where = nullptr) = 0;
 
           virtual utils::Sizei
           queryTexture(const utils::Uuid& uuid) = 0;

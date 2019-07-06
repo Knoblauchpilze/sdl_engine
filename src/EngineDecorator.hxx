@@ -98,9 +98,10 @@ namespace sdl {
       inline
       void
       EngineDecorator::fillTexture(const utils::Uuid& uuid,
-                                   const Palette& palette)
+                                   const Palette& palette,
+                                   const utils::Boxf* area)
       {
-        m_engine->fillTexture(uuid, palette);
+        m_engine->fillTexture(uuid, palette, area);
       }
 
       inline
@@ -129,7 +130,7 @@ namespace sdl {
       void
       EngineDecorator::drawTexture(const utils::Uuid& tex,
                                    const utils::Uuid* on,
-                                   utils::Boxf* where)
+                                   const utils::Boxf* where)
       {
         m_engine->drawTexture(tex, on, where);
       }

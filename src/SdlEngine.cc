@@ -142,7 +142,8 @@ namespace sdl {
 
       void
       SdlEngine::fillTexture(const utils::Uuid& uuid,
-                             const Palette& palette)
+                             const Palette& palette,
+                             const utils::Boxf* area)
       {
         std::lock_guard<std::mutex> guard(m_locker);
 
@@ -150,7 +151,7 @@ namespace sdl {
         WindowShPtr win = getWindowFromTextureOrThrow(uuid);
 
         // Delegate the fill operation to the window object.
-        win->fill(uuid, palette);
+        win->fill(uuid, palette, area);
       }
 
       void
@@ -196,7 +197,7 @@ namespace sdl {
       void
       SdlEngine::drawTexture(const utils::Uuid& tex,
                              const utils::Uuid* on,
-                             utils::Boxf* where)
+                             const utils::Boxf* where)
       {
         std::lock_guard<std::mutex> guard(m_locker);
 

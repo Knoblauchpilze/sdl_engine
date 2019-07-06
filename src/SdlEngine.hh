@@ -73,7 +73,8 @@ namespace sdl {
 
           void
           fillTexture(const utils::Uuid& uuid,
-                      const Palette& palette) override;
+                      const Palette& palette,
+                      const utils::Boxf* area = nullptr) override;
 
           void
           setTextureAlpha(const utils::Uuid& uuid,
@@ -89,7 +90,7 @@ namespace sdl {
           void
           drawTexture(const utils::Uuid& tex,
                       const utils::Uuid* on = nullptr,
-                      utils::Boxf* where = nullptr) override;
+                      const utils::Boxf* where = nullptr) override;
 
           utils::Sizei
           queryTexture(const utils::Uuid& uuid) override;

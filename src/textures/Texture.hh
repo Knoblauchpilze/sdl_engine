@@ -25,11 +25,25 @@ namespace sdl {
           const Palette::ColorRole&
           getRole() const noexcept;
 
+          /**
+           * @brief - Attempts to fill this texture with the palette provided based on
+           *          the internal role for this texture.
+           *          The palette is used to retrieve the associated color to apply to
+           *          the texture. The `area` (if not null) specifies a rectangle of the
+           *          texture which should be filled with the corresponding color.
+           *          Note that if the `area` is null the whole texture is filled with
+           *          the color corresponding to the current texture's role.
+           * @param palette - the palette to use to retrieve the color corresponding to
+           *                  the texture's role.
+           * @param area - the area of the texture to fill. If this argument is null the
+           *               whole texture will be filled.
+           */
           void
-          fill(const Palette& palette);
+          fill(const Palette& palette,
+               const utils::Boxf* area = nullptr);
 
           void
-          draw(utils::Boxf* box,
+          draw(const utils::Boxf* box,
                SDL_Texture* on = nullptr);
 
           void

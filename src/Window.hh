@@ -50,7 +50,8 @@ namespace sdl {
 
           void
           fill(const utils::Uuid& uuid,
-               const Palette& palette);
+               const Palette& palette,
+               const utils::Boxf* area = nullptr);
 
           void
           setTextureAlpha(const utils::Uuid& uuid,
@@ -66,7 +67,7 @@ namespace sdl {
           void
           drawTexture(const utils::Uuid& tex,
                       const utils::Uuid* on = nullptr,
-                      utils::Boxf* where = nullptr);
+                      const utils::Boxf* where = nullptr);
 
           utils::Sizei
           queryTexture(const utils::Uuid& uuid);

@@ -73,13 +73,14 @@ namespace sdl {
       inline
       void
       Window::fill(const utils::Uuid& uuid,
-                   const Palette& palette)
+                   const Palette& palette,
+                   const utils::Boxf* area)
       {
         // Try to retrieve the corresponding texture.
         TextureShPtr tex = getTextureOrThrow(uuid);
 
         // Fill it using the internal renderer.
-        tex->fill(palette);
+        tex->fill(palette, area);
       }
 
       inline

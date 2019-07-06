@@ -57,7 +57,7 @@ namespace sdl {
       void
       Window::drawTexture(const utils::Uuid& tex,
                           const utils::Uuid* on,
-                          utils::Boxf* where)
+                          const utils::Boxf* where)
       {
         // We want to draw the input `tex` on the target `on` at
         // position `where`.
