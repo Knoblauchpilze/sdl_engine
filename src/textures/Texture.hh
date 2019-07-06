@@ -42,8 +42,23 @@ namespace sdl {
           fill(const Palette& palette,
                const utils::Boxf* area = nullptr);
 
+          /**
+           * @brief - Perform the copy operation of `this` texture on the specified `on`
+           *          texture or on the default rendering target if no texture is provided.
+           *          The `from` indicates the area of `this` texture to copy and the
+           *          `where` indicates the area where this texture should be copied.
+           * @param from - a box representing the source area of `this` texture which should
+           *               be copied. If this value is null the entire texture will be copied.
+           * @param where - a box representing where `this` texture should be copied. If the
+           *                value is null `this` texture will be copied so that it occupies
+           *                the entire destination texture.
+           * @param on - an optional texture which indicates the destination texture where
+           *             `this` texture should be drawn. If this value is null `this` texture
+           *             is copied on the default rendering target pf the renderer.
+           */
           void
-          draw(const utils::Boxf* box,
+          draw(const utils::Boxf* from,
+               const utils::Boxf* where,
                SDL_Texture* on = nullptr);
 
           void

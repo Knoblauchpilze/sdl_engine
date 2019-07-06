@@ -62,7 +62,8 @@ namespace sdl {
       }
 
       void
-      Texture::draw(const utils::Boxf* box,
+      Texture::draw(const utils::Boxf* from,
+                    const utils::Boxf* box,
                     SDL_Texture* on)
       {
         // Performs the creation of the texture using the dedicated handler
@@ -77,12 +78,24 @@ namespace sdl {
         SDL_SetRenderTarget(getRenderer(), on);
 
         // Draw the input texture at the corresponding location.
-        if (box == nullptr) {
-          SDL_RenderCopy(getRenderer(), m_texture, nullptr, nullptr);
+        if (from == nullptr) {
+          if (box == nullptr) {
+            SDL_RenderCopy(getRenderer(), m_texture, nullptr, nullptr);
+          }
+          else {
+            SDL_Rect dstArea = toSDLRect(*box);
+            SDL_RenderCopy(getRenderer(), m_texture, nullptr, &dstArea);
+          }
         }
         else {
-          SDL_Rect dstArea = toSDLRect(*box);
-          SDL_RenderCopy(getRenderer(), m_texture, nullptr, &dstArea);
+          SDL_Rect srcArea = toSDLRect(*from);
+          if (box == nullptr) {
+            SDL_RenderCopy(getRenderer(), m_texture, &srcArea, nullptr);
+          }
+          else {
+            SDL_Rect dstArea = toSDLRect(*box);
+            SDL_RenderCopy(getRenderer(), m_texture, &srcArea, &dstArea);
+          }
         }
       }
 
