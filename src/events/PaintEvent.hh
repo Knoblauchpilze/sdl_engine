@@ -34,6 +34,20 @@ namespace sdl {
           const std::vector<utils::Boxf>&
           getUpdateRegions() const noexcept;
 
+          /**
+           * @brief - Used to convert the input `area` expressed in a coordinate frame similar
+           *          to the `reference` into local coordinate frame.
+           * @param area - the area to convert: this value is assumed to be expressed in a
+           *               parent coordinate frame.
+           * @param reference - the reference area to use to provide the local coordinate frame
+           *                    into which the `area` should be converted.
+           * @return - a converted area corresponding to the input `area` in a coordinate frame
+           *           corresponding to the `reference`.
+           */
+          utils::Boxf
+          convertToLocal(const utils::Boxf& area,
+                         const utils::Boxf& reference) const noexcept;
+
           void
           populateFromEngineData(Engine& engine) override;
 
