@@ -6,21 +6,6 @@ namespace sdl {
   namespace core {
     namespace engine {
 
-      utils::Boxf
-      PaintEvent::convertToLocal(const utils::Boxf& area,
-                                 const utils::Boxf& reference) const noexcept
-      {
-        // The position of the `reference` is used to convert the position of the
-        // input `area`. To do so we compute the relative offset between both areas.
-        // The dimensions are kept unchanged as there is no scaling.
-        return utils::Boxf(
-          area.x() - reference.x(),
-          area.y() - reference.y(),
-          area.w(),
-          area.h()
-        );
-      }
-
       void
       PaintEvent::populateFromEngineData(Engine& engine) {
         engine.populateEvent(*this);
