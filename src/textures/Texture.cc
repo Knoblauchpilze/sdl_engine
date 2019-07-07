@@ -41,20 +41,23 @@ namespace sdl {
 
         // Configure the renderer to draw on the texture, apply the color and perform
         // the filling. We also need to handle filling only part of the texture if the
-        // `area` argument is not null. In this case we will use a virtual viewport in
-        // order to allow clearing only part of the screen.
+        // `area` argument is not null. This is done by either:
+        // a. if the `area` is null we just clear the renderer target.
+        // b. if the `area` is not null we just draw a rectangle at the specified area.
+
+        // Assign the renderer target.
         SDL_SetRenderTarget(getRenderer(), m_texture);
 
-        if (area != nullptr) {
-          SDL_Rect viewport = toSDLRect(*area);
-          SDL_RenderSetViewport(getRenderer(), &viewport);
-        }
-
+        // Assign the renderer draw color.
         SDL_SetRenderDrawColor(getRenderer(), color.r, color.g, color.b, SDL_ALPHA_OPAQUE);
-        SDL_RenderClear(getRenderer());
 
-        if (area != nullptr) {
-          SDL_RenderSetViewport(getRenderer(), nullptr);
+        // Perofrm either the filling of the rectangle drawing based on the input `area`.
+        if (area == nullptr) {
+          SDL_RenderClear(getRenderer());
+        }
+        else {
+          SDL_Rect dstRect = toSDLRect(*area);
+          SDL_RenderFillRect(getRenderer(), &dstRect);
         }
 
         // Also apply alpha modulation for this texture.
