@@ -22,6 +22,7 @@ namespace sdl {
           SDL_Renderer* m_renderer;
           SDL_Color m_color;
           SDL_Texture* m_texture;
+          SDL_Rect m_viewport;
 
       };
 
