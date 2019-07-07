@@ -5,8 +5,6 @@
 # include "WindowEvent.hh"
 # include "QuitEvent.hh"
 
-# include <iostream>
-
 namespace sdl {
   namespace core {
     namespace engine {
