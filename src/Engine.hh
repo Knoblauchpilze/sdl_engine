@@ -49,6 +49,7 @@ namespace sdl {
                         const utils::Sizei& size,
                         const Palette::ColorRole& role) = 0;
 
+          // TODO: Should probably be a Sizef so that we can keep the real size as long as possible.
           virtual utils::Uuid
           createTexture(const utils::Sizei& size,
                         const Palette::ColorRole& role) = 0;
