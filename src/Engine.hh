@@ -44,14 +44,37 @@ namespace sdl {
           virtual void
           destroyWindow(const utils::Uuid& uuid) = 0;
 
+          /**
+           * @brief - Similar in behavior to the `createTexture` with no windows identifier but this
+           *          method creates the texture as a child of the input window.
+           *          Failure to create the texture or to provide a valid window identifier will raise
+           *          an error.
+           *          The user can specify the role of the texture to create. This role will mostly be
+           *          used to determine the color to assign to the texture when drawing it.
+           * @param win - an identifier of the window into which the texture should be created.
+           * @param size - the size of the texture to create.
+           * @param role - the role of the texture to create, mostly used to determine the color to use
+           *               when drawing the texture.
+           * @return - the identifier of the created texture.
+           */
           virtual utils::Uuid
           createTexture(const utils::Uuid& win,
-                        const utils::Sizei& size,
+                        const utils::Sizef& size,
                         const Palette::ColorRole& role) = 0;
 
+          /**
+           * @brief - Creates a texture with the specified size and role. The size is provided with
+           *          floating point dimensions in order to allow more flexibility. Most of the times
+           *          the underlying texture will have integer dimensions though.
+           *          The return value corresponds to a unique identifier which can then be used to
+           *          reference the texture in the engine.
+           * @param size - the size of the texture to create.
+           * @param role - the role to associate to the texture.
+           * @return - the identifier of the created texture.
+           */
           // TODO: Should probably be a Sizef so that we can keep the real size as long as possible.
           virtual utils::Uuid
-          createTexture(const utils::Sizei& size,
+          createTexture(const utils::Sizef& size,
                         const Palette::ColorRole& role) = 0;
 
           virtual utils::Uuid
@@ -96,7 +119,18 @@ namespace sdl {
                       const utils::Uuid* on = nullptr,
                       const utils::Boxf* where = nullptr) = 0;
 
-          virtual utils::Sizei
+          /**
+           * @brief - Queries the underlying engine to find the dimensions of the texture
+           *          referenced by the input identifier.
+           *          If no such texture can be found in the engine an error is raised.
+           *          Note that the returned size is composed of floating point values
+           *          which is not always supported by underlying engine.
+           *          The goal is to ensure consistencies with textures' creation where the
+           *          user can specify floating point dimensions.
+           * @param uuid - the index of the texture which dimensions should be queried.
+           * @return - a size rperesenting the dimensions of the texture.
+           */
+          virtual utils::Sizef
           queryTexture(const utils::Uuid& uuid) = 0;
 
           virtual void
