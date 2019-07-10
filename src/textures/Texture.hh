@@ -67,7 +67,15 @@ namespace sdl {
           void
           setRole(const Palette::ColorRole& role);
 
-          utils::Sizei
+          /**
+           * @brief - Used to retrieve the dimensions of the texture. Note that this function
+           *          returns the logical size of the texture as assigned when creating the
+           *          texture and not the exact size of the underlying SDL texture.
+           *          This allows for more flexibility when dealing with texture's size as we
+           *          can account for half pixels for example.
+           * @return - the size of the texture.
+           */
+          virtual utils::Sizef
           query();
 
         protected:

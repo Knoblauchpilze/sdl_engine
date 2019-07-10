@@ -112,7 +112,7 @@ namespace sdl {
         SDL_SetTextureAlphaMod(m_texture, color.toSDLColor().a);
       }
 
-      utils::Sizei
+      utils::Sizef
       Texture::query() {
         // Performs the creation of the texture using the dedicated handler
         // which will only create it once.
@@ -122,7 +122,7 @@ namespace sdl {
         int w, h;
         SDL_QueryTexture(m_texture, nullptr, nullptr, &w, &h);
 
-        return utils::Sizei(w, h);
+        return utils::Sizef(static_cast<float>(w), static_cast<float>(h));
       }
 
     }
