@@ -35,7 +35,7 @@ namespace sdl {
 
       inline
       utils::Uuid
-      Window::createTexture(const utils::Sizei& size,
+      Window::createTexture(const utils::Sizef& size,
                             const Palette::ColorRole& role)
       {
         // Create the texture.
@@ -118,7 +118,7 @@ namespace sdl {
       }
 
       inline
-      utils::Sizei
+      utils::Sizef
       Window::queryTexture(const utils::Uuid& uuid) {
         // Try to retrieve the corresponding texture.
         TextureShPtr tex = getTextureOrThrow(uuid);

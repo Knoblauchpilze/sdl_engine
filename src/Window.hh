@@ -35,8 +35,19 @@ namespace sdl {
           void
           setIcon(const std::string& icon);
 
+          /**
+           * @brief - Creates a children texture for this window with the specified dimensions and
+           *          role. The SDL library that we're using to create the texture needs to parent
+           *          each texture to a renderer and a renderer is linked to a window hence the fact
+           *          fact that this method is defined in the `Window` class.
+           * @param size - the size of the texture to create.
+           * @param role - the role to assign to the texture: this will mostly be used to draw the
+           *               texture and select an appropriate color.
+           * @return - a unique identifier which can be used to refer to the created texture for
+           *            subsequent operations.
+           */
           utils::Uuid
-          createTexture(const utils::Sizei& size,
+          createTexture(const utils::Sizef& size,
                         const Palette::ColorRole& role);
 
           utils::Uuid
@@ -70,7 +81,15 @@ namespace sdl {
                       const utils::Uuid* on = nullptr,
                       const utils::Boxf* where = nullptr);
 
-          utils::Sizei
+          /**
+           * @brief - Tries to find the texture corresponding to the input identifier within
+           *          this window and retrieves its associated dimensions.
+           *          Note that if no such texture can be found within this window an error
+           *          is raised.
+           * @param uuid - the identifier of the texture which should be queried.
+           * @return - a size rperesenting the dimensions of the texture.
+           */
+          utils::Sizef
           queryTexture(const utils::Uuid& uuid);
 
           void
