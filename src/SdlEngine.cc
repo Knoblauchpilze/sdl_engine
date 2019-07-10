@@ -81,7 +81,7 @@ namespace sdl {
 
       utils::Uuid
       SdlEngine::createTexture(const utils::Uuid& win,
-                               const utils::Sizei& size,
+                               const utils::Sizef& size,
                                const Palette::ColorRole& role)
       {
         // Acquire the lock so that we do not create multiple textures at the
@@ -236,7 +236,7 @@ namespace sdl {
         win->drawTexture(tex, from, on, where);
       }
 
-      utils::Sizei
+      utils::Sizef
       SdlEngine::queryTexture(const utils::Uuid& uuid) {
         std::lock_guard<std::mutex> guard(m_locker);
 

@@ -48,7 +48,7 @@ namespace sdl {
 
       inline
       utils::Uuid
-      SdlEngine::createTexture(const utils::Sizei& size,
+      SdlEngine::createTexture(const utils::Sizef& size,
                                const Palette::ColorRole& /*role*/)
       {
         // Not handled in here, we need a window ID.

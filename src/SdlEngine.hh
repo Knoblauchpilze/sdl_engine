@@ -42,13 +42,31 @@ namespace sdl {
           void
           destroyWindow(const utils::Uuid& uuid) override;
 
+          /**
+           * @brief - Implementation of the interface method in order to create a texture using the
+           *          SDL library.
+           * @param win - the window for which the texture should be created.
+           * @param size - the size of the texture to create.
+           * @param role - the role to assign to the texture, mostly used to determine the drawing
+           *               color for the texture.
+           * @return - an identifier allowing to refer to the texture in subsequent operations.
+           */
           utils::Uuid
           createTexture(const utils::Uuid& win,
-                        const utils::Sizei& size,
+                        const utils::Sizef& size,
                         const Palette::ColorRole& role) override;
 
+          /**
+           * @brief - Specialization of the interface method to provide the creation of a texture with
+           *          no associated window. Within the SDL library this scenario is not allowed and
+           *          thus this method always throws.
+           *          The user is encouraged to use the other variant method.
+           * @param size - ignored parameter.
+           * @param role - ignored parameter.
+           * @return - nothing, always raise an error before returning any value.
+           */
           utils::Uuid
-          createTexture(const utils::Sizei& size,
+          createTexture(const utils::Sizef& size,
                         const Palette::ColorRole& role) override;
 
           utils::Uuid
@@ -93,7 +111,19 @@ namespace sdl {
                       const utils::Uuid* on = nullptr,
                       const utils::Boxf* where = nullptr) override;
 
-          utils::Sizei
+          /**
+           * @brief - Reimplementation of the base `Engine` method. Ultimately queries
+           *          the SDL library to obtain the size of the texture referenced by
+           *          the input identifier.
+           *          If no such texture can be found in the engine an error is raised.
+           *          Note that the returned size is composed of floating point values
+           *          which is not always supported by underlying engine.
+           *          The goal is to ensure consistencies with textures' creation where the
+           *          user can specify floating point dimensions.
+           * @param uuid - the index of the texture which dimensions should be queried.
+           * @return - a size rperesenting the dimensions of the texture.
+           */
+          utils::Sizef
           queryTexture(const utils::Uuid& uuid) override;
 
           void
