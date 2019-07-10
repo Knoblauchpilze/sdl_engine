@@ -10,13 +10,19 @@ namespace sdl {
       inline
       BasicTexture::BasicTexture(SDL_Renderer* renderer,
                                  const Palette::ColorRole& role,
-                                 const utils::Sizei& size):
+                                 const utils::Sizef& size):
         Texture(renderer, role, Type::Basic),
         m_size(size)
       {}
 
       inline
       BasicTexture::~BasicTexture() {}
+
+      inline
+      utils::Sizef
+      BasicTexture::query() {
+        return m_size;
+      }
 
     }
   }
