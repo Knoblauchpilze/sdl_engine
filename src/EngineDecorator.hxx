@@ -45,7 +45,7 @@ namespace sdl {
       inline
       utils::Uuid
       EngineDecorator::createTexture(const utils::Uuid& win,
-                                     const utils::Sizei& size,
+                                     const utils::Sizef& size,
                                      const Palette::ColorRole& role)
       {
         return m_engine->createTexture(win, size, role);
@@ -53,7 +53,7 @@ namespace sdl {
 
       inline
       utils::Uuid
-      EngineDecorator::createTexture(const utils::Sizei& size,
+      EngineDecorator::createTexture(const utils::Sizef& size,
                                      const Palette::ColorRole& role)
       {
         return m_engine->createTexture(size, role);
@@ -137,7 +137,7 @@ namespace sdl {
       }
 
       inline
-      utils::Sizei
+      utils::Sizef
       EngineDecorator::queryTexture(const utils::Uuid& uuid) {
         return m_engine->queryTexture(uuid);
       }

@@ -36,13 +36,29 @@ namespace sdl {
           void
           destroyWindow(const utils::Uuid& uuid) override;
 
+          /**
+           * @brief - Reimplementation of the base `Engine` class method. Uses the internal
+           *          wrapped engine to perform the creation of the texture.
+           * @param win - the identifier of the window for which the texture should be created.
+           * @param size - the size of the texture to create.
+           * @param role - the role to assign to the texture.
+           * @return - an identifier allowing to reference the created texture in subsequent
+           *           operations.
+           */
           utils::Uuid
           createTexture(const utils::Uuid& win,
-                        const utils::Sizei& size,
+                        const utils::Sizef& size,
                         const Palette::ColorRole& role) override;
 
+          /**
+           * @brief - Reimplementation of the base `Engine` class method. Uses the internal
+           *          wrapped engine to perform the creation of the texture.
+           * @param size - the dimensions of the texture to create.
+           * @param role - the role to assign to the texture.
+           * @return - an identifier allowing to reference the texture in subsequent operations.
+           */
           utils::Uuid
-          createTexture(const utils::Sizei& size,
+          createTexture(const utils::Sizef& size,
                         const Palette::ColorRole& role) override;
 
           utils::Uuid
@@ -87,7 +103,13 @@ namespace sdl {
                       const utils::Uuid* on = nullptr,
                       const utils::Boxf* where = nullptr) override;
 
-          utils::Sizei
+          /**
+           * @brief - Reimplementation of the base class. Uses the internal engine
+           *          to perform the query.
+           * @param uuid - the index of the texture which dimensions should be queried.
+           * @return - a size rperesenting the dimensions of the texture.
+           */
+          utils::Sizef
           queryTexture(const utils::Uuid& uuid) override;
 
           void
