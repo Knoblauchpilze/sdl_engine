@@ -82,8 +82,8 @@ namespace sdl {
         // the new input event to the internal array.
         if (unique) {
           // Proceed to the insertion of the input event into the internal
-          log("Queuing " + Event::getNameFromEvent(e) + " for " + e->getReceiver()->getName());
           // array.
+          log("Queuing " + Event::getNameFromEvent(e), utils::Level::Notice);
           m_events.push_back(e);
         }
         else {
@@ -92,7 +92,7 @@ namespace sdl {
           log("Merging " + Event::getNameFromEvent(e) + " with more recent event", utils::Level::Warning);
 
           (*event)->merge(*e);
-          
+
           // The only remaining operation here is a sort so that events are
           // only ordered with the most basic first: as we did not modify
           // the order of the internal `m_events` array we can return right
@@ -144,6 +144,7 @@ namespace sdl {
           // prevent events from being generated as long as possible.
           {
             std::lock_guard<std::mutex> guard(m_eventsLocker);
+
             // Check if at least one event can be retrieved.
             if (m_events.empty()) {
               toProcess = nullptr;
