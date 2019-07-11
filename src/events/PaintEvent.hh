@@ -69,7 +69,6 @@ namespace sdl {
 
           /**
            * @brief - Contains all the regions to update when processing this event.
-           *          TODO: Should probably handle some kind of `join` method on boxes.
            */
           std::vector<utils::Boxf> m_updateRegions;
 

@@ -42,12 +42,33 @@ namespace sdl {
         // Convert the input `other` event to usable data type.
         const PaintEvent& usable = dynamic_cast<const PaintEvent&>(other);
 
-        // Equalize internal fields.
-        m_updateRegions.insert(
-          m_updateRegions.end(),
-          usable.m_updateRegions.begin(),
-          usable.m_updateRegions.end()
-        );
+        // We need to merge both internal arrays to keep only relevant
+        // areas. Instead of adding all the areas from the `other` to
+        // `this` event we select only the ones which do not already
+        // exist in `this` event.
+        // We keep extra care to only proces needed areas: we consider
+        // the the `other` event is valid and only contains unique areas
+        // so we can check them against the initial areas of this event.
+
+        const int max = static_cast<int>(m_updateRegions.size());
+
+        // Traverse the list of regions defined for `other`.
+        for (int id = 0 ; id < static_cast<int>(usable.m_updateRegions.size()) ; ++id) {
+          // Check whether this area can be added to `this` event.
+          bool found = 0;
+          int elem = 0;
+          while (!found && elem < max) {
+            found = usable.m_updateRegions[id] == m_updateRegions[elem];
+            ++elem;
+          }
+
+          // If this update region already exists, do not add it. And
+          // conversely if it does not exist yet, add it as part of
+          // `this` event.
+          if (!found) {
+            m_updateRegions.push_back(usable.m_updateRegions[id]);
+          }
+        }
 
         // Return the base handler's prescriptions.
         return canMerge;
