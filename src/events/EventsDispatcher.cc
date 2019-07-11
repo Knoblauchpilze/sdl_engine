@@ -303,7 +303,7 @@ namespace sdl {
         // The event is not directed, transmite it to all listeners. As some new
         // listeners might be added to this dispatcher, we cannot just loop through
         // the internal `m_listeners` array. We have to copy its value into a new
-        // elements and then iterate over the copy.
+        // element and then iterate over the copy.
         // We continue looping as long as listeners have been added.
         int offset = 0;
         bool someListenersAdded = true;
