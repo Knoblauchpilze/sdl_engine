@@ -11,6 +11,9 @@ namespace sdl {
         // Add the region to the internal areas if it does not already exist.
         if (isUnique(region)) {
           m_updateRegions.push_back(region);
+
+          // Sanitize in case the new region encompasses some old areas.
+          sanitize();
         }
         else {
           log("Discarding region " + region.toString() + " already existing in paint event", utils::Level::Warning);
@@ -76,6 +79,13 @@ namespace sdl {
           m_updateRegions.push_back(usable.m_updateRegions[id]);
         }
 
+        // Last step: sanitize the update regions. Indeed as we only
+        // checked whether some internal areas contained the one from
+        // the `other` event we have neglected the case where some
+        // new areas encompassed existing ones. We need to take care
+        // of this.
+        sanitize();
+
         // Return the base handler's prescriptions.
         return canMerge;
       }
@@ -105,6 +115,48 @@ namespace sdl {
 
         // Return the status for this `area`.
         return !found;
+      }
+
+      void
+      PaintEvent::sanitize() {
+        // What we want to do here is make sure that all the areas in the
+        // internal `m_updateRegions` are unique. To do so, we will proceed
+        // sequentially and keep only the areas which are not contained in
+        // any other.
+
+        // First, copy the internal array into a temporary one.
+        std::vector<utils::Boxf> working;
+        working.swap(m_updateRegions);
+
+        // Traverse the working vector and populate the `m_updateRegions`
+        // with areas which are not contained in any other.
+        for (int id = 0 ; id < static_cast<int>(working.size()) ; ++id) {
+
+          int check = 0;
+          bool contained = false;
+          while (!contained && check < static_cast<int>(working.size())) {
+            // Do not check an area against itself, as it is obviously contained
+            // in it.
+            if (check == id) {
+              ++check;
+              continue;
+            }
+
+            contained = working[check].contains(working[id]);
+
+            if (!contained) {
+              ++check;
+            }
+          }
+
+          // Insert this area if it was not contained in any other area.
+          if (contained) {
+            log("Discarding region " + working[id].toString() + " contained in " + working[check].toString(), utils::Level::Warning);
+            continue;
+          }
+
+          m_updateRegions.push_back(working[id]);
+        }
       }
 
     }

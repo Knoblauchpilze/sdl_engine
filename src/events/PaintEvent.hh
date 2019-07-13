@@ -107,6 +107,16 @@ namespace sdl {
           isUnique(const utils::Boxf& area,
                    int max = -1) const noexcept;
 
+          /**
+           * @brief - Should be used after any insertion operation of an element inside
+           *          the internal `m_updateRegions` array.
+           *          This method will check that no area is contained in another one
+           *          so that we keep only the minimum amount of elements in the update
+           *          regions.
+           */
+          void
+          sanitize();
+
         private:
 
           /**
