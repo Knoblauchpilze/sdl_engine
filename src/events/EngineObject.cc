@@ -145,7 +145,7 @@ namespace sdl {
         else {
           // This event is not unique: use the dedicated merge function to
           // merge both events into a single one.
-          log("Merging " + Event::getNameFromEvent(e) + " with more recent event", utils::Level::Warning);
+          log("Merging " + Event::getNameFromEvent(e) + " with more recent event", utils::Level::Notice);
 
           (*event)->merge(*e);
 
