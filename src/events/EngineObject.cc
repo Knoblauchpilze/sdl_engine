@@ -259,6 +259,27 @@ namespace sdl {
         m_filters.push_back(filter);
       }
 
+      void
+      EngineObject::removeEvents(const Event::Type& type) noexcept {
+        // Traverse the internal events list and remove the ones with
+        // the specified input type.
+        std::lock_guard<std::mutex> guard(m_eventsLocker);
+
+        Events::iterator event = m_events.begin();
+
+        while (event != m_events.cend()) {
+          // Check the current event's type and remove it if needed.
+          // We also try to erase null events just in case we find
+          // some, but this should never happen.
+          if ((*event) == nullptr || (*event)->getType() == type) {
+            event = m_events.erase(event);
+          }
+          else {
+            ++event;
+          }
+        }
+      }
+
       bool
       EngineObject::handleEvent(EventShPtr e) {
         // Check for degenerate event.

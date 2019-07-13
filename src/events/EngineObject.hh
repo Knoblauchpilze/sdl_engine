@@ -185,6 +185,15 @@ namespace sdl {
           isEmitter(const Event& e) const noexcept;
 
           /**
+           * @brief - Used to request the deletion of all events of the input type
+           *          from the internal queue. If no such event exist nothing happens.
+           *          Note that this method will most likely remove `0` or `1` event(s).
+           * @param type - the type of events to remove.
+           */
+          void
+          removeEvents(const Event::Type& type) noexcept;
+
+          /**
            * @brief - Interface method which is called upon inserting any event to the
            *          local events queue. This gives a chance to inheriting classes to
            *          process the events currently registered to the queue (including
