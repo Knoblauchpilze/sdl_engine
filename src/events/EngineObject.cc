@@ -46,6 +46,62 @@ namespace sdl {
       }
 
       void
+      EngineObject::postEvent(EventShPtr e,
+                              bool autosetReceiver) noexcept
+      {
+        // Check event coherence.
+        if (e == nullptr) {
+          log(
+            std::string("Cannot post empty event in queue"),
+            utils::Level::Warning
+          );
+          return;
+        }
+
+        // Assign the receiver to `this` if asked and if no receiver
+        // is provided in the input event.
+        if (autosetReceiver && !e->isDirected()) {
+          e->setReceiver(this);
+        }
+
+        // Assign this object as emitter of this event.
+        e->setEmitter(this);
+
+        // Check whether a queue is provided: if this is not the case
+        // we might still be ok if the event is set to be directed for
+        // this object.
+        if (m_queue == nullptr) {
+          // Check whether the event is directed towards this object.
+          if (isReceiver(*e)) {
+            // Post directly onto the local queue. The event will not
+            // be processed until a queue is assigned anyway but at
+            // least we will not lose information.
+            postLocalEvent(e);
+
+            // Return to avoid posting the event using the null queue
+            // anyway.
+            return;
+          }
+          else {
+            // We cannot direct the event to the suited object as no
+            // queue is provided.
+            log(
+              std::string("Cannot post event ") + Event::getNameFromEvent(e) + ", no queue provided",
+              utils::Level::Warning
+            );
+            return;
+          }
+        }
+
+        // The event is now completely built. We need to either insert it into the
+        // general events queue or inside the internal list of events for this object
+        // if `this` is this object anyway.
+        // No matter the case we rely on the events queue to call `postLocalEvent`
+        // appropriately if needed.
+        m_queue->postEvent(e);
+      }
+
+      void
       EngineObject::postLocalEvent(EventShPtr e) {
         // Check whether this event is valid.
         if (e == nullptr) {
@@ -201,62 +257,6 @@ namespace sdl {
         // we insert the filter at the end of the vector it will
         // be applied first which is what we want.
         m_filters.push_back(filter);
-      }
-
-      void
-      EngineObject::postEvent(EventShPtr e,
-                              bool autosetReceiver) noexcept
-      {
-        // Check event coherence.
-        if (e == nullptr) {
-          log(
-            std::string("Cannot post empty event in queue"),
-            utils::Level::Warning
-          );
-          return;
-        }
-
-        // Assign the receiver to `this` if asked and if no receiver
-        // is provided in the input event.
-        if (autosetReceiver && !e->isDirected()) {
-          e->setReceiver(this);
-        }
-
-        // Assign this object as emitter of this event.
-        e->setEmitter(this);
-
-        // Check whether a queue is provided: if this is not the case
-        // we might still be ok if the event is set to be directed for
-        // this object.
-        if (m_queue == nullptr) {
-          // Check whether the event is directed towards this object.
-          if (isReceiver(*e)) {
-            // Post directly onto the local queue. The event will not
-            // be processed until a queue is assigned anyway but at
-            // least we will not lose information.
-            postLocalEvent(e);
-
-            // Return to avoid posting the event using the null queue
-            // anyway.
-            return;
-          }
-          else {
-            // We cannot direct the event to the suited object as no
-            // queue is provided.
-            log(
-              std::string("Cannot post event ") + Event::getNameFromEvent(e) + ", no queue provided",
-              utils::Level::Warning
-            );
-            return;
-          }
-        }
-
-        // The event is now completely built. We need to either insert it into the
-        // general events queue or inside the internal list of events for this object
-        // if `this` is this object anyway.
-        // No matter the case we rely on the events queue to call `postLocalEvent`
-        // appropriately if needed.
-        m_queue->postEvent(e);
       }
 
       bool

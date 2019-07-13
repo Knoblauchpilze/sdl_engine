@@ -69,6 +69,21 @@ namespace sdl {
           setEventsQueue(EventsQueue* queue) noexcept;
 
           /**
+           * @brief - Posts an event to the underlying events queue.
+           * @param e - the event to post.
+           * @param autosetReceiver - defines whether the input event `e`
+           *                          should be assigned this object as a
+           *                          receiver. Default value is true (meaning
+           *                          that the event will be set to be received
+           *                          by this object).
+           *                          Note that this flag is ignored if a
+           *                          receiver is already set for the event.
+           */
+          void
+          postEvent(EventShPtr e,
+                    bool autosetReceiver = true) noexcept;
+
+          /**
            * @brief - Contrary to the `postEvent` method, which will only send the event
            *          to the associated events queue (if any), this method actually tries
            *          to insert the input event `e` into the internal events array. This
@@ -148,21 +163,6 @@ namespace sdl {
            */
           virtual void
           registerToSameQueue(EngineObject* other);
-
-          /**
-           * @brief - Posts an event to the underlying events queue.
-           * @param e - the event to post.
-           * @param autosetReceiver - defines whether the input event `e`
-           *                          should be assigned this object as a
-           *                          receiver. Default value is true (meaning
-           *                          that the event will be set to be received
-           *                          by this object).
-           *                          Note that this flag is ignored if a
-           *                          receiver is already set for the event.
-           */
-          void
-          postEvent(EventShPtr e,
-                    bool autosetReceiver = true) noexcept;
 
           /**
            * @brief - Returns true whenever the input event `e` has this object as
