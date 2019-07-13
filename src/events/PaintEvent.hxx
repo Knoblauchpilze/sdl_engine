@@ -8,6 +8,14 @@ namespace sdl {
     namespace engine {
 
       inline
+      PaintEvent::PaintEvent(EngineObject* receiver):
+        Event(Event::Type::Repaint,
+              receiver,
+              std::string("paint_event")),
+        m_updateRegions()
+      {}
+
+      inline
       PaintEvent::PaintEvent(const utils::Boxf& updateRegion,
                              EngineObject* receiver):
         Event(Event::Type::Repaint,

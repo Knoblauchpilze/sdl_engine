@@ -14,6 +14,17 @@ namespace sdl {
         public:
 
           /**
+           * @brief - Creates an event with no associated update region and the specified
+           *          receiver. The default `null` value of the receiver makes it not
+           *          directed towards any specific object.
+           *          User are encouraged to add update regions with the `addUpdateRegion`
+           *          method otherwise the paint event will do nothing.
+           * @param receiver - the object which will receive this paint event. If left
+           *                   empty all registered elements will receive it.
+           */
+          PaintEvent(EngineObject* receiver = nullptr);
+
+          /**
            * @brief - Creates an event which is used to repaint the area defined by the
            *          `updateRegion` of the object described by the `receiver` or to be
            *          transmitted to all registered elements if it is left empty.
@@ -33,6 +44,15 @@ namespace sdl {
            */
           const std::vector<utils::Boxf>&
           getUpdateRegions() const noexcept;
+
+          /**
+           * @brief - Add the input region as a region to update for this event. Note that
+           *          the standard process is used to clean duplicated region and to merge
+           *          potentially overlapping regions.
+           * @param region - the region to add as a region to update for this event.
+           */
+          void
+          addUpdateRegion(const utils::Boxf& region) noexcept;
 
           void
           populateFromEngineData(Engine& engine) override;
@@ -64,6 +84,28 @@ namespace sdl {
            */
           bool
           mergePrivate(const Event& other) noexcept override;
+
+        private:
+
+          /**
+           * @brief - Used to determine whether the input `area` already exists in the
+           *          internal `m_updateRegions` array. The term `exists` covers both
+           *          the fact that an exactly equal region might be present in the
+           *          internal array but also the case where a region containing the
+           *          input `area` exists in the array.
+           *          If none of this scenarii occurs, the method returns true.
+           *          The internal array is searched up until the `max` index is reached
+           *          or up until the end if `max` is negative.
+           *          This allows to dynamically insert elements in the `m_updateRegions`
+           *          without researching the already inserted elements (for example in
+           *          the `meregPrivate` method).
+           * @param area - the area which should be checked for uniqueness.
+           * @return - true if the `area` is not already part of the internal areas,
+           *           false ig this ara either exists or is covered by another one.
+           */
+          bool
+          isUnique(const utils::Boxf& area,
+                   int max = -1) const noexcept;
 
         private:
 

@@ -7,6 +7,17 @@ namespace sdl {
     namespace engine {
 
       void
+      PaintEvent::addUpdateRegion(const utils::Boxf& region) noexcept {
+        // Add the region to the internal areas if it does not already exist.
+        if (isUnique(region)) {
+          m_updateRegions.push_back(region);
+        }
+        else {
+          log("Discarding region " + region.toString() + " already existing in paint event", utils::Level::Warning);
+        }
+      }
+
+      void
       PaintEvent::populateFromEngineData(Engine& engine) {
         engine.populateEvent(*this);
       }
@@ -47,31 +58,53 @@ namespace sdl {
         // `this` event we select only the ones which do not already
         // exist in `this` event.
         // We keep extra care to only proces needed areas: we consider
-        // the the `other` event is valid and only contains unique areas
-        // so we can check them against the initial areas of this event.
-
+        // the `other` event is valid and only contains unique areas so
+        // we can check them against the initial areas of this event.
         const int max = static_cast<int>(m_updateRegions.size());
 
         // Traverse the list of regions defined for `other`.
         for (int id = 0 ; id < static_cast<int>(usable.m_updateRegions.size()) ; ++id) {
-          // Check whether this area can be added to `this` event.
-          bool found = 0;
-          int elem = 0;
-          while (!found && elem < max) {
-            found = usable.m_updateRegions[id] == m_updateRegions[elem];
-            ++elem;
+          // Check whether this area can be added to `this` event (i.e.
+          // check its uniqueness).
+          if (!isUnique(usable.m_updateRegions[id], max)) {
+            // Continue the process.
+            log("Discarding region " + usable.m_updateRegions[id].toString() + " already existing in merge operation", utils::Level::Warning);
+            continue;
           }
 
-          // If this update region already exists, do not add it. And
-          // conversely if it does not exist yet, add it as part of
-          // `this` event.
-          if (!found) {
-            m_updateRegions.push_back(usable.m_updateRegions[id]);
-          }
+          // Safely add the input area to the internal array.
+          m_updateRegions.push_back(usable.m_updateRegions[id]);
         }
 
         // Return the base handler's prescriptions.
         return canMerge;
+      }
+
+      bool
+      PaintEvent::isUnique(const utils::Boxf& area,
+                           int max) const noexcept
+      {
+        // Determine the maximum: i.e. update it if it is negative.
+        if (max < 0) {
+          max = static_cast<int>(m_updateRegions.size());
+        }
+
+        // Traverse the internal list of regions to update until we
+        // find either this `area` exactly or an area which spans
+        // the input one.
+        int id = 0;
+        bool found = false;
+
+        while (!found && id < max) {
+          // The logic to determine if the area is contained inside the
+          // other one already accounts for equality: we consider to
+          // equal areas to be contained into each other.
+          found = m_updateRegions[id].contains(area);
+          ++id;
+        }
+
+        // Return the status for this `area`.
+        return !found;
       }
 
     }
