@@ -144,16 +144,13 @@ namespace sdl {
         if (unique) {
           // Proceed to the insertion of the input event into the internal
           // array.
-          log("Queuing " + Event::getNameFromEvent(e), utils::Level::Notice);
+          // log("Queuing " + Event::getNameFromEvent(e), utils::Level::Notice);
           m_events.push_back(e);
         }
         else {
           // This event is not unique: use the dedicated merge function to
           // merge both events into a single one.
-          log("Merging " + Event::getNameFromEvent(e) + " with more recent event", utils::Level::Notice);
-          if (e->getEmitter() != nullptr && (*event)->getEmitter() != nullptr) {
-            log("Existing has emitter " + (*event)->getEmitter()->getName() + " and new " + e->getEmitter()->getName());
-          }
+          // log("Merging " + Event::getNameFromEvent(e) + " with more recent event", utils::Level::Notice);
 
           (*event)->merge(*e);
 
