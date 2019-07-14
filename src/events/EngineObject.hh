@@ -78,10 +78,18 @@ namespace sdl {
            *                          by this object).
            *                          Note that this flag is ignored if a
            *                          receiver is already set for the event.
+           * @param autosetEmitter - defines whether the input event `e`
+           *                         should be assigned this object as emitter
+           *                         Default value is true (meaning that the
+           *                         event will be set to be emitted by this
+           *                         object).
+           *                         Note that this flag is ignored if an emitter
+           *                         is already set for the event.
            */
           void
           postEvent(EventShPtr e,
-                    bool autosetReceiver = true) noexcept;
+                    bool autosetReceiver = true,
+                    bool autosetEmitter = true) noexcept;
 
           /**
            * @brief - Contrary to the `postEvent` method, which will only send the event

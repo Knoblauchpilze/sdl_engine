@@ -47,7 +47,8 @@ namespace sdl {
 
       void
       EngineObject::postEvent(EventShPtr e,
-                              bool autosetReceiver) noexcept
+                              bool autosetReceiver,
+                              bool autosetEmitter) noexcept
       {
         // Check event coherence.
         if (e == nullptr) {
@@ -65,7 +66,9 @@ namespace sdl {
         }
 
         // Assign this object as emitter of this event.
-        e->setEmitter(this);
+        if (autosetEmitter && e->isSpontaneous()) {
+          e->setEmitter(this);
+        }
 
         // Check whether a queue is provided: if this is not the case
         // we might still be ok if the event is set to be directed for
@@ -125,7 +128,9 @@ namespace sdl {
         Events::iterator event = m_events.begin();
 
         while (unique && event != m_events.end()) {
-          unique = ((*event)->getType() != e->getType());
+          // An event is unique as long as it has either a) a different type or b) a
+          // different emitter.
+          unique = ((*event)->getType() != e->getType() || (*event)->getEmitter() != e->getEmitter());
           if (unique) {
             ++event;
           }
@@ -146,6 +151,9 @@ namespace sdl {
           // This event is not unique: use the dedicated merge function to
           // merge both events into a single one.
           log("Merging " + Event::getNameFromEvent(e) + " with more recent event", utils::Level::Notice);
+          if (e->getEmitter() != nullptr && (*event)->getEmitter() != nullptr) {
+            log("Existing has emitter " + (*event)->getEmitter()->getName() + " and new " + e->getEmitter()->getName());
+          }
 
           (*event)->merge(*e);
 
