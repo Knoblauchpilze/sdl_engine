@@ -38,6 +38,15 @@ namespace sdl {
           ~PaintEvent();
 
           /**
+           * @brief - Returns true if this paint event has at least an update region associated
+           *          to it and false otherwise.
+           * @return - true if at least one update regions is associated to this event, false
+           *           otherwise.
+           */
+          bool
+          hasUpdateRegions() const noexcept;
+
+          /**
            * @brief - Retrieves the regions to update as provided during the construction
            *          of the object.
            * @return - the update regions associated to this paint event.

@@ -28,6 +28,12 @@ namespace sdl {
       PaintEvent::~PaintEvent() {}
 
       inline
+      bool
+      PaintEvent::hasUpdateRegions() const noexcept {
+        return !m_updateRegions.empty();
+      }
+
+      inline
       const std::vector<utils::Boxf>&
       PaintEvent::getUpdateRegions() const noexcept {
         return m_updateRegions;
