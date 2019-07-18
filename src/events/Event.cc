@@ -50,9 +50,6 @@ namespace sdl {
           case Type::MouseWheel:
             name = std::string("\"mouse_wheel\"");
             break;
-          case Type::Refresh:
-            name = std::string("\"refresh\"");
-            break;
           case Type::Repaint:
             name = std::string("\"repaint\"");
             break;

@@ -52,7 +52,6 @@ namespace sdl {
         // MouseButtonRelease Not defined
         // MouseMove          Not defined
         // MouseWheel         Not defined
-        // Refresh            Not defined
         // Repaint            9
         // Resize             3
         // Show               2

@@ -31,7 +31,6 @@ namespace sdl {
             MouseButtonRelease,  //<! - One of the mouse button has been released.
             MouseMove,           //<! - The mouse cursor has been moved.
             MouseWheel,          //<! - The mouse wheel has been used.
-            Refresh,             //<! - Trigger a refrech operation for a component.
             Repaint,             //<! - Trigger a repaint operation for a component.
             Resize,              //<! - Size of the component has been modified.
             Show,                //<! - Object is now visible.
