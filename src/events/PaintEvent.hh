@@ -63,6 +63,30 @@ namespace sdl {
           void
           addUpdateRegion(const utils::Boxf& region) noexcept;
 
+          /**
+           * @brief - Used to copy the update regions of the input paint event `e` into the
+           *          internal list of regions. A sanitize operation is called at the end of
+           *          the function so that we keep only relevant areas.
+           *          Note that none of the other parameters of the input paint event `e`
+           *          are copied.
+           * @param e - the event from which update regions should be copied.
+           */
+          void
+          copyUpdateRegions(const PaintEvent& e) noexcept;
+
+          /**
+           * @brief - Used to determine whether all the areas associated to this paint event
+           *          can be contained in the input area. This can be used to determine for
+           *          example if the area of a widget encompasses all the modifications brought
+           *          by the paint event or to replace several areas with a single larger one.
+           * @param area - the area which should be checked to determine whether it contains
+           *               all the areas associated to this event.
+           * @return - `true` if the input `area` contains all the area associated to this paint
+           *           event and `false` otherwise.
+           */
+          bool
+          isContained(const utils::Boxf& area) const noexcept;
+
           void
           populateFromEngineData(Engine& engine) override;
 

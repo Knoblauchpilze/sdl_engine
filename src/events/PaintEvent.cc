@@ -21,6 +21,56 @@ namespace sdl {
       }
 
       void
+      PaintEvent::copyUpdateRegions(const PaintEvent& e) noexcept {
+        // We need to merge both internal arrays to keep only relevant
+        // areas. Instead of adding all the areas from the `other` to
+        // `this` event we select only the ones which do not already
+        // exist in `this` event.
+        // We keep extra care to only proces needed areas: we consider
+        // the `other` event is valid and only contains unique areas so
+        // we can check them against the initial areas of this event.
+        const int max = static_cast<int>(m_updateRegions.size());
+
+        // Traverse the list of regions defined for `other`.
+        for (int id = 0 ; id < static_cast<int>(e.m_updateRegions.size()) ; ++id) {
+          // Check whether this area can be added to `this` event (i.e.
+          // check its uniqueness).
+          if (!isUnique(e.m_updateRegions[id], max)) {
+            // Continue the process.
+            log("Discarding region " + e.m_updateRegions[id].toString() + " already existing in merge operation", utils::Level::Warning);
+            continue;
+          }
+
+          // Safely add the input area to the internal array.
+          m_updateRegions.push_back(e.m_updateRegions[id]);
+        }
+
+        // Last step: sanitize the update regions. Indeed as we only
+        // checked whether some internal areas contained the one from
+        // the `other` event we have neglected the case where some
+        // new areas encompassed existing ones. We need to take care
+        // of this.
+        sanitize();
+      }
+
+      bool
+      PaintEvent::isContained(const utils::Boxf& area) const noexcept {
+        // We need to traverse all the update regions and check whether the input
+        // area contains each one.
+        int id = 0;
+        int max = static_cast<int>(m_updateRegions.size());
+        bool contained = true;
+
+        while (id < max && contained) {
+          contained = area.contains(m_updateRegions[id]);
+          ++id;
+        }
+
+        // Return the contained boolean which describes the required status.
+        return contained;
+      }
+
+      void
       PaintEvent::populateFromEngineData(Engine& engine) {
         engine.populateEvent(*this);
       }
@@ -56,35 +106,8 @@ namespace sdl {
         // Convert the input `other` event to usable data type.
         const PaintEvent& usable = dynamic_cast<const PaintEvent&>(other);
 
-        // We need to merge both internal arrays to keep only relevant
-        // areas. Instead of adding all the areas from the `other` to
-        // `this` event we select only the ones which do not already
-        // exist in `this` event.
-        // We keep extra care to only proces needed areas: we consider
-        // the `other` event is valid and only contains unique areas so
-        // we can check them against the initial areas of this event.
-        const int max = static_cast<int>(m_updateRegions.size());
-
-        // Traverse the list of regions defined for `other`.
-        for (int id = 0 ; id < static_cast<int>(usable.m_updateRegions.size()) ; ++id) {
-          // Check whether this area can be added to `this` event (i.e.
-          // check its uniqueness).
-          if (!isUnique(usable.m_updateRegions[id], max)) {
-            // Continue the process.
-            log("Discarding region " + usable.m_updateRegions[id].toString() + " already existing in merge operation", utils::Level::Warning);
-            continue;
-          }
-
-          // Safely add the input area to the internal array.
-          m_updateRegions.push_back(usable.m_updateRegions[id]);
-        }
-
-        // Last step: sanitize the update regions. Indeed as we only
-        // checked whether some internal areas contained the one from
-        // the `other` event we have neglected the case where some
-        // new areas encompassed existing ones. We need to take care
-        // of this.
-        sanitize();
+        // Use the dedicated handler to merge the update regions.
+        copyUpdateRegions(usable);
 
         // Return the base handler's prescriptions.
         return canMerge;
