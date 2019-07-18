@@ -186,13 +186,6 @@ namespace sdl {
 
       inline
       bool
-      EngineObject::refreshEvent(const Event& /*e*/) {
-        // Empty implementation.
-        return true;
-      }
-
-      inline
-      bool
       EngineObject::repaintEvent(const PaintEvent& /*e*/) {
         // Empty implementation.
         return true;

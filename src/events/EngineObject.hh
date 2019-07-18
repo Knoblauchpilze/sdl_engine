@@ -269,9 +269,6 @@ namespace sdl {
           mouseWheelEvent(const MouseEvent& e);
 
           virtual bool
-          refreshEvent(const Event& e);
-
-          virtual bool
           repaintEvent(const PaintEvent& e);
 
           virtual bool

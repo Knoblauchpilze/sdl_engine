@@ -326,8 +326,6 @@ namespace sdl {
               return mouseMoveEvent(*std::dynamic_pointer_cast<MouseEvent>(e));
             case Event::Type::MouseWheel:
               return mouseWheelEvent(*std::dynamic_pointer_cast<MouseEvent>(e));
-            case Event::Type::Refresh:
-              return refreshEvent(*e);
             case Event::Type::Repaint:
               return repaintEvent(*std::dynamic_pointer_cast<PaintEvent>(e));
             case Event::Type::Show:
