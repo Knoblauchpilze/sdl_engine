@@ -134,11 +134,12 @@ namespace sdl {
 
       bool
       Event::mergePrivate(const Event& other) noexcept {
-        // We assume that we want to copy the field only if `other` is more
-        // recent than `this` event.
+        // Check timestamps to notify in case we merge with an older event.
         if (m_timestamp >= other.m_timestamp) {
-          // Do nothing: `this` event is more recent than the `other`.
-          return false;
+          log(
+            "Merging event with timestamp " + other.getTimestampAsString() + " anterior to own " + getTimestampAsString(),
+            utils::Level::Warning
+          );
         }
 
         // Copy the fields from `other` to this event.
