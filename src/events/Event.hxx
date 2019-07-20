@@ -2,6 +2,8 @@
 # define   EVENT_HXX
 
 # include "Event.hh"
+# include <sstream>
+# include <iomanip>
 
 namespace sdl {
   namespace core {
@@ -66,6 +68,23 @@ namespace sdl {
       Event::Timestamp
       Event::getTimestamp() const noexcept {
         return m_timestamp;
+      }
+
+      inline
+      std::string
+      Event::getTimestampAsString() const noexcept {
+        // Convert the timestamp to a system clock timepoint.
+        std::time_t t = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now() + (m_timestamp - std::chrono::steady_clock::now()));
+
+        // Convert to a local time.
+        std::tm* localTime = std::localtime(&t);
+
+        // Output this time into a stringstream.
+        std::ostringstream localTimeAsStringStream;
+        localTimeAsStringStream << std::put_time(localTime, "%d-%m-%Y %H:%M:%S");
+
+        // Return the built-in string.
+        return localTimeAsStringStream.str();
       }
 
       inline

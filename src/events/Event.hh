@@ -107,10 +107,23 @@ namespace sdl {
           getType() const noexcept;
 
           /**
-           * @brief 
+           * @brief - Returns the timestamp for this event. A timestamp is a timed
+           *          indication of the creation date of the event. It allows to
+           *          compare two events to determine which one is older than the
+           *          other for example.
+           * @return - the timestamp of the creation of this event.
            */
           Timestamp
           getTimestamp() const noexcept;
+
+          /**
+           * @brief - Similar method to `getTimestamp` but returns the timestamp
+           *          as a displayable string. Not suited for comparison but for
+           *          human readable output.
+           * @return - the timestamp of this event as a string.
+           */
+          std::string
+          getTimestampAsString() const noexcept;
 
           /**
            * @brief - Retrieves the assigned receiver for this event. If the value is not null
