@@ -112,6 +112,34 @@ namespace sdl {
           setTextureRole(const utils::Uuid& uuid,
                          const Palette::ColorRole& role) = 0;
 
+          /**
+           * @brief - Used to perform the copy of the texture referenced by `tex` onto
+           *          the texture referenced by `where`. The area of the input `tex`
+           *          which should be drawn is specified by the `from` area, which should
+           *          correspond to an area in local texture coordinate frame describing
+           *          the area to draw.
+           *          The precise position where the source texture should be drawn is
+           *          specified by `where`. If `where is `null` the source area is mapped
+           *          on the entire destination texture.
+           *          If no `on` texture is provided the input `tex` is drawn on the default
+           *          rendering target.
+           *          Note that if both textures do not refer to the same window an error
+           *          is raised. An error is raised as well if one of the texture cannot
+           *          be found.
+           * @param tex - an identifier representing the texture to draw.
+           * @param from - a position describing the source area to draw. Should be expressed
+           *               in local texture frame. A `null` value indicates that the whole
+           *               `tex` should be drawn.
+           * @param on - an identifier representing the texture to draw on. If this identifer
+           *             corresponds to a texture in a different window an error is raised.
+           *             If this value is null the `tex` is drawn on the default rendering
+           *             target for its window.
+           * @param where - a position describing where on the `on` texture the `tex` should
+           *                be drawn. If the `on` parameter is `null` this value is ignored.
+           *                If this value is `null` the source area will be mapped to the
+           *                entire `on` texture. Should be expressed in local `on` texture
+           *                coordinate frame.
+           */
           virtual void
           drawTexture(const utils::Uuid& tex,
                       const utils::Boxf* from = nullptr,
