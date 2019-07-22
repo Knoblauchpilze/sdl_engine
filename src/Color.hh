@@ -25,6 +25,7 @@ namespace sdl {
             Gray,
             Maroon,
             Olive,
+            Pink,
             Purple,
             Teal,
             Navy,

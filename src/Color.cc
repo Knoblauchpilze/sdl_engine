@@ -51,6 +51,9 @@ namespace sdl {
           case NamedColor::Olive:
             r = 0.5f; g = 0.5f; b = 0.0f;
             break;
+          case NamedColor::Pink:
+            r = 1.0f; g = 0.7529f; b = 0.7961f;
+            break;
           case NamedColor::Purple:
             r = 0.5f; g = 0.0f; b = 0.5f;
             break;
