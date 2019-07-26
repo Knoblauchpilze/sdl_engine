@@ -308,6 +308,8 @@ namespace sdl {
               return focusInEvent(*e);
             case Event::Type::FocusOut:
               return focusOutEvent(*e);
+            case Event::Type::GainFocus:
+              return gainFocusEvent(*e);
             case Event::Type::GeometryUpdate:
               return geometryUpdateEvent(*e);
             case Event::Type::Hide:
@@ -318,6 +320,8 @@ namespace sdl {
               return keyReleaseEvent(*std::dynamic_pointer_cast<KeyEvent>(e));
             case Event::Type::Leave:
               return leaveEvent(*e);
+            case Event::Type::LostFocus:
+              return lostFocusEvent(*e);
             case Event::Type::MouseButtonPress:
               return mouseButtonPressEvent(*std::dynamic_pointer_cast<MouseEvent>(e));
             case Event::Type::MouseButtonRelease:

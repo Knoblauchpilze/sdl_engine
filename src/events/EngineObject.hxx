@@ -123,6 +123,13 @@ namespace sdl {
 
       inline
       bool
+      EngineObject::gainFocusEvent(const Event& /*e*/) {
+        // Empty implementation.
+        return true;
+      }
+
+      inline
+      bool
       EngineObject::geometryUpdateEvent(const Event& /*e*/) {
         // Empty implementation.
         return true;
@@ -152,6 +159,13 @@ namespace sdl {
       inline
       bool
       EngineObject::leaveEvent(const Event& /*e*/) {
+        // Empty implementation.
+        return true;
+      }
+
+      inline
+      bool
+      EngineObject::lostFocusEvent(const Event& /*e*/) {
         // Empty implementation.
         return true;
       }

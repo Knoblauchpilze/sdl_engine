@@ -242,6 +242,9 @@ namespace sdl {
           focusOutEvent(const Event& e);
 
           virtual bool
+          gainFocusEvent(const Event& e);
+
+          virtual bool
           geometryUpdateEvent(const Event& e);
 
           virtual bool
@@ -255,6 +258,9 @@ namespace sdl {
 
           virtual bool
           leaveEvent(const Event& e);
+
+          virtual bool
+          lostFocusEvent(const Event& e);
 
           virtual bool
           mouseButtonPressEvent(const MouseEvent& e);

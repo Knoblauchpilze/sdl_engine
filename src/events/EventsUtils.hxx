@@ -43,11 +43,13 @@ namespace sdl {
         // Enter              5
         // FocusIn            7
         // FocusOut           8
+        // GainFocus          Not defined
         // GeometryUpdate     4
         // Hide               1
         // KeyPress           Not defined
         // KeyRelease         Not defined
         // Leave              6
+        // LostFocus          Not defined
         // MouseButtonPress   Not defined
         // MouseButtonRelease Not defined
         // MouseMove          Not defined

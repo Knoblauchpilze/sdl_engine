@@ -22,11 +22,13 @@ namespace sdl {
             Enter,               //<! - Mouse enter object's boundaries.
             FocusIn,             //<! - Object gains keyboard focus.
             FocusOut,            //<! - Object loses keyboard focus.
+            GainFocus,           //<! - Child gained focus.
             GeometryUpdate,      //<! - The geometry of a component should be updated.
             Hide,                //<! - Object has been hidden.
             KeyPress,            //<! - One of the keyboard's keys has been pressed.
             KeyRelease,          //<! - One of the keyboard's keys has been released.
             Leave,               //<! - Mouse leaves the object's boundaries.
+            LostFocus,           //<! - Child lost focus.
             MouseButtonPress,    //<! - One of the mouse button has been pressed.
             MouseButtonRelease,  //<! - One of the mouse button has been released.
             MouseMove,           //<! - The mouse cursor has been moved.

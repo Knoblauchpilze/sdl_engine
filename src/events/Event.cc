@@ -23,6 +23,9 @@ namespace sdl {
           case Type::FocusOut:
             name = std::string("\"focus_out\"");
             break;
+          case Type::GainFocus:
+            name = std::string("\"gain_focus\"");
+            break;
           case Type::GeometryUpdate:
             name = std::string("\"geometry_update\"");
             break;
@@ -37,6 +40,9 @@ namespace sdl {
             break;
           case Type::Leave:
             name = std::string("\"leave\"");
+            break;
+          case Type::LostFocus:
+            name = std::string("\"lost_focus\"");
             break;
           case Type::MouseButtonPress:
             name = std::string("\"mouse_button_press\"");
