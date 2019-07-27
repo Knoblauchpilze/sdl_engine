@@ -33,10 +33,21 @@ namespace sdl {
            * @param gainFocus - `true` if this event should represent a focus gain
            *                    and `false` otherwise.
            * @param reason - the reason which produced this event.
-           * @param receiver - the receiver for this object, `null` by default.
+           * @param receiver - the receiver for this event, `null` by default.
            */
           FocusEvent(const bool gainFocus,
                      const Reason& reason,
+                     EngineObject* receiver = nullptr);
+
+          /**
+           * @brief - Creates a focus event with type `GainFocus` and the specified
+           *          reason and receiver.
+           *          It slightly differs from the previous constructor in the sense
+           *          that the type is always the same.
+           * @param reason - the reason which produced this event.
+           * @param receiver - the receiver for this event, `null` by default.
+           */
+          FocusEvent(const Reason& reason,
                      EngineObject* receiver = nullptr);
 
           ~FocusEvent();
@@ -47,6 +58,7 @@ namespace sdl {
           /**
            * @brief - Returns true if this event is associated with a focus gain
            *          action. Similar to `getType() == Event::Type::FocusIn`.
+           *          Also returns `true` if `getType() == Event::Type::GainFocus`.
            * @return - `true` if this event is associated with a focus gain, `false`
            *           otherwise.
            */
