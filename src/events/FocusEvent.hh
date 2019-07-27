@@ -1,6 +1,7 @@
 #ifndef    FOCUS_EVENT_HH
 # define   FOCUS_EVENT_HH
 
+# include <memory>
 # include "Event.hh"
 
 namespace sdl {
@@ -104,6 +105,8 @@ namespace sdl {
 
       };
 
+
+      using FocusEventShPtr = std::shared_ptr<FocusEvent>;
     }
   }
 }
