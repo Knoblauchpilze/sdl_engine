@@ -242,7 +242,7 @@ namespace sdl {
           focusOutEvent(const FocusEvent& e);
 
           virtual bool
-          gainFocusEvent(const Event& e);
+          gainFocusEvent(const FocusEvent& e);
 
           virtual bool
           geometryUpdateEvent(const Event& e);

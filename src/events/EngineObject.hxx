@@ -123,7 +123,7 @@ namespace sdl {
 
       inline
       bool
-      EngineObject::gainFocusEvent(const Event& /*e*/) {
+      EngineObject::gainFocusEvent(const FocusEvent& /*e*/) {
         // Empty implementation.
         return true;
       }

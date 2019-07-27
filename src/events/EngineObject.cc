@@ -309,7 +309,7 @@ namespace sdl {
             case Event::Type::FocusOut:
               return focusOutEvent(*std::dynamic_pointer_cast<FocusEvent>(e));
             case Event::Type::GainFocus:
-              return gainFocusEvent(*e);
+              return gainFocusEvent(*std::dynamic_pointer_cast<FocusEvent>(e));
             case Event::Type::GeometryUpdate:
               return geometryUpdateEvent(*e);
             case Event::Type::Hide:
