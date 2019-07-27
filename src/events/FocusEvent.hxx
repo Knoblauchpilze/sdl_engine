@@ -30,7 +30,7 @@ namespace sdl {
       inline
       bool
       FocusEvent::gotFocus() const noexcept {
-        return getType() == Event::Type::FocusIn;
+        return getType() == Event::Type::FocusIn || getType() == Event::Type::GainFocus;
       }
 
       inline
