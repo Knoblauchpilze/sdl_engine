@@ -109,14 +109,14 @@ namespace sdl {
 
       inline
       bool
-      EngineObject::focusInEvent(const Event& /*e*/) {
+      EngineObject::focusInEvent(const FocusEvent& /*e*/) {
         // Empty implementation.
         return true;
       }
 
       inline
       bool
-      EngineObject::focusOutEvent(const Event& /*e*/) {
+      EngineObject::focusOutEvent(const FocusEvent& /*e*/) {
         // Empty implementation.
         return true;
       }

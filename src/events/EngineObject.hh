@@ -236,10 +236,10 @@ namespace sdl {
           enterEvent(const EnterEvent& e);
 
           virtual bool
-          focusInEvent(const Event& e);
+          focusInEvent(const FocusEvent& e);
 
           virtual bool
-          focusOutEvent(const Event& e);
+          focusOutEvent(const FocusEvent& e);
 
           virtual bool
           gainFocusEvent(const Event& e);

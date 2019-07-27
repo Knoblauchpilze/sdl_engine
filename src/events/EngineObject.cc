@@ -305,9 +305,9 @@ namespace sdl {
             case Event::Type::Enter:
               return enterEvent(*std::dynamic_pointer_cast<EnterEvent>(e));
             case Event::Type::FocusIn:
-              return focusInEvent(*e);
+              return focusInEvent(*std::dynamic_pointer_cast<FocusEvent>(e));
             case Event::Type::FocusOut:
-              return focusOutEvent(*e);
+              return focusOutEvent(*std::dynamic_pointer_cast<FocusEvent>(e));
             case Event::Type::GainFocus:
               return gainFocusEvent(*e);
             case Event::Type::GeometryUpdate:
