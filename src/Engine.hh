@@ -12,6 +12,7 @@
 # include "ColoredFont.hh"
 # include "Event.hh"
 # include "EnterEvent.hh"
+# include "FocusEvent.hh"
 # include "KeyEvent.hh"
 # include "MouseEvent.hh"
 # include "PaintEvent.hh"
@@ -179,6 +180,9 @@ namespace sdl {
 
           virtual void
           populateEvent(EnterEvent& event);
+
+          virtual void
+          populateEvent(FocusEvent& event);
 
           virtual void
           populateEvent(KeyEvent& event);

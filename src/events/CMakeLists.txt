@@ -6,6 +6,7 @@ set (SOURCES
   ${CMAKE_CURRENT_SOURCE_DIR}/EventsDispatcher.cc
   ${CMAKE_CURRENT_SOURCE_DIR}/Event.cc
   ${CMAKE_CURRENT_SOURCE_DIR}/EnterEvent.cc
+  ${CMAKE_CURRENT_SOURCE_DIR}/FocusEvent.cc
   ${CMAKE_CURRENT_SOURCE_DIR}/KeyEvent.cc
   ${CMAKE_CURRENT_SOURCE_DIR}/MouseEvent.cc
   ${CMAKE_CURRENT_SOURCE_DIR}/PaintEvent.cc

@@ -183,6 +183,12 @@ namespace sdl {
 
       inline
       void
+      EngineDecorator::populateEvent(FocusEvent& event) {
+        m_engine->populateEvent(event);
+      }
+
+      inline
+      void
       EngineDecorator::populateEvent(KeyEvent& event) {
         m_engine->populateEvent(event);
       }

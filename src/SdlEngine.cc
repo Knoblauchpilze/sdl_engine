@@ -342,6 +342,12 @@ namespace sdl {
       }
 
       void
+      SdlEngine::populateEvent(FocusEvent& event) {
+        // Populate the window id.
+        populateWindowIDEvent(event);
+      }
+
+      void
       SdlEngine::populateEvent(KeyEvent& event) {
         // Populate the window id.
         populateWindowIDEvent(event);

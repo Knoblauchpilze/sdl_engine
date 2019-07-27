@@ -21,6 +21,12 @@ namespace sdl {
 
       inline
       void
+      Engine::populateEvent(FocusEvent& /*event*/) {
+        // Empty implementation.
+      }
+
+      inline
+      void
       Engine::populateEvent(KeyEvent& /*event*/) {
         // Empty implementation.
       }
