@@ -91,7 +91,7 @@ namespace sdl {
            *          base handler internally to merge common attributes of the event,
            *          and then downcast the input `other` event to `this` dynamic type
            *          to perform custom merging.
-           *          Note that the returnvalue of the base class will indicate whether
+           *          Note that the return value of the base class will indicate whether
            *          we should perform the custom merge strategy.
            *          The return value of this method is indistinguishable from the
            *          return value of the base `Event` method.
