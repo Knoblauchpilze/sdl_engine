@@ -260,7 +260,7 @@ namespace sdl {
           leaveEvent(const Event& e);
 
           virtual bool
-          lostFocusEvent(const Event& e);
+          lostFocusEvent(const FocusEvent& e);
 
           virtual bool
           mouseButtonPressEvent(const MouseEvent& e);

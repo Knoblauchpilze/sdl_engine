@@ -321,7 +321,7 @@ namespace sdl {
             case Event::Type::Leave:
               return leaveEvent(*e);
             case Event::Type::LostFocus:
-              return lostFocusEvent(*e);
+              return lostFocusEvent(*std::dynamic_pointer_cast<FocusEvent>(e));
             case Event::Type::MouseButtonPress:
               return mouseButtonPressEvent(*std::dynamic_pointer_cast<MouseEvent>(e));
             case Event::Type::MouseButtonRelease:

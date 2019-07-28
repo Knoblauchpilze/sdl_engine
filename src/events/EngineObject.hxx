@@ -165,7 +165,7 @@ namespace sdl {
 
       inline
       bool
-      EngineObject::lostFocusEvent(const Event& /*e*/) {
+      EngineObject::lostFocusEvent(const FocusEvent& /*e*/) {
         // Empty implementation.
         return true;
       }
