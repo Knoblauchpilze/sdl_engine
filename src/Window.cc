@@ -65,7 +65,7 @@ namespace sdl {
         // `on` may be nil, in which case we should assign the default
         // rendering target to the internal `m_renderer` and perform
         // the blit.
-        // If `where` is set to nul, it only affects how the SDL
+        // If `where` is set to null, it only affects how the SDL
         // will process the blit operation internally but does not
         // really change anything at this level.
 
