@@ -19,8 +19,11 @@ namespace sdl {
 
       inline
       FocusEvent::FocusEvent(const Reason& reason,
+                             const bool gainFocus,
                              EngineObject* receiver):
-        Event(Event::Type::GainFocus, receiver, std::string("focus_event")),
+        Event(gainFocus ? Event::Type::GainFocus: Event::Type::LostFocus,
+              receiver,
+              std::string("focus_event")),
         m_reason(reason)
       {}
 

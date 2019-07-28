@@ -40,14 +40,15 @@ namespace sdl {
                      EngineObject* receiver = nullptr);
 
           /**
-           * @brief - Creates a focus event with type `GainFocus` and the specified
-           *          reason and receiver.
-           *          It slightly differs from the previous constructor in the sense
-           *          that the type is always the same.
+           * @brief - Creates a focus event with type `GainFocus` or `LostFocus` event
+           *          with the specified reason and receiver. It's similar to the above
+           *          constructor but we'd rather not expose the type of the event to
+           *          pass to the focus event to avoid people passing any type.
            * @param reason - the reason which produced this event.
            * @param receiver - the receiver for this event, `null` by default.
            */
           FocusEvent(const Reason& reason,
+                     const bool gainFocus,
                      EngineObject* receiver = nullptr);
 
           ~FocusEvent();
