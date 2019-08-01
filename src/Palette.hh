@@ -100,6 +100,17 @@ namespace sdl {
           Palette
           fromButtonColor(const Color& color) noexcept;
 
+          /**
+           * @brief - Defines a new color for the input role. The color
+           *          is assumed to refer to the active group. A suited
+           *          color is deduced for the other color groups.
+           * @param role - the role for which the color should be set.
+           * @param color - the color to associate to the role.
+           */
+          void
+          setColorForRole(const ColorRole& role,
+                          const Color& color);
+
         private:
 
           Palette(const std::string& name = std::string("Palette"));

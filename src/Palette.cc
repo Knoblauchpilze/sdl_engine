@@ -17,6 +17,35 @@ namespace sdl {
       }
 
       void
+      Palette::setColorForRole(const ColorRole& role,
+                               const Color& color)
+      {
+        // The input color is assumed to refer to the provided role for the
+        // active color group.
+        // For the rest of the color group we will try to make a guess to
+        // obtain a color which is relevant with the new provided one. As
+        // upon constructing the palette we will assume that the inactive
+        // color group is similar to the active group.
+        // For the disabled group we only have to handle the special case
+        // where the input color role is `WindowText`: apart from that all
+        // colors are the same.
+
+        // Compute the color to actually assign to each color group.
+        Color inaColor = color;
+
+        Color disColor = color;
+        if (role == ColorRole::WindowText) {
+          // The disabled color is actually darker than the active one.
+          disColor = disColor.darken(0.5f);
+        }
+
+        // Set color for each color group.
+        setActiveColor(role, color);
+        setInactiveColor(role, inaColor);
+        setDisabledColor(role, disColor);
+      }
+
+      void
       Palette::initFromButtonColor(const Color& color) {
         // The `Background` color is identical to the input button's color.
         Color bg = color;
@@ -53,7 +82,7 @@ namespace sdl {
           button,
           bg,
           Color::NamedColor::White,
-          button.darken(0.66f),
+          button.brighten(1.5f),
           button.darken(0.5f),
           button.darken(0.66f),
           Color::NamedColor::Black,
