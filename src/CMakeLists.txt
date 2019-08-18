@@ -1,4 +1,3 @@
-project (sdl_engine)
 
 set (CMAKE_CXX_STANDARD 14)
 
