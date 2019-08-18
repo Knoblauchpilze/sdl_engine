@@ -1,6 +1,7 @@
 #ifndef    KEY_EVENT_HH
 # define   KEY_EVENT_HH
 
+# include <memory>
 # include "Event.hh"
 # include <SDL2/SDL.h>
 
@@ -69,6 +70,8 @@ namespace sdl {
 
       };
 
+
+      using KeyEventShPtr = std::shared_ptr<KeyEvent>;
     }
   }
 }
