@@ -17,7 +17,7 @@ namespace sdl {
            */
           enum class Reason {
             HoverFocus,   //<! - A hovering action triggered the event.
-            MouseFocus,   //<! - The mouse (either through click or hover over) triggered the event.
+            MouseFocus,   //<! - The mouse (mainly through click) triggered the event.
             TabFocus,     //<! - A tab triggered the event.
             BacktabFocus, //<! - A backtab triggered the event.
             OtherFocus    //<! - Other reason.
