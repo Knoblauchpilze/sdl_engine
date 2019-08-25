@@ -186,6 +186,18 @@ namespace sdl {
           bool
           isSpontaneous() const noexcept;
 
+          /**
+           * @brief - Used to determine whether this event has been emitted by the
+           *          input object. Similar to `this->getEmitter() == obj` but with
+           *          a nicer semantic.
+           * @param obj - the object which should be checked to determine whether it
+           *              is the source of `this` event.
+           * @return - `true` if the `obj` is the source of `this` event, `false` in
+           *           any other case.
+           */
+          bool
+          isEmittedBy(const EngineObject* obj) const noexcept;
+
           bool
           hasSDLWinID() const noexcept;
 
