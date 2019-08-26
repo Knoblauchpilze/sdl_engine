@@ -131,6 +131,12 @@ namespace sdl {
 
       inline
       bool
+      Event::isReceivedBy(const EngineObject* obj) const noexcept {
+        return m_receiver == obj;
+      }
+
+      inline
+      bool
       Event::hasSDLWinID() const noexcept {
         return m_hasWinID;
       }

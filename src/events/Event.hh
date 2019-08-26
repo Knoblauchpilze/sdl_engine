@@ -198,6 +198,18 @@ namespace sdl {
           bool
           isEmittedBy(const EngineObject* obj) const noexcept;
 
+          /**
+           * @brief - Used to determine whether this event is meant to be received
+           *          by the input object. Similar to `this->getReceiver() == obj`
+           *          but with a nicer semantic.
+           * @param obj - the object which should be checked to determine whether it
+           *              is the destination of `this` event.
+           * @return - `true` if the `obj` is the destination of `this` event, `false` in
+           *           any other case.
+           */
+          bool
+          isReceivedBy(const EngineObject* obj) const noexcept;
+
           bool
           hasSDLWinID() const noexcept;
 
