@@ -52,15 +52,21 @@ namespace sdl {
       }
 
       inline
-      bool
-      EngineObject::isActive() const noexcept {
-        return m_active;
+      void
+      EngineObject::disableEventsProcessing() noexcept {
+        setActive(false);
       }
 
       inline
       void
-      EngineObject::setActive(const bool active) noexcept {
-        m_active = active;
+      EngineObject::activateEventsProcessing() noexcept {
+        setActive(true);
+      }
+
+      inline
+      bool
+      EngineObject::isActive() const noexcept {
+        return m_active;
       }
 
       inline
@@ -85,13 +91,13 @@ namespace sdl {
       inline
       bool
       EngineObject::isReceiver(const Event& e) const noexcept {
-        return e.getReceiver() == this;
+        return e.isReceivedBy(this);
       }
 
       inline
       bool
       EngineObject::isEmitter(const Event& e) const noexcept {
-        return e.getEmitter() == this;
+        return e.isEmittedBy(this);
       }
 
       inline
@@ -281,6 +287,12 @@ namespace sdl {
           // Remove it.
           m_filters.erase(filter);
         }
+      }
+
+      inline
+      void
+      EngineObject::setActive(const bool active) noexcept {
+        m_active = active;
       }
 
     }

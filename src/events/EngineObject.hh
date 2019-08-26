@@ -135,6 +135,30 @@ namespace sdl {
         protected:
 
           /**
+           * @brief - Used to deactivate the events processing for this object. Events will
+           *          still be discarded whenever new ones are posted for this object, but
+           *          we will still allow this object to serve as relay when posting event
+           *          for another object.
+           *          Upon the first call to `processEvents` after calling this function, the
+           *          remaining events will be discarded.
+           *          Note that events processing can be reactivated using the below method.
+           *          This method uses the `setActive` method internally and is equivalent
+           *          to calling `setActive(true)`.
+           */
+          void
+          disableEventsProcessing() noexcept;
+
+          /**
+           * @brief - Used to activate the events processing for this object. Any event posted
+           *          directly in the queue of this object will be allowed after calling this
+           *          method.
+           *          Previous events discarded while the object was in disabled state will not
+           *          be reprocessed.
+           */
+          void
+          activateEventsProcessing() noexcept;
+
+          /**
            * @brief - Determine whether this object is able to receiver and process events.
            *          This can be used to completely cut-off the element from events processing
            *          until the `setActive` method is called again. This might be useful for
@@ -146,17 +170,6 @@ namespace sdl {
            */
           virtual bool
           isActive() const noexcept;
-
-          /**
-           * @brief - Used to de/activate this item so that it can handle events. Any call to
-           *          this method will either activate events handling or deactivate it.
-           *          Note that a deactivated element still accepts events directed towards it
-           *          and that this method has effect immediately (meaning for example that any
-           *          remaining events in the loop will be discarded).
-           * @param active - the activation status for this widget regarding events.
-           */
-          void
-          setActive(const bool active) noexcept;
 
           /**
            * @brief - Used to register the input `other` object to the
@@ -313,8 +326,32 @@ namespace sdl {
           void
           removeFilter(const Filter& filter);
 
+          /**
+           * @brief - Used to sort the local events registered in the internal `m_queue`
+           *          according to the order of importance defined by the `Event` class.
+           *          This method is called upon inserting a new event in the internal
+           *          queue and allow to process events in their order of importance.
+           *          This helps minimizing the number of events needed as we process
+           *          the events which might generate more events first.
+           *          Triggers a call to `trimEvents` internally which allows inheriting
+           *          classes to filter even more some events (such as duplicated events,
+           *          or any other process).
+           */
           void
           sortLocalEvents();
+
+          /**
+           * @brief - Used to de/activate this item so that it can handle events. Any call to
+           *          this method will either activate events handling or deactivate it.
+           *          Note that a deactivated element still accepts events directed towards
+           *          another object (so it can still serve as a relay) but events directed
+           *          to this object are discarded.
+           *          Calling this method takes effect immediately (meaning for example that
+           *          any remaining events in the loop will be discarded).
+           * @param active - the activation status for this widget regarding events.
+           */
+          void
+          setActive(const bool active) noexcept;
 
         private:
 

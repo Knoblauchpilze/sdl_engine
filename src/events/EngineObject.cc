@@ -70,6 +70,13 @@ namespace sdl {
           e->setEmitter(this);
         }
 
+        // Check whether this object is meant to be the receiver or
+        // the emitter of the event. If this is the case, we need to
+        // trash it if this object is inactive.
+        if (!isActive() && (isReceiver(*e) || isEmitter(*e))) {
+          return;
+        }
+
         // Check whether a queue is provided: if this is not the case
         // we might still be ok if the event is set to be directed for
         // this object.
@@ -108,6 +115,12 @@ namespace sdl {
       EngineObject::postLocalEvent(EventShPtr e) {
         // Check whether this event is valid.
         if (e == nullptr) {
+          return;
+        }
+
+        // Check whether this object is active: if this is not the case the event will
+        // not be posted.
+        if (!isActive()) {
           return;
         }
 
