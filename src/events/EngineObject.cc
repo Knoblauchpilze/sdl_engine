@@ -193,7 +193,7 @@ namespace sdl {
       }
 
       void
-      EngineObject::processEvents() {
+      EngineObject::processEvents(const EventProcessingPass& pass) {
         // We need to handle each and every event registered in this
         // object (and more specifically into the internal `m_events`
         // queue).
@@ -210,6 +210,7 @@ namespace sdl {
         //    events as fast as possible.
         // 3. It provides better support for os events which are
         //    usually numerous.
+        // TODO: Handle pass.
         EventShPtr toProcess = nullptr;
 
         // Start processing.

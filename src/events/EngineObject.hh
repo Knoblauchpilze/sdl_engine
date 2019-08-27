@@ -4,6 +4,7 @@
 # include <vector>
 # include <mutex>
 # include <core_utils/CoreObject.hh>
+# include "EventsUtils.hh"
 # include "Event.hh"
 # include "EventsQueue.hh"
 # include "EnterEvent.hh"
@@ -107,13 +108,16 @@ namespace sdl {
 
           /**
            * @brief - Returns true if this object contains internal events to process, false
-           *          otherwise.
+           *          otherwise. The events are related to a processing pass which is given
+           *          in argument.
            *          Note that to ensure concurrency safety this method uses a mutex and can
            *          thus not return immediately.
+           * @param pass - the events processing pass for which we should check if this object
+           *               has pending events.
            * @return - true if this object does have events to process, false otherwise.
            */
           bool
-          hasEvents();
+          hasEvents(const EventProcessingPass& pass);
 
           /**
            * @brief - Performs a cleaning of all the internal events registered for this
@@ -126,11 +130,16 @@ namespace sdl {
 
           /**
            * @brief - Used to perform the processing of all internal events registered for
-           *          this object. Note that process will loop until no more events are
-           *          produced for this object.
+           *          this object.
+           *          Note that process will loop until no more events are produced for this
+           *          object and until no more events corresponding to the input `pass` are
+           *          found.
+           * @param pass - the events processing pass describing events which should be
+           *               processed. Other types of events (which don't belong to the pass
+           *               are left unchanged).
            */
           void
-          processEvents();
+          processEvents(const EventProcessingPass& pass);
 
         protected:
 

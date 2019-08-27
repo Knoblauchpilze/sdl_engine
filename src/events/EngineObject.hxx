@@ -46,9 +46,38 @@ namespace sdl {
 
       inline
       bool
-      EngineObject::hasEvents() {
+      EngineObject::hasEvents(const EventProcessingPass& pass) {
+        // Lock the mutex to access events.
         std::lock_guard<std::mutex> guard(m_eventsLocker);
-        return !m_events.empty();
+
+        Events::const_iterator e = m_events.cbegin();
+
+        // Check the pass.
+        if (pass == EventProcessingPass::Visibility) {
+          // We need to search for hide and show events.
+          while (e != m_events.cend()) {
+            if ((*e)->getType() == Event::Type::Show || (*e)->getType() == Event::Type::Hide) {
+              return true;
+            }
+
+            ++e;
+          }
+
+          // No events corresponding to the input pass.
+          return false;
+        }
+
+        // Any event apart from hide and show events is valid.
+        while (e != m_events.cend()) {
+          if ((*e)->getType() != Event::Type::Show && (*e)->getType() != Event::Type::Hide) {
+            return true;
+          }
+
+          ++e;
+        }
+
+        // No events corresponding to the input pass.
+        return false;
       }
 
       inline
