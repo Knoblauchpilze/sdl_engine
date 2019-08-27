@@ -180,7 +180,18 @@ namespace sdl {
         // need to pass it to all the listeners created by this event.
         // And when processing an event, we need to continue processing
         // as long as some events have been generated.
+        // We noted that most of the time the visibility events are the
+        // ones which generate the most trouble as they can both create
+        // some new listeners but also some new events. We thus want to
+        // process them first in order to guarantee that we can factor as
+        // much events as possible. In a second time we process the rest
+        // of the events.
+        // This is all orcherstrated using so called events processing
+        // passes.
+
+        // Now resume the rest of the events.
         bool allDone = false;
+        EventProcessingPass pass = EventProcessingPass::Visibility;
 
         // Process as long as some events have been added or some listener
         // created.
@@ -190,6 +201,16 @@ namespace sdl {
           // In a first approach we assume that we're done. If this is
           // not the case and a listener still has events to process
           // we will change our minds.
+          // We also need to handle the events processing pass: we say
+          // that if the `allDone` boolean is true upon entering the
+          // loop and the pass is still set to `Visibility` it means
+          // that no visibility events are left and we can safely move
+          // on to the rest of the events.
+          if (allDone && pass == EventProcessingPass::Visibility) {
+            pass = EventProcessingPass::Rest;
+          }
+
+          // Reset `allDone` flag.
           allDone = true;
 
           int offset = 0;
@@ -207,7 +228,7 @@ namespace sdl {
 
             // Process events for the listeners.
             for (int id = offset ; id < static_cast<int>(existingListeners.size()) ; ++id) {
-              if (existingListeners[id]->hasEvents()) {
+              if (existingListeners[id]->hasEvents(pass)) {
                 EngineObject* listener = existingListeners[id];
 
                 withSafetyNet(
@@ -241,7 +262,7 @@ namespace sdl {
 
           } while (someListenersAdded);
 
-        } while (!allDone);
+        } while (!allDone || pass != EventProcessingPass::Rest);
       }
 
       void
