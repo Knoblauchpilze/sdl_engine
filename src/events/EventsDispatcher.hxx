@@ -51,9 +51,10 @@ namespace sdl {
 
       inline
       void
-      EventsDispatcher::postEvent(EventShPtr event) {
-        // Check whether this event is valid.
-        if (event == nullptr) {
+      EventsDispatcher::postEvent(EventShPtr e) {
+        // Check whether this event is valid: we discard null events and
+        // events with an invalid type.
+        if (e == nullptr || e->getType() == Event::Type::None) {
           // No need to go further.
           return;
         }
@@ -63,13 +64,16 @@ namespace sdl {
 
         // Post the event in the relevant queue based on whether it is
         // spontaneous or directed to a particular element.
-        // In order not to queue several events with similar content
-        // we use a dedicated handler.
-        if (event->isDirected()) {
-          trimAndPostDirectedEvent(event);
+        if (e->isDirected()) {
+          // Post the event to the receiver indicated by the event. We
+          // are sure that it is valid with the above line.
+          e->getReceiver()->postLocalEvent(e);
         }
         else {
-          trimAndPostBroadcastEvent(event);
+          // The event does not have any precise destination: we will
+          // broadcast it to all the listeners so add it to the internal
+          // queue.
+          m_broadcastEvents.push_back(e);
         }
       }
 
@@ -125,6 +129,32 @@ namespace sdl {
         // listener: it is done by directly calling the appropriate
         // method on the listener to remove.
         listener->clearEvents();
+      }
+
+      inline
+      bool
+      EventsDispatcher::interceptEscapeKey(const EventShPtr event) {
+        // In order for the event to be intercepted we have to check that
+        // the event is a key release and that this object is configured
+        // to intercept events in the first place.
+        if (m_exitOnEscape && event->getType() == Event::Type::KeyRelease) {
+          // This is a key release event and we can intercept events, let's
+          // determine which key was released.
+          std::shared_ptr<KeyEvent> keyEvent = std::dynamic_pointer_cast<KeyEvent>(event);
+
+          // If the conversion was successful and that it corresponds to the `Escape`
+          // key, we need to check the internal status to determine the next action.
+          if (keyEvent != nullptr && keyEvent->isEscape() && m_exitOnEscape) {
+            // Replace the input event with a quit event.
+            dispatchEventToListeners(std::make_shared<QuitEvent>());
+
+            // We successfully intercepted the release of the escape key.
+            return true;
+          }
+        }
+
+        // No interception, continue to standard processing.
+        return false;
       }
 
     }
