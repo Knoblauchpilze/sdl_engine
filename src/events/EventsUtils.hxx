@@ -1,14 +1,32 @@
 #ifndef    EVENTS_UTILS_HXX
 # define   EVENTS_UTILS_HXX
 
-# include "Event.hh"
+# include "EventsUtils.hh"
 
 namespace sdl {
   namespace core {
     namespace engine {
 
+      inline
+      bool
+      belongsToPass(const Event::Type& type,
+                    const EventProcessingPass& pass) noexcept
+      {
+        // First check the visibility pass.
+        if (pass == EventProcessingPass::Visibility) {
+          // Only hide and show events belong to a specific pass, the rest
+          // belongs to the default pass.
+          return type == Event::Type::Show || type == Event::Type::Hide;
+        }
+        
+        // We know that we are on the default pass: all events types except
+        // hide and show belong to it.
+        return type != Event::Type::Show && type != Event::Type::Hide;
+      }
+
+      inline
       int
-      getEventID(const Event::Type& type) {
+      getEventID(const Event::Type& type) noexcept {
         // Assigning an id to en event focuses on providing some
         // kind of ordering between event types.
         // From a logical point of view a mouse move event has not
@@ -89,13 +107,15 @@ namespace sdl {
         }
       }
 
+      inline
       int
-      getEventID(const Event& e) {
+      getEventID(const Event& e) noexcept {
         return getEventID(e.getType());
       }
 
+      inline
       int
-      getEventID(const EventShPtr e) {
+      getEventID(const EventShPtr e) noexcept {
         if (e == nullptr) {
           return getEventID(Event::Type::None);
         }
