@@ -219,7 +219,6 @@ namespace sdl {
         // We thus temper a bit what we said before in order to stop
         // also in case no more events corresponding to the input
         // `pass` exist in the internal queue.
-        // TODO: Handle pass.
         EventShPtr toProcess = nullptr;
 
         // Start processing.
