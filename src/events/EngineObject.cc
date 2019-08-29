@@ -210,13 +210,27 @@ namespace sdl {
         //    events as fast as possible.
         // 3. It provides better support for os events which are
         //    usually numerous.
+        // The dispatch system also facilitates this optimization
+        // process by providing a `pass` argument: several events
+        // processing passes are defined, each one focusing on the
+        // processing of a specific kind of events. Each increment
+        // add support for more events which usually generate less
+        // new events.
+        // We thus temper a bit what we said before in order to stop
+        // also in case no more events corresponding to the input
+        // `pass` exist in the internal queue.
         // TODO: Handle pass.
         EventShPtr toProcess = nullptr;
 
         // Start processing.
         do {
           // Retrieve the first event of the queue so that we can
-          // prevent events from being generated as long as possible.
+          // safely process the event without worrying that new
+          // events might be generated. Indeed if we kept an iterator
+          // on the queue it would be invalidated as soon as a new
+          // event was posted.
+          // Additionally we process the first event which belongs
+          // to the input events processing pass.
           {
             std::lock_guard<std::mutex> guard(m_eventsLocker);
 
@@ -225,8 +239,19 @@ namespace sdl {
               toProcess = nullptr;
             }
             else {
-              toProcess = m_events[m_events.size() - 1];
-              m_events.pop_back();
+              Events::reverse_iterator it = m_events.rbegin();
+              while (it != m_events.rend() && !engine::belongsToPass((*it)->getType(), pass)) {
+                ++it;
+              }
+
+              // Check whether we could find a valid event to process.
+              if (it == m_events.rend()) {
+                toProcess = nullptr;
+              }
+              else {
+                toProcess = *it;
+                m_events.erase(std::next(it).base());
+              }
             }
           }
 

@@ -232,8 +232,8 @@ namespace sdl {
                 EngineObject* listener = existingListeners[id];
 
                 withSafetyNet(
-                  [&listener]() {
-                    listener->processEvents();
+                  [&listener, &pass]() {
+                    listener->processEvents(pass);
                   },
                   std::string("processEvents")
                 );
