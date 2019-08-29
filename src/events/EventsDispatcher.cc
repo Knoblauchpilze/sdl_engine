@@ -27,6 +27,8 @@ namespace sdl {
         m_eventsLocker(),
         m_broadcastEvents(),
 
+        m_pass(EventProcessingPass::Visibility),
+
         m_listenersLocker(),
         m_listeners()
       {
@@ -191,7 +193,6 @@ namespace sdl {
 
         // Now resume the rest of the events.
         bool allDone = false;
-        EventProcessingPass pass = EventProcessingPass::Visibility;
 
         // Process as long as some events have been added or some listener
         // created.
@@ -206,8 +207,8 @@ namespace sdl {
           // loop and the pass is still set to `Visibility` it means
           // that no visibility events are left and we can safely move
           // on to the rest of the events.
-          if (allDone && pass == EventProcessingPass::Visibility) {
-            pass = EventProcessingPass::Rest;
+          if (allDone && getCurrentProcessingPass() == EventProcessingPass::Visibility) {
+            setCurrentProcessingPass(EventProcessingPass::Rest);
           }
 
           // Reset `allDone` flag.
@@ -225,9 +226,14 @@ namespace sdl {
               std::lock_guard<std::mutex> guard(m_listenersLocker);
               existingListeners.swap(m_listeners);
             }
+            
+            // Retrieve the current processing pass: this will serve as a flag to indicate whenever
+            // the processing of an event changes the processing pass: in this case it means that we
+            // should go back to the anterior pass.
+            EventProcessingPass pass = getCurrentProcessingPass();
 
             // Process events for the listeners.
-            for (int id = offset ; id < static_cast<int>(existingListeners.size()) ; ++id) {
+            for (int id = offset ; id < static_cast<int>(existingListeners.size()) && pass == getCurrentProcessingPass() ; ++id) {
               if (existingListeners[id]->hasEvents(pass)) {
                 EngineObject* listener = existingListeners[id];
 
@@ -262,7 +268,7 @@ namespace sdl {
 
           } while (someListenersAdded);
 
-        } while (!allDone || pass != EventProcessingPass::Rest);
+        } while (!allDone || getCurrentProcessingPass() != EventProcessingPass::Rest);
       }
 
       void
