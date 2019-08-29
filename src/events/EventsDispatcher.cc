@@ -247,6 +247,11 @@ namespace sdl {
               }
             }
 
+            // Reset the `allDone` status.
+            if (pass != getCurrentProcessingPass()) {
+              allDone = false;
+            }
+
             // Check whether some listeners were added.
             {
               std::lock_guard<std::mutex> guard(m_listenersLocker);

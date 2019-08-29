@@ -73,7 +73,8 @@ namespace sdl {
         // Check whether this object is meant to be the receiver or
         // the emitter of the event. If this is the case, we need to
         // trash it if this object is inactive.
-        if (!isActive() && (isReceiver(*e) || isEmitter(*e))) {
+        // Unless it is a show event in case we should not trash it.
+        if (!isActive() && (isReceiver(*e) || isEmitter(*e)) && e->getType() != Event::Type::Show) {
           return;
         }
 
@@ -120,7 +121,7 @@ namespace sdl {
 
         // Check whether this object is active: if this is not the case the event will
         // not be posted.
-        if (!isActive()) {
+        if (!isActive() && e->getType() != Event::Type::Show) {
           return;
         }
 
