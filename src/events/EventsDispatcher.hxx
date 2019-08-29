@@ -59,6 +59,20 @@ namespace sdl {
           return;
         }
 
+        // Update the events processing pass based on the type of the input
+        // event to post. There are several cases possible:
+        //  1) the event is a visibility event and we're set for the rest
+        //  2) the event is not a visibility event and we're set for the rest
+        //  3) the event is a visibility event and we're set for the visibility
+        //  4) the event is not a visibility event and we're set for the visibility
+        // We can see that only the case one will trigger an update of the internal
+        // processing pass.
+        if (getCurrentProcessingPass() == EventProcessingPass::Rest &&
+            belongsToPass(e->getType(), EventProcessingPass::Visibility))
+        {
+          setCurrentProcessingPass(EventProcessingPass::Visibility);
+        }
+
         // Acquire the events lock.
         std::lock_guard<std::mutex> guard(m_eventsLocker);
 
@@ -155,6 +169,18 @@ namespace sdl {
 
         // No interception, continue to standard processing.
         return false;
+      }
+
+      inline
+      const EventProcessingPass&
+      EventsDispatcher::getCurrentProcessingPass() const noexcept {
+        return m_pass;
+      }
+
+      inline
+      void
+      EventsDispatcher::setCurrentProcessingPass(const EventProcessingPass& pass) noexcept {
+        m_pass = pass;
       }
 
     }

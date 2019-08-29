@@ -164,6 +164,24 @@ namespace sdl {
           bool
           interceptEscapeKey(const EventShPtr event);
 
+          /**
+           * @brief - Used to retrieve the current value of the `m_pass` attribute. The mutex
+           *          related to it is locked (so we assume it is not already locked beforehand)
+           *          and the return value should be used carefully as it might not stay valid
+           *          long.
+           * @return - the value of the `m_pass` internal attribute upon entering this method.
+           */
+          const EventProcessingPass&
+          getCurrentProcessingPass() const noexcept;
+
+          /**
+           * @brief - Assigns a new value for the current events processing pass. Performs a lock
+           *          of the associated mutex before setting the value.
+           * @param pass - the new events processing pass to assign.
+           */
+          void
+          setCurrentProcessingPass(const EventProcessingPass& pass) noexcept;
+
         private:
 
           float m_framerate;
@@ -180,10 +198,20 @@ namespace sdl {
           Events m_broadcastEvents;
 
           /**
-           * @brief - This mutex is meant to protect the access to the `m_listeners` array. We need
-           *          to make this mutex recursive so that whenever we dispatch some event to the
-           *          array, some listeners might still be able to register new listeners (typically
-           *          when creating new widgets) to this dispatcher.
+           * @brief - Indicates which events processing pass should be processed. This variable plays
+           *          a double role during the events processing loop.
+           *          When the dispatching of events is triggered it serves as a small optimization
+           *          to prevent some passes to be executed when not needed. For example if none of
+           *          the elements have some visibility related events registered there's no need to
+           *          start the processing at this step.
+           *          It also serves WHILE processing the events to detect when some events processing
+           *          triggers the creation of an event in an anterior pass: we should then go back to
+           *          the pass in order to process the highest priority events first.
+           */
+          EventProcessingPass m_pass;
+
+          /**
+           * @brief - This mutex is meant to protect the access to the `m_listeners` array.
            */
           std::mutex m_listenersLocker;
 
