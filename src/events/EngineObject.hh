@@ -3,6 +3,7 @@
 
 # include <vector>
 # include <mutex>
+# include <unordered_set>
 # include <core_utils/CoreObject.hh>
 # include "EventsUtils.hh"
 # include "Event.hh"
@@ -168,17 +169,19 @@ namespace sdl {
           activateEventsProcessing() noexcept;
 
           /**
-           * @brief - Determine whether this object is able to receiver and process events.
-           *          This can be used to completely cut-off the element from events processing
-           *          until the `setActive` method is called again. This might be useful for
-           *          example to prevent hidden or deactivated elements from processing some
-           *          events.
+           * @brief - Determine whether this object is able to receiver and process events of
+           *          the specified type. This can be used to completely cut-off the element
+           *          from events processing until the `setActive` method is called again.
+           *          This might be useful for example to prevent hidden or deactivated elements
+           *          from processing some events.
            *          Note that a deactivated object still accepts events directed towards it
            *          but do not process them in any way.
-           * @return - true if this item is able to handle events, false otherwise.
+           * @param type - the type of event which should be checked for handling by this object.
+           * @return - `true` if this item is able to handle events of the input type, `false`
+           *           otherwise.
            */
           virtual bool
-          isActive() const noexcept;
+          isActive(const Event::Type& type) const noexcept;
 
           /**
            * @brief - Used to register the input `other` object to the
@@ -326,6 +329,8 @@ namespace sdl {
           using Filter = Filters::const_iterator;
           using Events = std::vector<EventShPtr>;
 
+          using EventTypeFilter = std::unordered_set<Event::Type>;
+
           Filter
           findFilter(EngineObject* filter) const;
 
@@ -351,16 +356,19 @@ namespace sdl {
 
           /**
            * @brief - Used to de/activate this item so that it can handle events. Any call to
-           *          this method will either activate events handling or deactivate it.
-           *          Note that a deactivated element still accepts events directed towards
-           *          another object (so it can still serve as a relay) but events directed
-           *          to this object are discarded.
+           *          this method will either activate the input event type events or deactivate
+           *          it.
+           *          Note that a deactivated element still accepts events with similar types
+           *          directed towards another object (so it can still serve as a relay) and
+           *          events directed to this object are discarded.
            *          Calling this method takes effect immediately (meaning for example that
-           *          any remaining events in the loop will be discarded).
+           *          any remaining events of this type in the loop will be discarded).
+           * @param type - the type of events which should be updated.
            * @param active - the activation status for this widget regarding events.
            */
           void
-          setActive(const bool active) noexcept;
+          setActive(const Event::Type& type,
+                    const bool active) noexcept;
 
         private:
 
@@ -370,7 +378,13 @@ namespace sdl {
           std::mutex m_eventsLocker;
           Events m_events;
 
-          bool m_active;
+          /**
+           * @brief - Used to describe the types of events which are currently not handled by
+           *          this object. Basically any event type which is registered in this set
+           *          will be filtered when trying to handle it in the main `handle` method.
+           *          This allows for efficient blocking of non-desired events in objects.
+           */
+          EventTypeFilter m_handledTypes;
 
       };
 

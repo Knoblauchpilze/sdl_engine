@@ -15,7 +15,7 @@ namespace sdl {
         m_eventsLocker(),
         m_events(),
 
-        m_active(true)
+        m_handledTypes()
       {
         setService(std::string("object"));
       }
@@ -74,7 +74,7 @@ namespace sdl {
         // the emitter of the event. If this is the case, we need to
         // trash it if this object is inactive.
         // Unless it is a show event in case we should not trash it.
-        if (!isActive() && (isReceiver(*e) || isEmitter(*e)) && e->getType() != Event::Type::Show) {
+        if (!isActive(e->getType()) && (isReceiver(*e) || isEmitter(*e))) {
           return;
         }
 
@@ -121,7 +121,7 @@ namespace sdl {
 
         // Check whether this object is active: if this is not the case the event will
         // not be posted.
-        if (!isActive() && e->getType() != Event::Type::Show) {
+        if (!isActive(e->getType())) {
           return;
         }
 
@@ -334,7 +334,7 @@ namespace sdl {
         }
 
         // Handle the event if this element is active or if it is a show event.
-        if (isActive() || e->getType() == Event::Type::Show) {
+        if (isActive(e->getType())) {
           if (e->getType() != Event::Type::MouseMove) {
             log("Handling " + Event::getNameFromEvent(e), utils::Level::Info);
           }

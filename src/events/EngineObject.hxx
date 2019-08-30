@@ -83,19 +83,21 @@ namespace sdl {
       inline
       void
       EngineObject::disableEventsProcessing() noexcept {
+        // TODO: We should keep focus events and show events active.
         setActive(false);
       }
 
       inline
       void
       EngineObject::activateEventsProcessing() noexcept {
+        // TODO: Same as above.
         setActive(true);
       }
 
       inline
       bool
-      EngineObject::isActive() const noexcept {
-        return m_active;
+      EngineObject::isActive(const Event::Type& type) const noexcept {
+        return m_handledTypes.find(type) == m_handledTypes.cend();
       }
 
       inline
@@ -320,8 +322,39 @@ namespace sdl {
 
       inline
       void
-      EngineObject::setActive(const bool active) noexcept {
-        m_active = active;
+      EngineObject::setActive(const Event::Type& type,
+                              const bool active) noexcept
+      {
+        // Check whether this type is meant to be activated or deactivated.
+        if (active) {
+          // We should try to remove the input `type` from the internal
+          // filter.
+          EventTypeFilter::iterator it = m_handledTypes.find(type);
+
+          if (it == m_handledTypes.end()) {
+            log(
+              std::string("Could not remove filtering of events with type \"") + Event::getNameFromType(type) + "\" (no such filter)",
+              utils::Level::Warning
+            );
+            return;
+          }
+
+          m_handledTypes.erase(it);
+        }
+        else {
+          // Insert the input `type` into the internal filter.
+          EventTypeFilter::iterator it = m_handledTypes.find(type);
+
+          if (it != m_handledTypes.end()) {
+            log(
+              std::string("Trying to add duplicated filter for events with type \"") + Event::getNameFromType(type) + "\"",
+              utils::Level::Warning
+            );
+            return;
+          }
+
+          m_handledTypes.insert(type);
+        }
       }
 
     }
