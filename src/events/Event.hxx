@@ -38,6 +38,35 @@ namespace sdl {
       }
 
       inline
+      Event::Types
+      Event::getAllEvents() noexcept {
+        return Types{
+          Type::Enter,
+          Type::FocusIn,
+          Type::FocusOut,
+          Type::GainFocus,
+          Type::GeometryUpdate,
+          Type::Hide,
+          Type::KeyPress,
+          Type::KeyRelease,
+          Type::Leave,
+          Type::LostFocus,
+          Type::MouseButtonPress,
+          Type::MouseButtonRelease,
+          Type::MouseMove,
+          Type::MouseWheel,
+          Type::Repaint,
+          Type::Resize,
+          Type::Show,
+          Type::WindowEnter,
+          Type::WindowLeave,
+          Type::WindowResize,
+          Type::Quit,
+          Type::ZOrderChanged
+        };
+      }
+
+      inline
       Event::~Event() {}
 
       inline

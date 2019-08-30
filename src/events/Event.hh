@@ -3,6 +3,7 @@
 
 # include <memory>
 # include <chrono>
+# include <unordered_set>
 # include <core_utils/Uuid.hh>
 # include <core_utils/CoreObject.hh>
 
@@ -43,6 +44,12 @@ namespace sdl {
             ZOrderChanged        //<! - The z order for a component has changed.
           };
 
+          /**
+           * @brief - Convenience define to refer to a set of events type. Particularly
+           *          useful to handle filtering.
+           */
+          using Types = std::unordered_set<Type>;
+
           static
           std::string
           getNameFromType(const Type& type) noexcept;
@@ -54,6 +61,10 @@ namespace sdl {
           static
           std::string
           getNameFromEvent(const std::shared_ptr<Event> e) noexcept;
+
+          static
+          Types
+          getAllEvents() noexcept;
 
           /**
            * @brief - Convenience using which allows to refer to the timestamp of an event easily.
