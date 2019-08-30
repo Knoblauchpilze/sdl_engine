@@ -152,11 +152,12 @@ namespace sdl {
            *          Upon the first call to `processEvents` after calling this function, the
            *          remaining events will be discarded.
            *          Note that events processing can be reactivated using the below method.
-           *          This method uses the `setActive` method internally and is equivalent
-           *          to calling `setActive(true)`.
+           *          This method uses the `setActive` method internally to deactivate each
+           *          prodived event type.
+           * @param types - the types of the events to deactivate.
            */
           void
-          disableEventsProcessing() noexcept;
+          disableEventsProcessing(const Event::Types& types) noexcept;
 
           /**
            * @brief - Used to activate the events processing for this object. Any event posted
@@ -329,8 +330,6 @@ namespace sdl {
           using Filter = Filters::const_iterator;
           using Events = std::vector<EventShPtr>;
 
-          using EventTypeFilter = std::unordered_set<Event::Type>;
-
           Filter
           findFilter(EngineObject* filter) const;
 
@@ -384,7 +383,7 @@ namespace sdl {
            *          will be filtered when trying to handle it in the main `handle` method.
            *          This allows for efficient blocking of non-desired events in objects.
            */
-          EventTypeFilter m_handledTypes;
+          Event::Types m_handledTypes;
 
       };
 

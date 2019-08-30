@@ -82,16 +82,24 @@ namespace sdl {
 
       inline
       void
-      EngineObject::disableEventsProcessing() noexcept {
-        // TODO: We should keep focus events and show events active.
-        setActive(false);
+      EngineObject::disableEventsProcessing(const Event::Types& types) noexcept {
+        // Loop on the input types and deactivate each one.
+        for (Event::Types::const_iterator it = types.cbegin() ;
+             it != types.cend() ;
+             ++it)
+        {
+          setActive(*it, false);
+        }
       }
 
       inline
       void
       EngineObject::activateEventsProcessing() noexcept {
-        // TODO: Same as above.
-        setActive(true);
+        // When activating events processing we basically just want to
+        // erase any value existing in the internal events type filter.
+        while (!m_handledTypes.empty()) {
+          setActive(*m_handledTypes.begin(), true);
+        }
       }
 
       inline
@@ -329,7 +337,7 @@ namespace sdl {
         if (active) {
           // We should try to remove the input `type` from the internal
           // filter.
-          EventTypeFilter::iterator it = m_handledTypes.find(type);
+          Event::Types::iterator it = m_handledTypes.find(type);
 
           if (it == m_handledTypes.end()) {
             log(
@@ -343,7 +351,7 @@ namespace sdl {
         }
         else {
           // Insert the input `type` into the internal filter.
-          EventTypeFilter::iterator it = m_handledTypes.find(type);
+          Event::Types::iterator it = m_handledTypes.find(type);
 
           if (it != m_handledTypes.end()) {
             log(
