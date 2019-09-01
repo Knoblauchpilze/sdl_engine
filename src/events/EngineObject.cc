@@ -399,9 +399,6 @@ namespace sdl {
             return getEventID(lhs) > getEventID(rhs);
           }
         );
-
-        // Now let's proceed to trimming the events based on their content.
-        trimEvents(m_events);
       }
 
     }

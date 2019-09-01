@@ -228,20 +228,6 @@ namespace sdl {
           removeEvents(const Event::Type& type) noexcept;
 
           /**
-           * @brief - Interface method which is called upon inserting any event to the
-           *          local events queue. This gives a chance to inheriting classes to
-           *          process the events currently registered to the queue (including
-           *          the one which triggered this call) in order to trim some if they
-           *          are not needed anymore.
-           *          The precise behavior on this method is dependent on each child
-           *          class.
-           * @param events - the array containing all the events currently registered
-           *                 into the internal events queue.
-           */
-          virtual void
-          trimEvents(std::vector<EventShPtr>& events);
-
-          /**
            * @brief - Performs the handling of the input event `e` through calling the
            *          adequate method based on the type of the event. The input event
            *          is also casted into its dynamic type so that it is easier for
@@ -346,9 +332,6 @@ namespace sdl {
            *          queue and allow to process events in their order of importance.
            *          This helps minimizing the number of events needed as we process
            *          the events which might generate more events first.
-           *          Triggers a call to `trimEvents` internally which allows inheriting
-           *          classes to filter even more some events (such as duplicated events,
-           *          or any other process).
            */
           void
           sortLocalEvents();
