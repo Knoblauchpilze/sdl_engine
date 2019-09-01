@@ -140,12 +140,6 @@ namespace sdl {
       }
 
       inline
-      void
-      EngineObject::trimEvents(std::vector<EventShPtr>& /*events*/) {
-        // Empty implementation.
-      }
-
-      inline
       bool
       EngineObject::enterEvent(const EnterEvent& /*e*/) {
         // Empty implementation.
