@@ -82,24 +82,43 @@ namespace sdl {
 
       inline
       void
-      EngineObject::disableEventsProcessing(const Event::Types& types) noexcept {
-        // Loop on the input types and deactivate each one.
-        for (Event::Types::const_iterator it = types.cbegin() ;
-             it != types.cend() ;
+      EngineObject::disableEventsProcessing() noexcept {
+        // Loop on all valid event types and deactivate them if needed.
+        Event::Types all = Event::getAllEvents();
+        for (Event::Types::const_iterator it = all.cbegin() ;
+             it != all.cend() ;
              ++it)
         {
-          setActive(*it, false);
+          setActive(*it, staysActiveWhileDisabled(*it));
         }
+      }
+
+      inline
+      bool
+      EngineObject::staysActiveWhileDisabled(const Event::Type& type) const noexcept {
+        // By default no events stays active when the object is disabled except for `Show`
+        // event otherwise we would have a hard time reactivating some elements.
+        return type == Event::Type::Show;
       }
 
       inline
       void
       EngineObject::activateEventsProcessing() noexcept {
-        // When activating events processing we basically just want to
-        // erase any value existing in the internal events type filter.
-        while (!m_handledTypes.empty()) {
-          setActive(*m_handledTypes.begin(), true);
+        // Loop on all valid event types and activate them if needed.
+        Event::Types all = Event::getAllEvents();
+        for (Event::Types::const_iterator it = all.cbegin() ;
+             it != all.cend() ;
+             ++it)
+        {
+          setActive(*it, !staysInactiveWhileEnabled(*it));
         }
+      }
+
+      inline
+      bool
+      EngineObject::staysInactiveWhileEnabled(const Event::Type& /*type*/) const noexcept {
+        // By default no events stays inactive when the object is enabled.
+        return false;
       }
 
       inline
@@ -334,10 +353,6 @@ namespace sdl {
           Event::Types::iterator it = m_handledTypes.find(type);
 
           if (it == m_handledTypes.end()) {
-            log(
-              std::string("Could not remove filtering of events with type \"") + Event::getNameFromType(type) + "\" (no such filter)",
-              utils::Level::Warning
-            );
             return;
           }
 
@@ -348,10 +363,6 @@ namespace sdl {
           Event::Types::iterator it = m_handledTypes.find(type);
 
           if (it != m_handledTypes.end()) {
-            log(
-              std::string("Trying to add duplicated filter for events with type \"") + Event::getNameFromType(type) + "\"",
-              utils::Level::Warning
-            );
             return;
           }
 

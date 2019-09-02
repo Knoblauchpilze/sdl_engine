@@ -146,28 +146,63 @@ namespace sdl {
 
           /**
            * @brief - Used to deactivate the events processing for this object. Events will
-           *          still be discarded whenever new ones are posted for this object, but
-           *          we will still allow this object to serve as relay when posting event
-           *          for another object.
-           *          Upon the first call to `processEvents` after calling this function, the
-           *          remaining events will be discarded.
-           *          Note that events processing can be reactivated using the below method.
+           *          still be queued to the internal queues whenever they are generated but
+           *          the `processEvents` method will dicard them.
+           *          Inheriting classes can specify custom behavior to allow or disable the
+           *          events types on a per type basis. Basically this method calls internally
+           *          the `staysActiveWhileDisabled` method with each events type: if the
+           *          return value is `true` the event will be disabled, and kept active
+           *          otherwise. This allow inheriting classes to efficiently keep some events
+           *          active upon being disabled.
            *          This method uses the `setActive` method internally to deactivate each
-           *          prodived event type.
-           * @param types - the types of the events to deactivate.
+           *          prodived event type, given it is declared as filterable by the method
+           *          `staysActiveWhileDisabled`.
            */
           void
-          disableEventsProcessing(const Event::Types& types) noexcept;
+          disableEventsProcessing() noexcept;
 
           /**
-           * @brief - Used to activate the events processing for this object. Any event posted
-           *          directly in the queue of this object will be allowed after calling this
-           *          method.
-           *          Previous events discarded while the object was in disabled state will not
-           *          be reprocessed.
+           * @brief - Used as a basis allowing to determine whether the input event type
+           *          needs to be filtered when calling the `disableEventsProcessing` method.
+           *          Based on the return value of this method the call to `setActive` will
+           *          be triggered or not.
+           *          Inheriting classes are encouraged to specialize this method in order
+           *          to provide custom events types filtering.
+           * @param type - the event type which should be checked for filtering.
+           * @return - `true` if the event type should be kept active when the object becomes
+           *           inactive and `false` otherwise.
+           */
+          virtual bool
+          staysActiveWhileDisabled(const Event::Type& type) const noexcept;
+
+          /**
+           * @brief - Used to deactivate the events processing for this object. Events will
+           *          be able to be queued and processed during the events processing phase
+           *          as usual. Events which have been inserted into the queue while the
+           *          object was still deactivated but have not been processed yet will still
+           *          be procesed. Previous events discarded while the object was in disabled
+           *          state will not be reprocessed but events still in the internal queue
+           *          will be scheduled in the next call to the events processing.
+           *          This method internally calls the `staysInactiveWhileEnabled` method to
+           *          allows inheriting classes to filter some events which might never be
+           *          processed by this object.
            */
           void
           activateEventsProcessing() noexcept;
+
+          /**
+           * @brief - Used as a basis allowing to determine whether the input event type
+           *          needs to be activated when calling the `activateEventsProcessing` method.
+           *          Based on the return value of this method the call to `setActive` will be
+           *          triggered or not.
+           *          Inheriting classes are encouraged to specializee this method in order to
+           *          provide custom events types activation.
+           * @param type - the event type which should be checked for activation.
+           * @return - `true` if the event type should be kept inactive when the object becomes
+           *           active and `false` otherwise.
+           */
+          virtual bool
+          staysInactiveWhileEnabled(const Event::Type& type) const noexcept;
 
           /**
            * @brief - Determine whether this object is able to receiver and process events of
