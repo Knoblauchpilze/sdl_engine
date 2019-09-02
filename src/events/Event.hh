@@ -66,6 +66,10 @@ namespace sdl {
           Types
           getAllEvents() noexcept;
 
+          static
+          Types
+          getAllNonWindowEvents() noexcept;
+
           /**
            * @brief - Convenience using which allows to refer to the timestamp of an event easily.
            */

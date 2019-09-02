@@ -67,6 +67,19 @@ namespace sdl {
       }
 
       inline
+      Event::Types
+      Event::getAllNonWindowEvents() noexcept {
+        Types t = getAllEvents();
+
+        t.erase(Type::WindowEnter);
+        t.erase(Type::WindowLeave);
+        t.erase(Type::WindowResize);
+        t.erase(Type::Quit);
+
+        return t;
+      }
+
+      inline
       Event::~Event() {}
 
       inline
