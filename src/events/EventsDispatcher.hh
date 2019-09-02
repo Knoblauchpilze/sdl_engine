@@ -51,7 +51,6 @@ namespace sdl {
            *          queue and to be scheduled regularly for events processing.
            *          Note that an error is raised if the listener is not valid or already
            *          existing in this queue.
-           *          TODO: Add specific kind of listeners ? Like `WindowListener` for example.
            * @param listener - the object which should be added as a listener of this queue.
            */
           void
