@@ -8,6 +8,9 @@ namespace sdl {
   namespace core {
     namespace engine {
 
+      class FocusEvent;
+      using FocusEventShPtr = std::shared_ptr<FocusEvent>;
+
       class FocusEvent: public Event {
         public:
 
@@ -26,30 +29,60 @@ namespace sdl {
         public:
 
           /**
-           * @brief - Creates a new focus event with `gainFocus` indicating whether
-           *          the focus was gained or lost. The user should specify the type
-           *          of focus which has triggered this event chosen among the list
-           *          of `Reason`.
-           * @param gainFocus - `true` if this event should represent a focus gain
-           *                    and `false` otherwise.
-           * @param reason - the reason which produced this event.
-           * @param receiver - the receiver for this event, `null` by default.
+           * @brief - Creates a new focus in event with the specified reason and source
+           *          objects.
+           * @param reason - the reason of the focus.
+           * @param receiver - the object to which this event is directed.
+           * @param emitter - the emitter of the event.
+           * @return - a shared pointer on the newly created event.
            */
-          FocusEvent(const bool gainFocus,
-                     const Reason& reason,
-                     EngineObject* receiver = nullptr);
+          static
+          FocusEventShPtr
+          createFocusInEvent(const Reason& reason,
+                             EngineObject* receiver = nullptr,
+                             EngineObject* emitter = nullptr);
 
           /**
-           * @brief - Creates a focus event with type `GainFocus` or `LostFocus` event
-           *          with the specified reason and receiver. It's similar to the above
-           *          constructor but we'd rather not expose the type of the event to
-           *          pass to the focus event to avoid people passing any type.
-           * @param reason - the reason which produced this event.
-           * @param receiver - the receiver for this event, `null` by default.
+           * @brief - Creates a new focus out event with the specified reason and source
+           *          objects.
+           * @param reason - the reason of the focus.
+           * @param receiver - the object to which this event is directed.
+           * @param emitter - the emitter of the event.
+           * @return - a shared pointer on the newly created event.
            */
-          FocusEvent(const Reason& reason,
-                     const bool gainFocus,
-                     EngineObject* receiver = nullptr);
+          static
+          FocusEventShPtr
+          createFocusOutEvent(const Reason& reason,
+                              EngineObject* receiver = nullptr,
+                              EngineObject* emitter = nullptr);
+
+          /**
+           * @brief - Creates a new gain focus event with the specified reason and source
+           *          objects.
+           * @param reason - the reason of the focus.
+           * @param receiver - the object to which this event is directed.
+           * @param emitter - the emitter of the event.
+           * @return - a shared pointer on the newly created event.
+           */
+          static
+          FocusEventShPtr
+          createGainFocusEvent(const Reason& reason,
+                               EngineObject* receiver = nullptr,
+                               EngineObject* emitter = nullptr);
+
+          /**
+           * @brief - Creates a new lost focus event with the specified reason and source
+           *          objects.
+           * @param reason - the reason of the focus.
+           * @param receiver - the object to which this event is directed.
+           * @param emitter - the emitter of the event.
+           * @return - a shared pointer on the newly created event.
+           */
+          static
+          FocusEventShPtr
+          createLostFocusEvent(const Reason& reason,
+                               EngineObject* receiver = nullptr,
+                               EngineObject* emitter = nullptr);
 
           ~FocusEvent();
 
@@ -87,6 +120,38 @@ namespace sdl {
         protected:
 
           /**
+           * @brief - Internal wrapper which allows to mutualize some of the code
+           *          needed by the factory methods.
+           * @param type - the type of the focus event to create.
+           * @param reason - the focus reason of the event.
+           * @param emitter - the emitter of the event to create.
+           * @param receiver - the receiver of the event to create.
+           * @return - a shared pointer to the created focus event.
+           */
+          static
+          FocusEventShPtr
+          createEventFromType(const Event::Type& type,
+                              const Reason& reason,
+                              EngineObject* emitter,
+                              EngineObject* receiver);
+
+          /**
+           * @brief - Creates a focus event with the specified type. The type should
+           *          be a value among the `FocusIn`, `FocusOut`, `GainFocus` or a
+           *          `LostFocus` value. Typically the user should create a focus
+           *          event using the factory methods provided as public members.
+           *          The user should specify the reason of the focus and possibly
+           *          the receiver of the event.
+           * @param type - the type of the focus event to create.
+           * @param reason - the reason of the focus (click, hover, tab, etc.).
+           * @param receiver - the receiver of the focus event, null if the event is
+           *                   not directed.
+           */
+          FocusEvent(const Event::Type& type,
+                     const Reason& reason,
+                     EngineObject* receiver = nullptr);
+
+          /**
            * @brief - Reimplementation of the base `Event` method in order to provide
            *          specific behavior to compare both the common attribute (using the
            *          base handler) and the properties defined by this type of event.
@@ -118,8 +183,6 @@ namespace sdl {
 
       };
 
-
-      using FocusEventShPtr = std::shared_ptr<FocusEvent>;
     }
   }
 }

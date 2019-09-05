@@ -8,26 +8,6 @@ namespace sdl {
     namespace engine {
 
       inline
-      FocusEvent::FocusEvent(const bool gainFocus,
-                             const Reason& reason,
-                             EngineObject* receiver):
-        Event(gainFocus ? Event::Type::FocusIn : Event::Type::FocusOut,
-              receiver,
-              std::string("focus_event")),
-        m_reason(reason)
-      {}
-
-      inline
-      FocusEvent::FocusEvent(const Reason& reason,
-                             const bool gainFocus,
-                             EngineObject* receiver):
-        Event(gainFocus ? Event::Type::GainFocus: Event::Type::LostFocus,
-              receiver,
-              std::string("focus_event")),
-        m_reason(reason)
-      {}
-
-      inline
       FocusEvent::~FocusEvent() {}
 
       inline
