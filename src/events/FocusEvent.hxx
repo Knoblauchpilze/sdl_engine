@@ -28,6 +28,12 @@ namespace sdl {
         return m_reason;
       }
 
+      inline
+      bool
+      FocusEvent::isPrimary() const noexcept {
+        return m_primary;
+      }
+
     }
   }
 }

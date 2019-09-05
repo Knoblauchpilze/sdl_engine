@@ -8,18 +8,21 @@ namespace sdl {
 
       FocusEvent::FocusEvent(const Event::Type& type,
                              const Reason& reason,
+                             bool primary,
                              EngineObject* receiver):
         Event(type, receiver, std::string("focus_event")),
-        m_reason(reason)
+        m_reason(reason),
+        m_primary(primary)
       {}
 
       FocusEventShPtr
       FocusEvent::createEventFromType(const Event::Type& type,
                                       const Reason& reason,
+                                      bool primary,
                                       EngineObject* emitter,
                                       EngineObject* receiver)
       {
-        FocusEventShPtr e(new FocusEvent(type, reason, receiver));
+        FocusEventShPtr e(new FocusEvent(type, reason, primary, receiver));
         e->setEmitter(emitter);
 
         return e;
@@ -27,34 +30,60 @@ namespace sdl {
 
       FocusEventShPtr
       FocusEvent::createFocusInEvent(const Reason& reason,
+                                     bool primary,
                                      EngineObject* receiver,
                                      EngineObject* emitter)
       {
-        return createEventFromType(Event::Type::FocusIn, reason, emitter, receiver);
+        return createEventFromType(Event::Type::FocusIn, reason, primary, emitter, receiver);
       }
 
       FocusEventShPtr
       FocusEvent::createFocusOutEvent(const Reason& reason,
+                                      bool primary,
                                       EngineObject* receiver,
                                       EngineObject* emitter)
       {
-        return createEventFromType(Event::Type::FocusOut, reason, emitter, receiver);
+        return createEventFromType(Event::Type::FocusOut, reason, primary, emitter, receiver);
       }
 
       FocusEventShPtr
       FocusEvent::createGainFocusEvent(const Reason& reason,
+                                       bool primary,
                                        EngineObject* receiver,
                                        EngineObject* emitter)
       {
-        return createEventFromType(Event::Type::GainFocus, reason, emitter, receiver);
+        return createEventFromType(Event::Type::GainFocus, reason, primary, emitter, receiver);
       }
 
       FocusEventShPtr
       FocusEvent::createLostFocusEvent(const Reason& reason,
+                                       bool primary,
                                        EngineObject* receiver,
                                        EngineObject* emitter)
       {
-        return createEventFromType(Event::Type::LostFocus, reason, emitter, receiver);
+        return createEventFromType(Event::Type::LostFocus, reason, primary, emitter, receiver);
+      }
+
+      FocusEventShPtr
+      FocusEvent::copyFromExisting(FocusEventShPtr e,
+                                   bool copyEmitter,
+                                   bool copyReceiver)
+      {
+        if (e == nullptr) {
+          return nullptr;
+        }
+
+        FocusEventShPtr ne(new FocusEvent(e->getType(), e->getReason(), e->isPrimary()));
+
+        if (copyEmitter) {
+          ne->setEmitter(e->getEmitter());
+        }
+
+        if (copyReceiver) {
+          ne->setReceiver(e->getReceiver());
+        }
+
+        return ne;
       }
 
       void

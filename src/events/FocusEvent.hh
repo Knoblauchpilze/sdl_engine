@@ -32,6 +32,8 @@ namespace sdl {
            * @brief - Creates a new focus in event with the specified reason and source
            *          objects.
            * @param reason - the reason of the focus.
+           * @param primary - `true` if the focus event to create is a primary source
+           *                  of the focus, `false` otherwise.
            * @param receiver - the object to which this event is directed.
            * @param emitter - the emitter of the event.
            * @return - a shared pointer on the newly created event.
@@ -39,6 +41,7 @@ namespace sdl {
           static
           FocusEventShPtr
           createFocusInEvent(const Reason& reason,
+                             bool primary,
                              EngineObject* receiver = nullptr,
                              EngineObject* emitter = nullptr);
 
@@ -46,6 +49,8 @@ namespace sdl {
            * @brief - Creates a new focus out event with the specified reason and source
            *          objects.
            * @param reason - the reason of the focus.
+           * @param primary - `true` if the focus event to create is a primary source
+           *                  of the focus, `false` otherwise.
            * @param receiver - the object to which this event is directed.
            * @param emitter - the emitter of the event.
            * @return - a shared pointer on the newly created event.
@@ -53,6 +58,7 @@ namespace sdl {
           static
           FocusEventShPtr
           createFocusOutEvent(const Reason& reason,
+                              bool primary,
                               EngineObject* receiver = nullptr,
                               EngineObject* emitter = nullptr);
 
@@ -60,6 +66,8 @@ namespace sdl {
            * @brief - Creates a new gain focus event with the specified reason and source
            *          objects.
            * @param reason - the reason of the focus.
+           * @param primary - `true` if the focus event to create is a primary source
+           *                  of the focus, `false` otherwise.
            * @param receiver - the object to which this event is directed.
            * @param emitter - the emitter of the event.
            * @return - a shared pointer on the newly created event.
@@ -67,6 +75,7 @@ namespace sdl {
           static
           FocusEventShPtr
           createGainFocusEvent(const Reason& reason,
+                               bool primary,
                                EngineObject* receiver = nullptr,
                                EngineObject* emitter = nullptr);
 
@@ -74,6 +83,8 @@ namespace sdl {
            * @brief - Creates a new lost focus event with the specified reason and source
            *          objects.
            * @param reason - the reason of the focus.
+           * @param primary - `true` if the focus event to create is a primary source
+           *                  of the focus, `false` otherwise.
            * @param receiver - the object to which this event is directed.
            * @param emitter - the emitter of the event.
            * @return - a shared pointer on the newly created event.
@@ -81,8 +92,27 @@ namespace sdl {
           static
           FocusEventShPtr
           createLostFocusEvent(const Reason& reason,
+                               bool primary,
                                EngineObject* receiver = nullptr,
                                EngineObject* emitter = nullptr);
+
+          /**
+           * @brief - Performs the copy of the input event in a new focus event. The emitter
+           *          and receiver fields are only copied based on the input boolean values.
+           * @param e - the focus event to copy.
+           * @param copyEmitter - `true` if the emitter of the event `e` should be copied to
+           *                      the new event.
+           * @param copyReceiver - `true` if the receiver of the event `e` should be copied
+           *                       to the new event.
+           * @retrun - a new shared pointer describing a focus event with the same focus type
+           *           and reason and whose emitter and receiver fields are set based on the
+           *           input boolean values.
+           */
+          static
+          FocusEventShPtr
+          copyFromExisting(FocusEventShPtr e,
+                           bool copyEmitter,
+                           bool copyReceiver);
 
           ~FocusEvent();
 
@@ -117,6 +147,14 @@ namespace sdl {
           const Reason&
           getReason() const noexcept;
 
+          /**
+           * @brief - Return whether this event is a primary focus event.
+           * @return - `true` if the focus event is a primary source of the focus
+           *           and `false` otherwise.
+           */
+          bool
+          isPrimary() const noexcept;
+
         protected:
 
           /**
@@ -124,6 +162,8 @@ namespace sdl {
            *          needed by the factory methods.
            * @param type - the type of the focus event to create.
            * @param reason - the focus reason of the event.
+           * @param primary - `true` if the event is a primary focus reason and
+           *                  `false` otherwise.
            * @param emitter - the emitter of the event to create.
            * @param receiver - the receiver of the event to create.
            * @return - a shared pointer to the created focus event.
@@ -132,6 +172,7 @@ namespace sdl {
           FocusEventShPtr
           createEventFromType(const Event::Type& type,
                               const Reason& reason,
+                              bool primary,
                               EngineObject* emitter,
                               EngineObject* receiver);
 
@@ -142,6 +183,9 @@ namespace sdl {
            *          event using the factory methods provided as public members.
            *          The user should specify the reason of the focus and possibly
            *          the receiver of the event.
+           *          A primary focus event is one that originated from the focus
+           *          source while a secondary focus event is mostly generated to
+           *          ensure the propagation of the focus information.
            * @param type - the type of the focus event to create.
            * @param reason - the reason of the focus (click, hover, tab, etc.).
            * @param receiver - the receiver of the focus event, null if the event is
@@ -149,6 +193,7 @@ namespace sdl {
            */
           FocusEvent(const Event::Type& type,
                      const Reason& reason,
+                     bool primary,
                      EngineObject* receiver = nullptr);
 
           /**
@@ -180,6 +225,7 @@ namespace sdl {
         private:
 
           Reason m_reason;
+          bool m_primary;
 
       };
 
