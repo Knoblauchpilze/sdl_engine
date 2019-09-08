@@ -298,6 +298,12 @@ namespace sdl {
           hideEvent(const Event& e);
 
           virtual bool
+          keyboardGrabbedEvent(const Event& e);
+
+          virtual bool
+          keyboardReleasedEvent(const Event& e);
+
+          virtual bool
           keyPressEvent(const KeyEvent& e);
 
           virtual bool

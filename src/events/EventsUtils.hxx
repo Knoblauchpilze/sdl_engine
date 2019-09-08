@@ -64,6 +64,8 @@ namespace sdl {
         // GainFocus          Not defined
         // GeometryUpdate     4
         // Hide               1
+        // KeyboardGrabbed    Not defined
+        // KeyboardReleased   Not defined
         // KeyPress           Not defined
         // KeyRelease         Not defined
         // Leave              6
