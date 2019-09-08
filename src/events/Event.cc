@@ -32,6 +32,12 @@ namespace sdl {
           case Type::Hide:
             name = std::string("\"hide\"");
             break;
+          case Type::KeyboardGrabbed:
+            name = std::string("\"keyboard_grabbed\"");
+            break;
+          case Type::KeyboardReleased:
+            name = std::string("\"keyboard_released\"");
+            break;
           case Type::KeyPress:
             name = std::string("\"key_press\"");
             break;

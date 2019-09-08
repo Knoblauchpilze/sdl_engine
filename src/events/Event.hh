@@ -26,6 +26,8 @@ namespace sdl {
             GainFocus,           //<! - Child gained focus.
             GeometryUpdate,      //<! - The geometry of a component should be updated.
             Hide,                //<! - Object has been hidden.
+            KeyboardGrabbed,     //<! - Object has gained keyboard focus.
+            KeyboardReleased,    //<! - Object has lost keyboard focus.
             KeyPress,            //<! - One of the keyboard's keys has been pressed.
             KeyRelease,          //<! - One of the keyboard's keys has been released.
             Leave,               //<! - Mouse leaves the object's boundaries.
