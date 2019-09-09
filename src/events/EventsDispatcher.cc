@@ -226,7 +226,7 @@ namespace sdl {
               std::lock_guard<std::mutex> guard(m_listenersLocker);
               existingListeners.swap(m_listeners);
             }
-            
+
             // Retrieve the current processing pass: this will serve as a flag to indicate whenever
             // the processing of an event changes the processing pass: in this case it means that we
             // should go back to the anterior pass.

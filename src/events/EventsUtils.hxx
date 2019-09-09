@@ -18,7 +18,7 @@ namespace sdl {
           // belongs to the default pass.
           return type == Event::Type::Show || type == Event::Type::Hide;
         }
-        
+
         // We know that we are on the default pass: all events types except
         // hide and show belong to it.
         return type != Event::Type::Show && type != Event::Type::Hide;
