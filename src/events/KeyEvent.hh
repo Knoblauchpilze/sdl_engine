@@ -31,6 +31,27 @@ namespace sdl {
           bool
           isEscape() const noexcept;
 
+          /**
+           * @brief - Used to determine whether the code of the key pressed or released
+           *          corresponds to an alpha numeric value.
+           *          This is especially useful in case we want to react to specific keys.
+           * @return - `true` if the key pressed or released belongs to `[a-z0-9]` and
+           *           `false` otherwise.
+           */
+          bool
+          isAlphaNumeric() const noexcept;
+
+          /**
+           * @brief - Used to return the char code equivalent to the alpha numeric key
+           *          pressed or released. Note that if the key is not alpha numeric an
+           *          error is raised. One can check if this is the case using the above
+           *          method `isAlphaNumeric`.
+           * @return - a char which vaule corresponds to the ASCII code of the character
+           *           associated to the key of this event.
+           */
+          char
+          getChar() const;
+
         protected:
 
           /**
