@@ -47,6 +47,9 @@ namespace sdl {
           type = Event::Type::KeyRelease;
         }
 
+        m_converted = fromSDLKey(m_key.keysym.sym);
+        m_mod = fromSDLMod(m_key.keysym.mod);
+
         setType(type);
 
         setSDLWinID(m_key.windowID);

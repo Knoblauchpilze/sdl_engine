@@ -3,6 +3,7 @@
 
 # include <memory>
 # include "Event.hh"
+# include "KeyUtils.hh"
 # include <SDL2/SDL.h>
 
 namespace sdl {
@@ -19,14 +20,20 @@ namespace sdl {
           void
           populateFromEngineData(Engine& engine) override;
 
-          int
+          Key
           getKey() const noexcept;
+
+          Modifier
+          getModifier() const noexcept;
 
           bool
           isPress() const noexcept;
 
           bool
           isRelease() const noexcept;
+
+          bool
+          isRepeat() const noexcept;
 
           bool
           isEscape() const noexcept;
@@ -88,6 +95,9 @@ namespace sdl {
         private:
 
           SDL_KeyboardEvent m_key;
+
+          Key m_converted;
+          Modifier m_mod;
 
       };
 
