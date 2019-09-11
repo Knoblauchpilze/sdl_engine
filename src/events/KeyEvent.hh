@@ -2,9 +2,10 @@
 # define   KEY_EVENT_HH
 
 # include <memory>
+# include <SDL2/SDL.h>
 # include "Event.hh"
 # include "KeyUtils.hh"
-# include <SDL2/SDL.h>
+# include "KeyModifier.hh"
 
 namespace sdl {
   namespace core {
@@ -23,8 +24,8 @@ namespace sdl {
           Key
           getKey() const noexcept;
 
-          Modifier
-          getModifier() const noexcept;
+          KeyModifier
+          getModifiers() const noexcept;
 
           bool
           isPress() const noexcept;
@@ -97,7 +98,7 @@ namespace sdl {
           SDL_KeyboardEvent m_key;
 
           Key m_converted;
-          Modifier m_mod;
+          KeyModifier m_mods;
 
       };
 

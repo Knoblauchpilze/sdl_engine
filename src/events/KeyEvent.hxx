@@ -14,7 +14,7 @@ namespace sdl {
         m_key(event),
 
         m_converted(Key::None),
-        m_mod(Modifier::None)
+        m_mods(KeyModifier::None)
       {
         init();
       }
@@ -29,9 +29,9 @@ namespace sdl {
       }
 
       inline
-      Modifier
-      KeyEvent::getModifier() const noexcept {
-        return m_mod;
+      KeyModifier
+      KeyEvent::getModifiers() const noexcept {
+        return m_mods;
       }
 
       inline
@@ -78,14 +78,14 @@ namespace sdl {
         }
 
         // Use the dedicated handler.
-        return getCharFromKey(getKey(), getModifier());
+        return getCharFromKey(getKey(), getModifiers());
       }
 
       inline
       bool
       KeyEvent::equal(const Event& other) const noexcept {
         const KeyEvent& e = dynamic_cast<const KeyEvent&>(other);
-        return Event::equal(other) && getKey() == e.getKey() && getModifier() == e.getModifier();
+        return Event::equal(other) && getKey() == e.getKey() && getModifiers() == e.getModifiers();
       }
 
     }

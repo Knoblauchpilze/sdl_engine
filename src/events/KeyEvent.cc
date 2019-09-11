@@ -48,7 +48,7 @@ namespace sdl {
         }
 
         m_converted = fromSDLKey(m_key.keysym.sym);
-        m_mod = fromSDLMod(m_key.keysym.mod);
+        m_mods = fromSDLMod(m_key.keysym.mod);
 
         setType(type);
 
