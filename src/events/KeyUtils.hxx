@@ -254,27 +254,41 @@ namespace sdl {
       }
 
       inline
-      Modifier
+      KeyModifier
       fromSDLMod(const std::uint16_t& m) {
         // Handle each value and set `None` for unrecognized ones.
-        // TODO: Improve modifiers.
-        switch (m) {
-          case KMOD_LSHIFT:
-          case KMOD_RSHIFT:
-          case KMOD_CAPS:
-            return Modifier::Shift;
-          case KMOD_LCTRL:
-          case KMOD_RCTRL:
-            return Modifier::Ctrl;
-          case KMOD_LALT:
-          case KMOD_RALT:
-            return Modifier::Alt;
-          case KMOD_NUM:
-          case KMOD_MODE:
-          case KMOD_NONE:
-          default:
-            return Modifier::None;
+        KeyModifier mods;
+
+        if (m & KMOD_LALT) {
+          mods.addModifier(KeyModifier::Modifier::LeftAlt);
         }
+        if (m & KMOD_LCTRL) {
+          mods.addModifier(KeyModifier::Modifier::LeftCtrl);
+        }
+        if (m & KMOD_LSHIFT) {
+          mods.addModifier(KeyModifier::Modifier::LeftShift);
+        }
+
+        if (m & KMOD_RALT) {
+          mods.addModifier(KeyModifier::Modifier::RightAlt);
+        }
+        if (m & KMOD_RCTRL) {
+          mods.addModifier(KeyModifier::Modifier::RightCtrl);
+        }
+        if (m & KMOD_RSHIFT) {
+          mods.addModifier(KeyModifier::Modifier::RightShift);
+        }
+
+
+        if (m & KMOD_CAPS) {
+          mods.addModifier(KeyModifier::Modifier::Caps);
+        }
+        if (m & KMOD_NUM) {
+          mods.addModifier(KeyModifier::Modifier::Num);
+        }
+
+        // Return the built-in modifiers.
+        return mods;
       }
 
       inline
@@ -328,9 +342,12 @@ namespace sdl {
       inline
       char
       getCharFromKey(const Key& k,
-                     const Modifier& m) noexcept
+                     const KeyModifier& m) noexcept
       {
         // If the key is not alpha numeric, we can't do much.
+        // We also need to consider the input modifiers.
+        const char offset = (m.shiftEnabled() ? ' ' : '\0');
+
         switch (k) {
           case Key::Zero:
             return '0';
@@ -353,57 +370,57 @@ namespace sdl {
           case Key::Nine:
             return '9';
           case Key::A:
-            return 'a' + (m == Modifier::Shift ? ' ' : '\0');
+            return 'a' - offset;
           case Key::B:
-            return 'b' + (m == Modifier::Shift ? ' ' : '\0');
+            return 'b' - offset;
           case Key::C:
-            return 'c' + (m == Modifier::Shift ? ' ' : '\0');
+            return 'c' - offset;
           case Key::D:
-            return 'd' + (m == Modifier::Shift ? ' ' : '\0');
+            return 'd' - offset;
           case Key::E:
-            return 'e' + (m == Modifier::Shift ? ' ' : '\0');
+            return 'e' - offset;
           case Key::F:
-            return 'f' + (m == Modifier::Shift ? ' ' : '\0');
+            return 'f' - offset;
           case Key::G:
-            return 'g' + (m == Modifier::Shift ? ' ' : '\0');
+            return 'g' - offset;
           case Key::H:
-            return 'h' + (m == Modifier::Shift ? ' ' : '\0');
+            return 'h' - offset;
           case Key::I:
-            return 'i' + (m == Modifier::Shift ? ' ' : '\0');
+            return 'i' - offset;
           case Key::J:
-            return 'j' + (m == Modifier::Shift ? ' ' : '\0');
+            return 'j' - offset;
           case Key::K:
-            return 'k' + (m == Modifier::Shift ? ' ' : '\0');
+            return 'k' - offset;
           case Key::L:
-            return 'l' + (m == Modifier::Shift ? ' ' : '\0');
+            return 'l' - offset;
           case Key::M:
-            return 'm' + (m == Modifier::Shift ? ' ' : '\0');
+            return 'm' - offset;
           case Key::N:
-            return 'n' + (m == Modifier::Shift ? ' ' : '\0');
+            return 'n' - offset;
           case Key::O:
-            return 'o' + (m == Modifier::Shift ? ' ' : '\0');
+            return 'o' - offset;
           case Key::P:
-            return 'p' + (m == Modifier::Shift ? ' ' : '\0');
+            return 'p' - offset;
           case Key::Q:
-            return 'q' + (m == Modifier::Shift ? ' ' : '\0');
+            return 'q' - offset;
           case Key::R:
-            return 'r' + (m == Modifier::Shift ? ' ' : '\0');
+            return 'r' - offset;
           case Key::S:
-            return 's' + (m == Modifier::Shift ? ' ' : '\0');
+            return 's' - offset;
           case Key::T:
-            return 't' + (m == Modifier::Shift ? ' ' : '\0');
+            return 't' - offset;
           case Key::U:
-            return 'u' + (m == Modifier::Shift ? ' ' : '\0');
+            return 'u' - offset;
           case Key::V:
-            return 'v' + (m == Modifier::Shift ? ' ' : '\0');
+            return 'v' - offset;
           case Key::W:
-            return 'w' + (m == Modifier::Shift ? ' ' : '\0');
+            return 'w' - offset;
           case Key::X:
-            return 'x' + (m == Modifier::Shift ? ' ' : '\0');
+            return 'x' - offset;
           case Key::Y:
-            return 'y' + (m == Modifier::Shift ? ' ' : '\0');
+            return 'y' - offset;
           case Key::Z:
-            return 'z' + (m == Modifier::Shift ? ' ' : '\0');
+            return 'z' - offset;
           default:
             // Not an alphanumeric character, return a default value.
             return '\0';

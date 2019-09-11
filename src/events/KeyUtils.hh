@@ -3,22 +3,11 @@
 
 # include <cstdint>
 # include <SDL2/SDL.h>
+# include "KeyModifier.hh"
 
 namespace sdl {
   namespace core {
     namespace engine {
-
-      /**
-       * @brief - Convenience enumeration describing the modifier associated to a key.
-       *          Modifiers typically are represented by control key which might affect
-       *          the way a key is interpreted.
-       */
-      enum class Modifier {
-        None,  //<!- Set when no modifier key is pressed.
-        Ctrl,  //<!- Set when any of the control keys is pressed.
-        Alt,   //<!- Set when any of the alt keys is pressed.
-        Shift  //<!- Set when any of the shift keys is pressed.
-      };
 
       /**
        * @brief - Convenience enumeration describing the handled keys by this type of
@@ -170,7 +159,7 @@ namespace sdl {
        * @return - the enumeration value corresponding to the input `SDL` code or `None` if no
        *           such value exist.
        */
-      Modifier
+      KeyModifier
       fromSDLMod(const std::uint16_t& m);
 
       /**
@@ -193,7 +182,7 @@ namespace sdl {
        */
       char
       getCharFromKey(const Key& k,
-                     const Modifier& m = Modifier::None) noexcept;
+                     const KeyModifier& m) noexcept;
 
     }
   }
