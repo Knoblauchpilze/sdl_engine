@@ -107,7 +107,7 @@ namespace sdl {
           case SDLK_d:
             return Key::D;
           case SDLK_e:
-            return Key::F;
+            return Key::E;
           case SDLK_f:
             return Key::F;
           case SDLK_g:
