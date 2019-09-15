@@ -102,6 +102,12 @@ namespace sdl {
           EventShPtr event = m_engine->pollEvent(eventsStillInQueue);
 
           // Enqueue this event if it is relevant.
+          // TODO: We should probably perform some kind of interpretation of the events in order
+          // to provide higher level features such as `MouseDoubleClick` and `MouseDrag`. Indeed
+          // these events might be useful for listeners and can only be generated at top level so
+          // that everyone is aware of them. Unlike what was previously said Qt does not have a
+          // better way to handle mouse click than by sending both a `Press` and a `Release` event
+          // to the consumers.
           if (eventsStillInQueue && event != nullptr && event->getType() != Event::Type::None) {
             postEvent(event);
           }
