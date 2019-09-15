@@ -72,6 +72,8 @@ namespace sdl {
         // LostFocus          Not defined
         // MouseButtonPress   Not defined
         // MouseButtonRelease Not defined
+        // MouseDoubleClick   Not defined
+        // MouseDrag          Not defined
         // MouseMove          Not defined
         // MouseWheel         Not defined
         // Repaint            9

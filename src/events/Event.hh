@@ -34,6 +34,8 @@ namespace sdl {
             LostFocus,           //<! - Child lost focus.
             MouseButtonPress,    //<! - One of the mouse button has been pressed.
             MouseButtonRelease,  //<! - One of the mouse button has been released.
+            MouseDoubleClick,    //<! - One of the mouse button has been performing a double click.
+            MouseDrag,           //<! - The mouse is being moved while a button is pressed.
             MouseMove,           //<! - The mouse cursor has been moved.
             MouseWheel,          //<! - The mouse wheel has been used.
             Repaint,             //<! - Trigger a repaint operation for a component.

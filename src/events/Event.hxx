@@ -53,6 +53,8 @@ namespace sdl {
           Type::LostFocus,
           Type::MouseButtonPress,
           Type::MouseButtonRelease,
+          Type::MouseDoubleClick,
+          Type::MouseDrag,
           Type::MouseMove,
           Type::MouseWheel,
           Type::Repaint,

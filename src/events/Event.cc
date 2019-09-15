@@ -56,6 +56,12 @@ namespace sdl {
           case Type::MouseButtonRelease:
             name = std::string("\"mouse_button_release\"");
             break;
+          case Type::MouseDoubleClick:
+            name = std::string("\"mouse_double_click\"");
+            break;
+          case Type::MouseDrag:
+            name = std::string("\"mouse_drag\"");
+            break;
           case Type::MouseMove:
             name = std::string("\"mouse_move\"");
             break;
