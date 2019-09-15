@@ -99,6 +99,26 @@ namespace sdl {
           type = Event::Type::MouseButtonRelease;
         }
 
+        // We now need to handle double clicks. Basically the `SDL` indicates whether a
+        // mouse button event corresponds to a double click through the `m_button->clicks`
+        // variable: if its value is `1` it corresponds to a single click while if its
+        // valud is `2` the event corresponds to a double click.
+        // It has no influence regarding the type of the button action (i.e. pressed or
+        // release): this means that we will actually receive to events indicating a double
+        // click if we are not careful. One with a `SDL_MOUSEBUTTONDOWN` and one with a
+        // valud of `SDL_MOUSEBUTTONUP`. We don't really want that and would rather create
+        // a single `MouseDoubleClick` event upon releasing the button.
+        // So at this point we will voluntarily set the type of the event to `None` if it
+        // corresponds to a double click on `SDL_MOUSEBUTTONDOWN`.
+        if (m_button->clicks > 1) {
+          if (type == Event::Type::MouseButtonPress) {
+            type = Event::Type::None;
+          }
+          else {
+            type = Event::Type::MouseDoubleClick;
+          }
+        }
+
         setType(type);
 
         setSDLWinID(m_button->windowID);

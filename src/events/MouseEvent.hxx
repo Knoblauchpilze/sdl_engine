@@ -70,7 +70,11 @@ namespace sdl {
       inline
       bool
       MouseEvent::isRelease() const noexcept {
-        return getType() == Event::Type::MouseButtonRelease;
+        // A release event is either a mouse button release event or a double click.
+        return
+          getType() == Event::Type::MouseButtonRelease ||
+          getType() == Event::Type::MouseDoubleClick
+        ;
       }
 
       inline
