@@ -355,6 +355,10 @@ namespace sdl {
               return mouseButtonPressEvent(*std::dynamic_pointer_cast<MouseEvent>(e));
             case Event::Type::MouseButtonRelease:
               return mouseButtonReleaseEvent(*std::dynamic_pointer_cast<MouseEvent>(e));
+            case Event::Type::MouseDoubleClick:
+              return mouseDoubleClickEvent(*std::dynamic_pointer_cast<MouseEvent>(e));
+            case Event::Type::MouseDrag:
+              return mouseDragEvent(*std::dynamic_pointer_cast<MouseEvent>(e));
             case Event::Type::MouseMove:
               return mouseMoveEvent(*std::dynamic_pointer_cast<MouseEvent>(e));
             case Event::Type::MouseWheel:

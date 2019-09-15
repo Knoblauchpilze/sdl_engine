@@ -244,6 +244,20 @@ namespace sdl {
 
       inline
       bool
+      EngineObject::mouseDoubleClickEvent(const MouseEvent& /*e*/) {
+        // Empty implementation.
+        return true;
+      }
+
+      inline
+      bool
+      EngineObject::mouseDragEvent(const MouseEvent& /*e*/) {
+        // Empty implementation.
+        return true;
+      }
+
+      inline
+      bool
       EngineObject::mouseMoveEvent(const MouseEvent& /*e*/) {
         // Empty implementation.
         return true;

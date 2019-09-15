@@ -322,6 +322,12 @@ namespace sdl {
           mouseButtonReleaseEvent(const MouseEvent& e);
 
           virtual bool
+          mouseDoubleClickEvent(const MouseEvent& e);
+
+          virtual bool
+          mouseDragEvent(const MouseEvent& e);
+
+          virtual bool
           mouseMoveEvent(const MouseEvent& e);
 
           virtual bool
