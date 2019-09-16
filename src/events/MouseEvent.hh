@@ -49,6 +49,14 @@ namespace sdl {
           bool
           isRelease() const noexcept;
 
+          /**
+           * @brief - Returns the mouse position as a vector expressed in the
+           *          corresponding window's coordinate system.
+           *          Note that all but the mouse wheel events have a position
+           *          associated to them.
+           * @return - the position associated to this mouse event if any in
+           *           the related window's coordinate frame.
+           */
           utils::Vector2f
           getMousePosition() const noexcept;
 
