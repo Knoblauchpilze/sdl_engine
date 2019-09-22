@@ -38,17 +38,17 @@ namespace sdl {
       inline
       bool
       KeyModifier::altEnabled() const noexcept {
-        return
-          hasModifier(Modifier::LeftAlt) ||
-          hasModifier(Modifier::RightAlt) ||
-          hasModifier(Modifier::Caps)
-        ;
+        return hasModifier(Modifier::LeftAlt) || hasModifier(Modifier::RightAlt);
       }
 
       inline
       bool
       KeyModifier::ctrlEnabled() const noexcept {
-        return hasModifier(Modifier::LeftCtrl) || hasModifier(Modifier::RightCtrl);
+        return
+          hasModifier(Modifier::LeftCtrl) ||
+          hasModifier(Modifier::RightCtrl) ||
+          hasModifier(Modifier::Caps)
+        ;
       }
 
       inline
