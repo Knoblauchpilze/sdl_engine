@@ -139,10 +139,16 @@ namespace sdl {
           );
         }
 
-        // TODO: The `SDL_MouseMotionEvent` defines a `state` attribute which contains the
-        // current buttons pressed. This allows to simply detect drag motion. We should also
-        // probably assign the mouse button to detect which button is dragging.
-        setType(Event::Type::MouseMove);
+        // A mouse motion event can be one of two kinds: either a simple mouse motion or
+        // a mouse drag event. The mouse drag event occurs when the mouse is moved while
+        // a button is pressed. The `SDL` conveniently allows to determine which button
+        // are pressed while dragging the mouse.
+        Event::Type type = Event::Type::MouseMove;
+        if (m_motion->state != 0u) {
+          type = Event::Type::MouseDrag;
+        }
+
+        setType(type);
 
         setSDLWinID(m_motion->windowID);
       }

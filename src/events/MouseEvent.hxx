@@ -46,6 +46,8 @@ namespace sdl {
       inline
       MouseEvent::Button
       MouseEvent::getButton() const noexcept {
+        // We can retrieve a button either if the event corresponds to a mouse pressed
+        // or released or if the mouse is being dragged.
         if (m_button != nullptr) {
           if (m_button->button == SDL_BUTTON_LEFT) {
             return Button::LeftButton;
@@ -54,6 +56,19 @@ namespace sdl {
             return Button::RightButton;
           }
           if (m_button->button == SDL_BUTTON_MIDDLE) {
+            return Button::MiddleButton;
+          }
+        }
+
+        // TODO: The state can actually hold several buttons.
+        if (m_motion != nullptr) {
+          if (m_motion->state == SDL_BUTTON_LEFT) {
+            return Button::LeftButton;
+          }
+          if (m_motion->state == SDL_BUTTON_RIGHT) {
+            return Button::RightButton;
+          }
+          if (m_motion->state == SDL_BUTTON_MIDDLE) {
             return Button::MiddleButton;
           }
         }
