@@ -7,122 +7,134 @@ namespace sdl {
   namespace core {
     namespace engine {
 
+      namespace modifier {
+
+        inline
+        std::string
+        getNameFromMode(const Mode& mode) noexcept {
+          switch (mode) {
+            case Mode::LeftAlt:
+              return std::string("LeftAlt");
+            case Mode::LeftCtrl:
+              return std::string("LeftCtrl");
+            case Mode::LeftShift:
+              return std::string("LeftShift");
+            case Mode::RightAlt:
+              return std::string("RightAlt");
+            case Mode::RightCtrl:
+              return std::string("RightCtrl");
+            case Mode::RightShift:
+              return std::string("RightShift");
+            case Mode::Caps:
+              return std::string("Caps");
+            case Mode::Num:
+              return std::string("Num");
+            default:
+              return std::string("Unknown");
+          }
+        }
+
+      }
+
       inline
       KeyModifier::KeyModifier():
-        m_mods(KeyModifier::None)
-      {}
-
-      inline
-      KeyModifier::KeyModifier(const Modifier& modifiers):
-        m_mods(modifiers)
-      {}
-
-      inline
-      bool
-      KeyModifier::operator==(const KeyModifier& km) const noexcept {
-        return m_mods == km.m_mods;
+        utils::CoreFlag<modifier::count>(std::string("key_modifier")),
+        m_modesToIDs()
+      {
+        init();
       }
 
       inline
-      const KeyModifier::Modifier&
-      KeyModifier::getModifiers() const noexcept {
-        return m_mods;
-      }
+      KeyModifier::KeyModifier(const modifier::Mode& mode):
+        utils::CoreFlag<modifier::count>(std::string("key_modifier")),
+        m_modesToIDs()
+      {
+        init();
 
-      inline
-      void
-      KeyModifier::setModifiers(const Modifier& modifiers) noexcept {
-        m_mods = modifiers;
+        set(getBitID(mode));
       }
 
       inline
       bool
       KeyModifier::altEnabled() const noexcept {
-        return hasModifier(Modifier::LeftAlt) || hasModifier(Modifier::RightAlt);
+        return
+          isSet(getBitID(modifier::Mode::LeftAlt)) ||
+          isSet(getBitID(modifier::Mode::RightAlt))
+        ;
       }
 
       inline
       bool
       KeyModifier::ctrlEnabled() const noexcept {
         return
-          hasModifier(Modifier::LeftCtrl) ||
-          hasModifier(Modifier::RightCtrl) ||
-          hasModifier(Modifier::Caps)
+          isSet(getBitID(modifier::Mode::LeftCtrl)) ||
+          isSet(getBitID(modifier::Mode::RightCtrl))
         ;
       }
 
       inline
       bool
       KeyModifier::shiftEnabled() const noexcept {
-        return hasModifier(Modifier::LeftShift) || hasModifier(Modifier::RightShift);
+        return
+          isSet(getBitID(modifier::Mode::LeftShift)) ||
+          isSet(getBitID(modifier::Mode::RightShift)) ||
+          isSet(getBitID(modifier::Mode::Caps))
+        ;
       }
 
       inline
       bool
       KeyModifier::numpadEnabled() const noexcept {
-        return hasModifier(Modifier::Num);
+        return isSet(getBitID(modifier::Mode::Num));
       }
 
       inline
-      std::string
-      KeyModifier::toString() const noexcept {
-        return std::string("[Modifiers: ") + getNameFromModifiers(*this) + "]";
+      void
+      KeyModifier::init() {
+        // Register all key modes.
+        registerKeyMode(modifier::Mode::LeftAlt);
+        registerKeyMode(modifier::Mode::LeftCtrl);
+        registerKeyMode(modifier::Mode::LeftShift);
+        registerKeyMode(modifier::Mode::RightAlt);
+        registerKeyMode(modifier::Mode::RightCtrl);
+        registerKeyMode(modifier::Mode::RightShift);
+        registerKeyMode(modifier::Mode::Caps);
+        registerKeyMode(modifier::Mode::Num);
       }
 
       inline
-      bool
-      KeyModifier::hasModifier(const Modifier& modifier) const noexcept {
-        return m_mods & modifier;
+      int
+      KeyModifier::getBitID(const modifier::Mode& mode) const {
+        // Find the corresponding mode in the internal table.
+        ModesTable::const_iterator it = m_modesToIDs.find(mode);
+
+        // Check for errors.
+        if (it == m_modesToIDs.cend()) {
+          throw utils::CoreException(
+            std::string("Could not get bit index for \"") + modifier::getNameFromMode(mode) + "\"",
+            std::string("getBitID"),
+            std::string("KeyModifier"),
+            std::string("No such bit registered")
+          );
+        }
+
+        // Return the corresponding index.
+        return it->second;
       }
 
       inline
-      std::string
-      KeyModifier::getNameFromModifiers(const KeyModifier& modifiers) noexcept {
-        std::string name;
-        if (modifiers.altEnabled()) {
-          name += "Alt";
-        }
-        if (modifiers.ctrlEnabled()) {
-          if (!name.empty()) {
-            name += "|";
-          }
-          name += "Ctrl";
-        }
-        if (modifiers.shiftEnabled()) {
-          if (!name.empty()) {
-            name += "|";
-          }
-          name += "Shift";
-        }
-        if (modifiers.numpadEnabled()) {
-          if (!name.empty()) {
-            name += "|";
-          }
-          name += "Numpad";
-        }
+      void
+      KeyModifier::registerKeyMode(const modifier::Mode& mode) {
+        // Register the name corresponding to the input mode with false value and default
+        // value.
+        int id = addNamedBit(modifier::getNameFromMode(mode), false, false);
 
-        if (name.empty()) {
-          name = "None";
-        }
-
-        return name;
+        // Register the returned index to easily retrieve its value later on.
+        m_modesToIDs[mode] = id;
       }
 
     }
   }
-}
-
-inline
-std::ostream&
-operator<<(const sdl::core::engine::KeyModifier& modifier, std::ostream& out) noexcept {
-  return operator<<(out, modifier);
-}
-
-inline
-std::ostream&
-operator<<(std::ostream& out, const sdl::core::engine::KeyModifier& modifier) noexcept {
-  out << modifier.toString();
-  return out;
 }
 
 #endif    /* KEY_MODIFIER_HXX */
