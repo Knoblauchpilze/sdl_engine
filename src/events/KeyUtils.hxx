@@ -260,31 +260,31 @@ namespace sdl {
         KeyModifier mods;
 
         if (m & KMOD_LALT) {
-          mods.addModifier(KeyModifier::Modifier::LeftAlt);
+          mods |= KeyModifier(modifier::Mode::LeftAlt);
         }
         if (m & KMOD_LCTRL) {
-          mods.addModifier(KeyModifier::Modifier::LeftCtrl);
+          mods |= KeyModifier(modifier::Mode::LeftCtrl);
         }
         if (m & KMOD_LSHIFT) {
-          mods.addModifier(KeyModifier::Modifier::LeftShift);
+          mods |= KeyModifier(modifier::Mode::LeftShift);
         }
 
         if (m & KMOD_RALT) {
-          mods.addModifier(KeyModifier::Modifier::RightAlt);
+          mods |= KeyModifier(modifier::Mode::RightAlt);
         }
         if (m & KMOD_RCTRL) {
-          mods.addModifier(KeyModifier::Modifier::RightCtrl);
+          mods |= KeyModifier(modifier::Mode::RightCtrl);
         }
         if (m & KMOD_RSHIFT) {
-          mods.addModifier(KeyModifier::Modifier::RightShift);
+          mods |= KeyModifier(modifier::Mode::RightShift);
         }
 
 
         if (m & KMOD_CAPS) {
-          mods.addModifier(KeyModifier::Modifier::Caps);
+          mods |= KeyModifier(modifier::Mode::Caps);
         }
         if (m & KMOD_NUM) {
-          mods.addModifier(KeyModifier::Modifier::Num);
+          mods |= KeyModifier(modifier::Mode::Num);
         }
 
         // Return the built-in modifiers.

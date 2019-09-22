@@ -14,7 +14,7 @@ namespace sdl {
         m_key(event),
 
         m_converted(Key::None),
-        m_mods(KeyModifier::None)
+        m_mods()
       {
         init();
       }
