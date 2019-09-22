@@ -130,10 +130,10 @@ namespace sdl {
 }
 
 std::ostream&
-operator<<(const sdl::core::engine::Color& color, std::ostream& out) noexcept;
+operator<<(std::ostream& out, const sdl::core::engine::Color& color) noexcept;
 
 std::ostream&
-operator<<(std::ostream& out, const sdl::core::engine::Color& color) noexcept;
+operator<<(const sdl::core::engine::Color& color, std::ostream& out) noexcept;
 
 # include "Color.hxx"
 

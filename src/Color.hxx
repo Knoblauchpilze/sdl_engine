@@ -175,15 +175,15 @@ namespace sdl {
 
 inline
 std::ostream&
-operator<<(const sdl::core::engine::Color& color, std::ostream& out) noexcept {
-  return operator<<(out, color);
+operator<<(std::ostream& out, const sdl::core::engine::Color& color) noexcept {
+  out << color.toString();
+  return out;
 }
 
 inline
 std::ostream&
-operator<<(std::ostream& out, const sdl::core::engine::Color& color) noexcept {
-  out << color.toString();
-  return out;
+operator<<(const sdl::core::engine::Color& color, std::ostream& out) noexcept {
+  return operator<<(out, color);
 }
 
 #endif    /* COLOR_HXX */
