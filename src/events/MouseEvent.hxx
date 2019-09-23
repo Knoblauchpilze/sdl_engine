@@ -60,7 +60,9 @@ namespace sdl {
           }
         }
 
-        // TODO: The state can actually hold several buttons.
+        // TODO: The state can actually hold several buttons: maybe transform this into a flag ?
+        // TODO: We should also maybe improve a bit the `CoreFlag` class to avoid even more duplication
+        // by templating it on enum class directly ?
         if (m_motion != nullptr) {
           if (m_motion->state == SDL_BUTTON_LEFT) {
             return Button::LeftButton;
