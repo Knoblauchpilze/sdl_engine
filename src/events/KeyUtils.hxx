@@ -260,31 +260,31 @@ namespace sdl {
         KeyModifier mods;
 
         if (m & KMOD_LALT) {
-          mods |= KeyModifier(modifier::Mode::LeftAlt);
+          mods.set(modifier::Mode::LeftAlt);
         }
         if (m & KMOD_LCTRL) {
-          mods |= KeyModifier(modifier::Mode::LeftCtrl);
+          mods.set(modifier::Mode::LeftCtrl);
         }
         if (m & KMOD_LSHIFT) {
-          mods |= KeyModifier(modifier::Mode::LeftShift);
+          mods.set(modifier::Mode::LeftShift);
         }
 
         if (m & KMOD_RALT) {
-          mods |= KeyModifier(modifier::Mode::RightAlt);
+          mods.set(modifier::Mode::RightAlt);
         }
         if (m & KMOD_RCTRL) {
-          mods |= KeyModifier(modifier::Mode::RightCtrl);
+          mods.set(modifier::Mode::RightCtrl);
         }
         if (m & KMOD_RSHIFT) {
-          mods |= KeyModifier(modifier::Mode::RightShift);
+          mods.set(modifier::Mode::RightShift);
         }
 
 
         if (m & KMOD_CAPS) {
-          mods |= KeyModifier(modifier::Mode::Caps);
+          mods.set(modifier::Mode::Caps);
         }
         if (m & KMOD_NUM) {
-          mods |= KeyModifier(modifier::Mode::Num);
+          mods.set(modifier::Mode::Num);
         }
 
         // Return the built-in modifiers.
@@ -346,7 +346,7 @@ namespace sdl {
       {
         // If the key is not alpha numeric, we can't do much.
         // We also need to consider the input modifiers.
-        const char offset = (m.shiftEnabled() ? ' ' : '\0');
+        const char offset = (shiftEnabled(m) ? ' ' : '\0');
 
         switch (k) {
           case Key::Zero:
