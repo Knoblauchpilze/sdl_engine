@@ -5,27 +5,62 @@
 # include <SDL2/SDL.h>
 # include <maths_utils/Size.hh>
 # include <maths_utils/Vector2.hh>
+# include <core_utils/CoreFlag.hh>
 # include "Event.hh"
 
 namespace sdl {
   namespace core {
     namespace engine {
 
+      namespace mouse {
+
+        /**
+         * @brief - Mouse buttons handled by this kind of event.
+         */
+        enum class Button {
+          Left        = 0,
+          Right       = 1,
+          Middle      = 2,
+          ValuesCount = 3
+        };
+
+        /**
+         * @brief - Retrieves a human readable name from the input button.
+         * @param button - an enumeration value containing a button whose
+         *                 name should be retrieved.
+         * @return - a string describing the button provided as argument.
+         */
+        std::string
+        getNameFromButton(const Button& button) noexcept;
+
+        /**
+         * @brief - Enumeration which describes the direction of scrolling.
+         */
+        enum class Direction {
+          NoScroll,
+          Up,
+          Down
+        };
+
+        /**
+         * @brief - Retrieves a human readable name from the input scroll
+         *          direction.
+         * @param button - an enumeration value containing a scroll direction
+         *                 to interpret.
+         * @return - a string describing the scroll direction provided as
+         *           argument.
+         */
+        std::string
+        getNameFromScroll(const Direction& direction) noexcept;
+
+        /**
+         * @brief - Flag describing the buttons pressed at any moment.
+         */
+        using Buttons = utils::CoreFlag<mouse::Button>;
+
+      }
+
       class MouseEvent: public Event {
-        public:
-
-          enum class Button {
-            NoButton,
-            LeftButton,
-            RightButton,
-            MiddleButton
-          };
-
-          enum class Direction {
-            NoScroll,
-            Up,
-            Down
-          };
 
         public:
 
@@ -40,8 +75,27 @@ namespace sdl {
           void
           populateFromEngineData(Engine& engine) override;
 
-          Button
-          getButton() const noexcept;
+          /**
+           * @brief - Used to retrieve the current state of all the buttons
+           *          of the mouse. In the case of a mouse pressed or released
+           *          event it will *also* contain the pressed or released
+           *          button.
+           *          In the case of a mouse motion it will contain all the
+           *          buttons pressed at the moment of the motion.
+           * @return - the state of all the buttons of the mouse.
+           */
+          mouse::Buttons
+          getButtons() const noexcept;
+
+          /**
+           * @brief - Returns the button associated to this event. Mostly useful
+           *          in the case of a mouse button pressed or released, otherwise
+           *          it throws an exception.
+           * @return - the button associated to this mouse event in the case of a
+           *           mouse button pressed or released.
+           */
+          mouse::Button
+          getButton() const;
 
           bool
           isPress() const noexcept;
@@ -63,7 +117,7 @@ namespace sdl {
           utils::Vector2i
           getMove() const noexcept;
 
-          Direction
+          mouse::Direction
           getDirection() const noexcept;
 
           utils::Vector2i
@@ -123,6 +177,17 @@ namespace sdl {
           void
           initWheel();
 
+          /**
+           * @brief - Used to populate the internal `m_buttons` flag from the input value describing
+           *          the `API` information about the buttons currently being pressed.
+           *          We use the provided value which is some sort of raw flag of all the buttons as
+           *          described by the `API`.
+           * @param apiButtons - some sort of flag describing the buttons pressed as reported by the
+           *                     underlying `API`.
+           */
+          void
+          initButtonFromState(std::uint32_t apiButtons);
+
         private:
 
           std::shared_ptr<SDL_MouseButtonEvent> m_button;
@@ -130,6 +195,13 @@ namespace sdl {
           std::shared_ptr<SDL_MouseWheelEvent> m_wheel;
 
           utils::Vector2f m_mousePosition;
+
+          /**
+           * @brief - Describes the mouse button pressed as described by the
+           *          underlying API. Several mouse buttons can be active at
+           *          the same time.
+           */
+          mouse::Buttons m_buttons;
 
       };
 
@@ -139,5 +211,6 @@ namespace sdl {
 }
 
 # include "MouseEvent.hxx"
+# include "MouseEvent_specialization.hxx"
 
 #endif    /* MOUSE_EVENT_HH */

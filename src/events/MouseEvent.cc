@@ -46,7 +46,7 @@ namespace sdl {
         const MouseEvent& e = dynamic_cast<const MouseEvent&>(other);
         return
           Event::equal(other) &&
-          getButton() == e.getButton() &&
+          getButtons() == e.getButtons() &&
           getMousePosition() == e.getMousePosition() &&
           getMove() == e.getMove() &&
           getDirection() == e.getDirection() &&
@@ -94,6 +94,13 @@ namespace sdl {
           );
         }
 
+        // Determine the button which are pressed as described in the input event:
+        // in the case of a button there's at most on button pressed (which is what
+        // is expected) compared to the case of a mouse motion where a state is used
+        // leading to potentially several buttons pressed.
+        // We want to 
+        initButtonFromState(SDL_GetMouseState(nullptr, nullptr));
+
         Event::Type type = Event::Type::MouseButtonPress;
         if (m_button->type == SDL_MOUSEBUTTONUP) {
           type = Event::Type::MouseButtonRelease;
@@ -139,6 +146,10 @@ namespace sdl {
           );
         }
 
+        // Determine the button which are pressed as described in the input event
+        // using the dedicated handler.
+        initButtonFromState(m_motion->state);
+
         // A mouse motion event can be one of two kinds: either a simple mouse motion or
         // a mouse drag event. The mouse drag event occurs when the mouse is moved while
         // a button is pressed. The `SDL` conveniently allows to determine which button
@@ -171,6 +182,23 @@ namespace sdl {
         setType(Event::Type::MouseWheel);
 
         setSDLWinID(m_wheel->windowID);
+      }
+
+      void
+      MouseEvent::initButtonFromState(std::uint32_t apiButtons) {
+        // Clear any existing flags.
+        m_buttons.clear();
+
+        // Check each button.
+        if (apiButtons & SDL_BUTTON(SDL_BUTTON_LEFT)) {
+          m_buttons |= mouse::Button::Left;
+        }
+        if (apiButtons & SDL_BUTTON(SDL_BUTTON_RIGHT)) {
+          m_buttons |= mouse::Button::Right;
+        }
+        if (apiButtons & SDL_BUTTON(SDL_BUTTON_MIDDLE)) {
+          m_buttons |= mouse::Button::Middle;
+        }
       }
 
     }

@@ -7,13 +7,48 @@ namespace sdl {
   namespace core {
     namespace engine {
 
+      namespace mouse {
+
+        inline
+        std::string
+        getNameFromButton(const Button& button) noexcept {
+          switch (button) {
+            case Button::Left:
+              return std::string("Left");
+            case Button::Right:
+              return std::string("Right");
+            case Button::Middle:
+              return std::string("Middle");
+            default:
+              return std::string("Unknown");
+          }
+        }
+
+        inline
+        std::string
+        getNameFromScroll(const Direction& direction) noexcept {
+          switch (direction) {
+            case Direction::NoScroll:
+              return std::string("NoScroll");
+            case Direction::Up:
+              return std::string("Up");
+            case Direction::Down:
+              return std::string("Down");
+            default:
+              return std::string("Unknown");
+          }
+        }
+
+      }
+
       inline
       MouseEvent::MouseEvent(const SDL_MouseButtonEvent& event):
         Event(Event::Type::None, nullptr, std::string("mouse_button_") + std::to_string(event.button)),
         m_button(std::make_shared<SDL_MouseButtonEvent>(event)),
         m_motion(nullptr),
         m_wheel(nullptr),
-        m_mousePosition()
+        m_mousePosition(),
+        m_buttons()
       {
         init();
       }
@@ -24,7 +59,8 @@ namespace sdl {
         m_button(nullptr),
         m_motion(std::make_shared<SDL_MouseMotionEvent>(event)),
         m_wheel(nullptr),
-        m_mousePosition()
+        m_mousePosition(),
+        m_buttons()
       {
         init();
       }
@@ -35,7 +71,8 @@ namespace sdl {
         m_button(nullptr),
         m_motion(nullptr),
         m_wheel(std::make_shared<SDL_MouseWheelEvent>(event)),
-        m_mousePosition()
+        m_mousePosition(),
+        m_buttons()
       {
         init();
       }
@@ -44,38 +81,32 @@ namespace sdl {
       MouseEvent::~MouseEvent() {}
 
       inline
-      MouseEvent::Button
-      MouseEvent::getButton() const noexcept {
-        // We can retrieve a button either if the event corresponds to a mouse pressed
-        // or released or if the mouse is being dragged.
+      mouse::Buttons
+      MouseEvent::getButtons() const noexcept {
+        return m_buttons;
+      }
+
+      inline
+      mouse::Button
+      MouseEvent::getButton() const {
+        // Check whether a button is available.
         if (m_button != nullptr) {
           if (m_button->button == SDL_BUTTON_LEFT) {
-            return Button::LeftButton;
+            return mouse::Button::Left;
           }
           if (m_button->button == SDL_BUTTON_RIGHT) {
-            return Button::RightButton;
+            return mouse::Button::Right;
           }
           if (m_button->button == SDL_BUTTON_MIDDLE) {
-            return Button::MiddleButton;
+            return mouse::Button::Middle;
           }
         }
 
-        // TODO: The state can actually hold several buttons: maybe transform this into a flag ?
-        // TODO: We should also maybe improve a bit the `CoreFlag` class to avoid even more duplication
-        // by templating it on enum class directly ?
-        if (m_motion != nullptr) {
-          if (m_motion->state == SDL_BUTTON_LEFT) {
-            return Button::LeftButton;
-          }
-          if (m_motion->state == SDL_BUTTON_RIGHT) {
-            return Button::RightButton;
-          }
-          if (m_motion->state == SDL_BUTTON_MIDDLE) {
-            return Button::MiddleButton;
-          }
-        }
-
-        return Button::NoButton;
+        // Either no button is defined or not a valid button anyway.
+        error(
+          std::string("Cannot retrieve button associated to event ") + Event::getNameFromType(getType()),
+          std::string("No such button")
+        );
       }
 
       inline
@@ -111,18 +142,18 @@ namespace sdl {
       }
 
       inline
-      MouseEvent::Direction
+      mouse::Direction
       MouseEvent::getDirection() const noexcept {
         if (m_wheel != nullptr) {
           if (getScroll().y() > 0) {
-            return Direction::Up;
+            return mouse::Direction::Up;
           }
           if (getScroll().y() < 0) {
-            return Direction::Down;
+            return mouse::Direction::Down;
           }
         }
 
-        return Direction::NoScroll;
+        return mouse::Direction::NoScroll;
       }
 
       inline
