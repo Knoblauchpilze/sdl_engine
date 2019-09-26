@@ -327,6 +327,8 @@ namespace sdl {
 
           // Check the event type and dispatch to the corresponding handler.
           switch (e->getType()) {
+            case Event::Type::Drop:
+              return dropEvent(*std::dynamic_pointer_cast<DropEvent>(e));
             case Event::Type::Enter:
               return enterEvent(*std::dynamic_pointer_cast<EnterEvent>(e));
             case Event::Type::FocusIn:

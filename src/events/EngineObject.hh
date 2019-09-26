@@ -280,6 +280,9 @@ namespace sdl {
           handleEvent(EventShPtr e);
 
           virtual bool
+          dropEvent(const DropEvent& e);
+
+          virtual bool
           enterEvent(const EnterEvent& e);
 
           virtual bool

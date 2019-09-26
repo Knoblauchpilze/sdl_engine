@@ -146,6 +146,13 @@ namespace sdl {
 
       inline
       bool
+      EngineObject::dropEvent(const DropEvent& /*e*/) {
+        // Empty implementation.
+        return true;
+      }
+
+      inline
+      bool
       EngineObject::enterEvent(const EnterEvent& /*e*/) {
         // Empty implementation.
         return true;
