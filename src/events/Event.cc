@@ -14,6 +14,9 @@ namespace sdl {
           case Type::None:
             name = std::string("\"none\"");
             break;
+          case Type::Drop:
+            name = std::string("\"drop\"");
+            break;
           case Type::Enter:
             name = std::string("\"enter\"");
             break;

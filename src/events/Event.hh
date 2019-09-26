@@ -20,6 +20,7 @@ namespace sdl {
           // Describes the available type of events.
           enum class Type {
             None,                //<! - Not an event
+            Drop,                //<! - A drag and drop action is finished.
             Enter,               //<! - Mouse enter object's boundaries.
             FocusIn,             //<! - Object gains keyboard focus.
             FocusOut,            //<! - Object loses keyboard focus.

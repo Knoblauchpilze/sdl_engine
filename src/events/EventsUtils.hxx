@@ -58,6 +58,7 @@ namespace sdl {
         // Among all the possible events types, we set the following
         // precedence:
         // None               Not defined
+        // Drop               Not defined
         // Enter              5
         // FocusIn            7
         // FocusOut           8

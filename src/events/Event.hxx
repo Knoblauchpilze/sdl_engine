@@ -41,6 +41,7 @@ namespace sdl {
       Event::Types
       Event::getAllEvents() noexcept {
         return Types{
+          Type::Drop,
           Type::Enter,
           Type::FocusIn,
           Type::FocusOut,
