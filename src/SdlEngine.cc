@@ -396,6 +396,27 @@ namespace sdl {
         const utils::Sizef size = win->getSize();
 
         event.transformForWindow(size);
+
+        // We also want to update the position of the last click registered in the engine. This
+        // will be particularly helpful to help provide context to some events like a mouse drag
+        // for example.
+        // Several cases may arise:
+        //  - if no clicks have been registered so far we need to update the last click position
+        //    if the event is a click.
+        //  - we should also update the last click if the event is a click.
+        //  - in any case we should provide the last click position to the event if any is valid.
+        if (event.getType() == Event::Type::MouseButtonPress) {
+          if (m_lastClickPosition == nullptr) {
+            m_lastClickPosition = std::make_shared<utils::Vector2f>(event.getMousePosition());
+          }
+          else {
+            *m_lastClickPosition = event.getMousePosition();
+          }
+        }
+
+        if (m_lastClickPosition != nullptr) {
+          event.updateLastClickPosition(*m_lastClickPosition);
+        }
       }
 
       void

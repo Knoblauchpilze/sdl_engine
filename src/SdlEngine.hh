@@ -7,6 +7,7 @@
 # include <unordered_map>
 # include <core_utils/CoreObject.hh>
 # include <maths_utils/Size.hh>
+# include <maths_utils/Vector2.hh>
 # include "Engine.hh"
 # include "Window.hh"
 # include "Texture.hh"
@@ -223,6 +224,15 @@ namespace sdl {
           SDLWinToWindows m_winIDToWindows;
           TexturesMap m_textures;
           FontsMap m_fonts;
+
+          /**
+           * @brief - Registers the last position of the mouse when a click was
+           *          detected. This value is fed to mouse events upon populating
+           *          the engine's data.
+           *          This value is a pointer to allow for easy detection when no
+           *          clicks have been registered so far.
+           */
+          std::shared_ptr<utils::Vector2f> m_lastClickPosition;
       };
 
       using SdlEngineShPtr = std::shared_ptr<SdlEngine>;

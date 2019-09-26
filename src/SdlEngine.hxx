@@ -20,7 +20,9 @@ namespace sdl {
         m_windows(),
         m_winIDToWindows(),
         m_textures(),
-        m_fonts()
+        m_fonts(),
+
+        m_lastClickPosition(nullptr)
       {
         setService(std::string("engine"));
 
