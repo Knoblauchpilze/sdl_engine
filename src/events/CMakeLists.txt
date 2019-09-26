@@ -5,6 +5,7 @@ set (SOURCES
   ${CMAKE_CURRENT_SOURCE_DIR}/EngineObject.cc
   ${CMAKE_CURRENT_SOURCE_DIR}/EventsDispatcher.cc
   ${CMAKE_CURRENT_SOURCE_DIR}/Event.cc
+  ${CMAKE_CURRENT_SOURCE_DIR}/DropEvent.cc
   ${CMAKE_CURRENT_SOURCE_DIR}/EnterEvent.cc
   ${CMAKE_CURRENT_SOURCE_DIR}/FocusEvent.cc
   ${CMAKE_CURRENT_SOURCE_DIR}/KeyEvent.cc
