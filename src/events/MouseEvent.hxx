@@ -44,10 +44,14 @@ namespace sdl {
       inline
       MouseEvent::MouseEvent(const SDL_MouseButtonEvent& event):
         Event(Event::Type::None, nullptr, std::string("mouse_button_") + std::to_string(event.button)),
+
         m_button(std::make_shared<SDL_MouseButtonEvent>(event)),
         m_motion(nullptr),
         m_wheel(nullptr),
+
+        m_initMousePosition(),
         m_mousePosition(),
+
         m_buttons()
       {
         init();
@@ -56,10 +60,14 @@ namespace sdl {
       inline
       MouseEvent::MouseEvent(const SDL_MouseMotionEvent& event):
         Event(Event::Type::None, nullptr, std::string("mouse_motion_") + std::to_string(event.state)),
+
         m_button(nullptr),
         m_motion(std::make_shared<SDL_MouseMotionEvent>(event)),
         m_wheel(nullptr),
+
+        m_initMousePosition(),
         m_mousePosition(),
+
         m_buttons()
       {
         init();
@@ -68,10 +76,14 @@ namespace sdl {
       inline
       MouseEvent::MouseEvent(const SDL_MouseWheelEvent& event):
         Event(Event::Type::None, nullptr, std::string("mouse_wheel_") + std::to_string(event.direction)),
+
         m_button(nullptr),
         m_motion(nullptr),
         m_wheel(std::make_shared<SDL_MouseWheelEvent>(event)),
+
+        m_initMousePosition(),
         m_mousePosition(),
+
         m_buttons()
       {
         init();
@@ -123,6 +135,12 @@ namespace sdl {
           getType() == Event::Type::MouseButtonRelease ||
           getType() == Event::Type::MouseDoubleClick
         ;
+      }
+
+      inline
+      utils::Vector2f
+      MouseEvent::getInitMousePosition() const noexcept {
+        return m_initMousePosition;
       }
 
       inline

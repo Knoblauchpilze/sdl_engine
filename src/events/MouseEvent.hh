@@ -104,6 +104,21 @@ namespace sdl {
           isRelease() const noexcept;
 
           /**
+           * @bried - Retrieves the position of the mouse at the beginning of the
+           *          current action. Most of the time this value will be identical
+           *          to the one returned by `getMousePosition` but in the case of
+           *          a drag evetn for example, this position will be keeping the
+           *          position of the cursor at the moment the mouse started to be
+           *          dragged: this allows to easily perform some update while the
+           *          mouse is being dragged.
+           * @return - the position of the mouse at the beginning of the current
+           *           action. Usually equal to the value returned by the method
+           *           `getMousePosition` but might differ in some cases.
+           */
+          utils::Vector2f
+          getInitMousePosition() const noexcept;
+
+          /**
            * @brief - Returns the mouse position as a vector expressed in the
            *          corresponding window's coordinate system.
            *          Note that all but the mouse wheel events have a position
@@ -122,6 +137,18 @@ namespace sdl {
 
           utils::Vector2i
           getScroll() const noexcept;
+
+          /**
+           * @brief - Used to update the last position of the the mouse when a click
+           *          was detected. This allows to update internally the attribute
+           *          `m_mouseInitPosition`.
+           *          Note that the input position is expected to be valid in the
+           *          window associated to this event: no further conversion will be
+           *          performed on the provided value.
+           * @param click - the last position of the mouse when a click was detected.
+           */
+          void
+          updateLastClickPosition(const utils::Vector2f& click) noexcept;
 
           /**
            * @brief - Used to transform the internal mouse position to
@@ -194,6 +221,14 @@ namespace sdl {
           std::shared_ptr<SDL_MouseMotionEvent> m_motion;
           std::shared_ptr<SDL_MouseWheelEvent> m_wheel;
 
+          /**
+           * @brief - The following attribute are used to keep track of the position of the mouse. The
+           *          `m_mousePosition` is always populated with the current position of the cursor
+           *          while `m_initMousePosition` is populated with the position of the mouse at the
+           *          beginning of the current action. It is equivalent to `m_mousePosition` in most
+           *          cases but can differ for example in the event of the mouse being dragged.
+           */
+          utils::Vector2f m_initMousePosition;
           utils::Vector2f m_mousePosition;
 
           /**

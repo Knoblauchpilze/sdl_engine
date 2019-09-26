@@ -12,6 +12,21 @@ namespace sdl {
       }
 
       void
+      MouseEvent::updateLastClickPosition(const utils::Vector2f& click) noexcept {
+        // We want to update the last click position only in the case of a drag
+        // event. In any other case the last mouse position should be set to be
+        // equal to the value returned by `getMousePosition`.
+
+        if (getType() != Event::Type::MouseDrag) {
+          m_initMousePosition = getMousePosition();
+
+          return;
+        }
+
+        m_initMousePosition = click;
+      }
+
+      void
       MouseEvent::transformForWindow(const utils::Sizef& size) noexcept {
         // Can only do that if the event is related to a mouse position at all.
         // This excludes _de facto_ the mouse wheel event.
