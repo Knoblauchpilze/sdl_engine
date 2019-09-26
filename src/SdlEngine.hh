@@ -145,6 +145,9 @@ namespace sdl {
           populateEvent(Event& event) override;
 
           void
+          populateEvent(DropEvent& event) override;
+
+          void
           populateEvent(EnterEvent& event) override;
 
           void
@@ -186,6 +189,16 @@ namespace sdl {
            */
           utils::Uuid
           populateWindowIDEvent(Event& event);
+
+          /**
+           * @brief - Used to update the internal mouse state kept by this
+           *          engine with the input data provided by the mouse event
+           *          in argument.
+           * @param e - the mouse event to use to update the internal mouse
+           *            state.
+           */
+          void
+          updateMouseState(MouseEvent& e);
 
           utils::Uuid
           registerTextureForWindow(const utils::Uuid& tex,
@@ -233,6 +246,12 @@ namespace sdl {
            *          clicks have been registered so far.
            */
           std::shared_ptr<utils::Vector2f> m_lastClickPosition;
+
+          /**
+           * @brief - Set to `true` if the mouse is being dragged, and to `false`
+           *          otherwise.
+           */
+          bool m_mouseDragged;
       };
 
       using SdlEngineShPtr = std::shared_ptr<SdlEngine>;

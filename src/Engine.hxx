@@ -15,6 +15,12 @@ namespace sdl {
 
       inline
       void
+      Engine::populateEvent(DropEvent& /*event*/) {
+        // Empty implementation.
+      }
+
+      inline
+      void
       Engine::populateEvent(EnterEvent& /*event*/) {
         // Empty implementation.
       }

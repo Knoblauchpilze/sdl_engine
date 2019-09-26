@@ -177,6 +177,12 @@ namespace sdl {
 
       inline
       void
+      EngineDecorator::populateEvent(DropEvent& event) {
+        m_engine->populateEvent(event);
+      }
+
+      inline
+      void
       EngineDecorator::populateEvent(EnterEvent& event) {
         m_engine->populateEvent(event);
       }

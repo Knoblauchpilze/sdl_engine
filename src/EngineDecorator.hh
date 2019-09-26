@@ -130,6 +130,9 @@ namespace sdl {
           populateEvent(Event& event) override;
 
           void
+          populateEvent(DropEvent& event) override;
+
+          void
           populateEvent(EnterEvent& event) override;
 
           void

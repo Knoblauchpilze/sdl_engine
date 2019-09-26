@@ -336,6 +336,12 @@ namespace sdl {
       }
 
       void
+      SdlEngine::populateEvent(DropEvent& event) {
+        // Populate the window id.
+        populateWindowIDEvent(event);
+      }
+
+      void
       SdlEngine::populateEvent(EnterEvent& event) {
         // Populate the window id.
         populateWindowIDEvent(event);
@@ -397,26 +403,8 @@ namespace sdl {
 
         event.transformForWindow(size);
 
-        // We also want to update the position of the last click registered in the engine. This
-        // will be particularly helpful to help provide context to some events like a mouse drag
-        // for example.
-        // Several cases may arise:
-        //  - if no clicks have been registered so far we need to update the last click position
-        //    if the event is a click.
-        //  - we should also update the last click if the event is a click.
-        //  - in any case we should provide the last click position to the event if any is valid.
-        if (event.getType() == Event::Type::MouseButtonPress) {
-          if (m_lastClickPosition == nullptr) {
-            m_lastClickPosition = std::make_shared<utils::Vector2f>(event.getMousePosition());
-          }
-          else {
-            *m_lastClickPosition = event.getMousePosition();
-          }
-        }
-
-        if (m_lastClickPosition != nullptr) {
-          event.updateLastClickPosition(*m_lastClickPosition);
-        }
+        // Update the mouse state based on the data provided by this event.
+        updateMouseState(event);
       }
 
       void
@@ -498,6 +486,53 @@ namespace sdl {
         event.setWindowID(winID);
 
         return winID;
+      }
+
+      void
+      SdlEngine::updateMouseState(MouseEvent& e) {
+
+
+        // We also want to update the position of the last click registered in the engine. This
+        // will be particularly helpful to help provide context to some events like a mouse drag
+        // for example.
+        // Several cases may arise:
+        //  - if no clicks have been registered so far we need to update the last click position
+        //    if the event is a click.
+        //  - we should also update the last click if the event is a click.
+        //  - in any case we should provide the last click position to the event if any is valid.
+        if (e.getType() == Event::Type::MouseButtonPress) {
+          if (m_lastClickPosition == nullptr) {
+            m_lastClickPosition = std::make_shared<utils::Vector2f>(e.getMousePosition());
+          }
+          else {
+            *m_lastClickPosition = e.getMousePosition();
+          }
+        }
+
+        if (m_lastClickPosition != nullptr) {
+          e.updateLastClickPosition(*m_lastClickPosition);
+        }
+
+        // Set the internal dragged state if needed.
+        // TODO: We should probably handle some sort of `MouseState` class which would make things
+        // easier to add more data to be tracked based on events.
+        if (e.getType() == Event::Type::MouseDrag) {
+          if (!m_mouseDragged) {
+            m_mouseDragged = true;
+          }
+        }
+        else {
+          // If the mouse was currently being dragged we need to generate a drop event with the
+          // current mouse position.
+          if (m_mouseDragged && e.getType() == Event::Type::MouseButtonRelease) {
+            // TODO: We should find a way to produce a `Drop` event from here. We still want to
+            // keep this event of `MouseButtonRelease` though.
+            // TODO: Also we should check that the drag is related to a specific button. The
+            // `m_mouseDragged` should probably be a map where any button which is dragged is
+            // associated with the position where it has started to be dragged.
+            m_mouseDragged = false;
+          }
+        }
       }
 
     }
