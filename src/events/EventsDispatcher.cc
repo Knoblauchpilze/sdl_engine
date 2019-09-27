@@ -92,18 +92,16 @@ namespace sdl {
 
       int
       EventsDispatcher::consumeSystemEvents() {
-        // Poll events until we deplete the queue.
-        bool eventsStillInQueue = true;
-
         // Start time measurement.
         auto start = std::chrono::steady_clock::now();
 
-        while (eventsStillInQueue) {
-          EventShPtr event = m_engine->pollEvent(eventsStillInQueue);
+        // Pull all events available in the queue.
+        std::vector<EventShPtr> events = m_engine->pollEvents();
 
-          // Enqueue this event if it is relevant.
-          if (eventsStillInQueue && event != nullptr && event->getType() != Event::Type::None) {
-            postEvent(event);
+        // Enqueue each event if it is relevant.
+        for (unsigned id = 0u ; id < events.size() ; ++id) {
+          if (events[id] != nullptr && events[id]->getType() != Event::Type::None) {
+            postEvent(events[id]);
           }
         }
 

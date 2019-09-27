@@ -304,29 +304,35 @@ namespace sdl {
         }
       }
 
-      EventShPtr
-      SdlEngine::pollEvent(bool& moreEvents) {
-        // Poll the next event in the queue.
+      std::vector<EventShPtr>
+      SdlEngine::pollEvents() {
+        // Poll all events available in the queue.
         SDL_Event sdlEvent;
-        moreEvents = SDL_PollEvent(&sdlEvent);
+        bool moreEvents = true;
 
-        // Return an event from the retrieved event if any.
-        if (moreEvents) {
-          // Create this event.
-          EventShPtr event = EventFactory::create(sdlEvent);
+        std::vector<EventShPtr> events;
 
-          // Check whether the event could be created.
-          if (event != nullptr) {
-            // Populate additional data for this event if needed.
-            event->populateFromEngineData(*this);
+        while (moreEvents) {
+          // Poll the next event in the queue.
+          moreEvents = SDL_PollEvent(&sdlEvent);
+
+          // If an event is available store it in the return array.
+          if (moreEvents) {
+            // Create this event.
+            EventShPtr event = EventFactory::create(sdlEvent);
+
+            // Check whether the event could be created.
+            if (event != nullptr) {
+              // Populate additional data for this event if needed.
+              event->populateFromEngineData(*this);
+
+              events.push_back(event);
+            }
           }
-
-          // Return this event.
-          return event;
         }
 
-        // Return null as there's no event available right now.
-        return nullptr;
+        // Return the list of events accumulated from the underlying `API`.
+        return events;
       }
 
       void

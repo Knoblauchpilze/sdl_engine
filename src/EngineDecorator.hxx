@@ -164,9 +164,9 @@ namespace sdl {
       }
 
       inline
-      EventShPtr
-      EngineDecorator::pollEvent(bool& moreEvents) {
-        return m_engine->pollEvent(moreEvents);
+      std::vector<EventShPtr>
+      EngineDecorator::pollEvents() {
+        return m_engine->pollEvents();
       }
 
       inline

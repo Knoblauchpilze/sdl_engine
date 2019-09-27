@@ -123,8 +123,8 @@ namespace sdl {
           void
           destroyColoredFont(const utils::Uuid& uuid) override;
 
-          EventShPtr
-          pollEvent(bool& moreEvents) override;
+          std::vector<EventShPtr>
+          pollEvents() override;
 
           void
           populateEvent(Event& event) override;
