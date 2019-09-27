@@ -13,6 +13,7 @@
 # include "Texture.hh"
 # include "RendererState.hh"
 # include "FontFactory.hh"
+# include "MouseState.hh"
 
 namespace sdl {
   namespace core {
@@ -190,16 +191,6 @@ namespace sdl {
           utils::Uuid
           populateWindowIDEvent(Event& event);
 
-          /**
-           * @brief - Used to update the internal mouse state kept by this
-           *          engine with the input data provided by the mouse event
-           *          in argument.
-           * @param e - the mouse event to use to update the internal mouse
-           *            state.
-           */
-          void
-          updateMouseState(MouseEvent& e);
-
           utils::Uuid
           registerTextureForWindow(const utils::Uuid& tex,
                                    const utils::Uuid& win);
@@ -239,19 +230,12 @@ namespace sdl {
           FontsMap m_fonts;
 
           /**
-           * @brief - Registers the last position of the mouse when a click was
-           *          detected. This value is fed to mouse events upon populating
-           *          the engine's data.
-           *          This value is a pointer to allow for easy detection when no
-           *          clicks have been registered so far.
+           * @brief - Holds the current mouse state as computed from the events
+           *          retrieved so far from the underlying `API`. This state is
+           *          updated upon finding some events in order to keep a value
+           *          up-to-date relatively to the real state of the mouse.
            */
-          std::shared_ptr<utils::Vector2f> m_lastClickPosition;
-
-          /**
-           * @brief - Set to `true` if the mouse is being dragged, and to `false`
-           *          otherwise.
-           */
-          bool m_mouseDragged;
+          MouseState m_mouseState;
       };
 
       using SdlEngineShPtr = std::shared_ptr<SdlEngine>;

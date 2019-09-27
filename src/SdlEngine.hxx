@@ -22,8 +22,7 @@ namespace sdl {
         m_textures(),
         m_fonts(),
 
-        m_lastClickPosition(nullptr),
-        m_mouseDragged(false)
+        m_mouseState()
       {
         setService(std::string("engine"));
 
