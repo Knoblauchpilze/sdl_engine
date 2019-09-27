@@ -119,6 +119,9 @@ namespace sdl {
           std::string("Cannot retrieve button associated to event ") + Event::getNameFromType(getType()),
           std::string("No such button")
         );
+
+        // Make the compiler happy even though this statement is never reached.
+        return mouse::Button::Left;
       }
 
       inline
