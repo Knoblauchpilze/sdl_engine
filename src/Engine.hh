@@ -173,8 +173,8 @@ namespace sdl {
           virtual void
           destroyColoredFont(const utils::Uuid& uuid) = 0;
 
-          virtual EventShPtr
-          pollEvent(bool& moreEvents) = 0;
+          virtual std::vector<EventShPtr>
+          pollEvents() = 0;
 
           virtual void
           populateEvent(Event& event);
