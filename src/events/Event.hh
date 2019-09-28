@@ -129,6 +129,24 @@ namespace sdl {
           getType() const noexcept;
 
           /**
+           * @brief - Returns `true` if this event is a mouse event (and thus can be
+           *          safely casted to an instance of a `MouseEvent`) and `false`
+           *          otherwise.
+           * @return - `true` if the event is a mouse event and `false` otherwise.
+           */
+          bool
+          isMouseEvent() const noexcept;
+
+          /**
+           * @brief - Returns `true` if this event is a keyboard related event (and
+           *          thus can be safely casted to an instance of a `KeyboardEvent`)
+           *          and `false` otherwise.
+           * @return - `true` if the event is a keyboard event and `false` otherwise.
+           */
+          bool
+          isKeyboardEvent() const noexcept;
+
+          /**
            * @brief - Returns the timestamp for this event. A timestamp is a timed
            *          indication of the creation date of the event. It allows to
            *          compare two events to determine which one is older than the

@@ -110,6 +110,29 @@ namespace sdl {
       }
 
       inline
+      bool
+      Event::isMouseEvent() const noexcept {
+        return
+          m_type == Type::Drop ||
+          m_type == Type::MouseButtonPress ||
+          m_type == Type::MouseButtonRelease ||
+          m_type == Type::MouseDoubleClick ||
+          m_type == Type::MouseDrag ||
+          m_type == Type::MouseMove ||
+          m_type == Type::MouseWheel
+        ;
+      }
+
+      inline
+      bool
+      Event::isKeyboardEvent() const noexcept {
+        return
+          m_type == Type::KeyPress ||
+          m_type == Type::KeyRelease
+        ;
+      }
+
+      inline
       Event::Timestamp
       Event::getTimestamp() const noexcept {
         return m_timestamp;
