@@ -327,6 +327,18 @@ namespace sdl {
               event->populateFromEngineData(*this);
 
               events.push_back(event);
+
+              // Also in the case of a mouse event we want to update the
+              // internal mouse state.
+              if (event->isMouseEvent()) {
+                std::vector<EventShPtr> newEvents = m_mouseState.updateEvent(
+                  *std::dynamic_pointer_cast<MouseEvent>(event)
+                );
+
+                // Insert all produced events to the list of events fetched
+                // from the underlying `API`.
+                events.insert(events.end(), newEvents.cbegin(), newEvents.cend());
+              }
             }
           }
         }
@@ -408,9 +420,6 @@ namespace sdl {
         const utils::Sizef size = win->getSize();
 
         event.transformForWindow(size);
-
-        // Update the mouse state based on the data provided by this event.
-        m_mouseState.updateEvent(event);
       }
 
       void
