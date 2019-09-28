@@ -17,7 +17,7 @@ namespace sdl {
         }
 
         // Transform the surface into a valid texture.
-        SDL_Texture* tex  = SDL_CreateTextureFromSurface(getRenderer(), imageAsSurface);
+        SDL_Texture* tex = SDL_CreateTextureFromSurface(getRenderer(), imageAsSurface);
 
         // Release the resources used by the surface.
         SDL_FreeSurface(imageAsSurface);
