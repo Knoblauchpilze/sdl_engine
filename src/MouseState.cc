@@ -157,10 +157,6 @@ namespace sdl {
             );
 
             newEvents.push_back(drop);
-
-            // TODO: We should find a way to produce a `Drop` event from here. We still want to
-            // keep this event of `MouseButtonRelease` though.
-            log("Issuing a drop event", utils::Level::Notice);
           }
         }
 

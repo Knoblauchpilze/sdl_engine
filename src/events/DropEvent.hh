@@ -1,8 +1,8 @@
 #ifndef    DROP_EVENT_HH
 # define   DROP_EVENT_HH
 
-# include "Event.hh"
 # include <memory>
+# include "Event.hh"
 # include <maths_utils/Vector2.hh>
 
 namespace sdl {
@@ -84,6 +84,7 @@ namespace sdl {
 
       };
 
+      using DropEventShPtr = std::shared_ptr<DropEvent>;
     }
   }
 }
