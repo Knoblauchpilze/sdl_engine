@@ -1,37 +1,45 @@
 
 # include "MouseState.hh"
+# include "DropEvent.hh"
 
 namespace sdl {
   namespace core {
     namespace engine {
 
-      void
+      std::vector<EventShPtr>
       MouseState::updateEvent(MouseEvent& event) {
+        std::vector<EventShPtr> newEvents;
+
         // Call the dedicated handler.
         switch (event.getType()) {
           case Event::Type::MouseDrag:
-            updateDragData(event);
+            updateDragData(event, newEvents);
             break;
           case Event::Type::MouseButtonPress:
           case Event::Type::MouseButtonRelease:
           case Event::Type::MouseDoubleClick:
-            updateClickData(event);
+            updateClickData(event, newEvents);
             break;
           case Event::Type::MouseMove:
-            updateMotionData(event);
+            updateMotionData(event, newEvents);
             break;
           case Event::Type::MouseWheel:
-            updateWheelData(event);
+            updateWheelData(event, newEvents);
             break;
           default:
             // Other cases should not happen as the input event
             // is a mouse event already.
             break;
         }
+
+        // Return the new events created by the update.
+        return newEvents;
       }
 
       void
-      MouseState::updateDragData(MouseEvent& event) {
+      MouseState::updateDragData(MouseEvent& event,
+                                 std::vector<EventShPtr>& /*newEvents*/)
+      {
         // Update the drag state of the corresponding buttons.
         mouse::Buttons b = event.getButtons();
 
@@ -119,21 +127,45 @@ namespace sdl {
       }
 
       void
-      MouseState::updateClickData(MouseEvent& event) {
+      MouseState::updateClickData(MouseEvent& event,
+                                  std::vector<EventShPtr>& newEvents)
+      {
         // Retrieve the button's data.
         ButtonDesc& desc = getDescForButton(event.getButton());
 
         // Update the pressed status and the position of the click.
         desc.pressed = (event.getType() != Event::Type::MouseButtonRelease);
-        desc.lastClick = std::make_shared<utils::Vector2f>(event.getMousePosition());
 
         // The drag status should be reset in case it is active: we
         // should also issue a drop event.
         if (desc.dragged && event.getType() == Event::Type::MouseButtonRelease) {
-          // TODO: We should find a way to produce a `Drop` event from here. We still want to
-          // keep this event of `MouseButtonRelease` though.
-          log("Should issue a drop event", utils::Level::Warning);
+          // Untick the `dragged` flag.
+          desc.dragged = false;
+
+          // Issue a `Drop` event if possible.
+          if (desc.lastClick == nullptr) {
+            log(
+              std::string("Released mouse button ") + mouse::getNameFromButton(event.getButton()) +
+              " while no click has been registered so far",
+              utils::Level::Warning
+            );
+          }
+          else {
+            EventShPtr drop = std::make_shared<DropEvent>(
+              *desc.lastClick,
+              event.getMousePosition()
+            );
+
+            newEvents.push_back(drop);
+
+            // TODO: We should find a way to produce a `Drop` event from here. We still want to
+            // keep this event of `MouseButtonRelease` though.
+            log("Issuing a drop event", utils::Level::Notice);
+          }
         }
+
+        // Finally update the last click position.
+        desc.lastClick = std::make_shared<utils::Vector2f>(event.getMousePosition());
       }
 
     }

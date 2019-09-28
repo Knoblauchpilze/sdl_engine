@@ -63,13 +63,17 @@ namespace sdl {
 
       inline
       void
-      MouseState::updateMotionData(MouseEvent& /*event*/) {
+      MouseState::updateMotionData(MouseEvent& /*event*/,
+                                   std::vector<EventShPtr>& /*newEvents*/)
+      {
         // Nothing to do for now.
       }
 
       inline
       void
-      MouseState::updateWheelData(MouseEvent& /*event*/) {
+      MouseState::updateWheelData(MouseEvent& /*event*/,
+                                  std::vector<EventShPtr>& /*newEvents*/)
+      {
         // Nothing to do for now.
       }
 
