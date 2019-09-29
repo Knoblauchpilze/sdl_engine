@@ -31,7 +31,7 @@ namespace sdl {
         if (font == nullptr) {
           error(
             std::string("Could not render text \"") + text + "\"",
-            std::string("Could not load font for size ") + std::to_string(size)
+            std::string("Could not load font \"") + getName() + "\" for size " + std::to_string(size)
           );
         }
 
@@ -45,6 +45,32 @@ namespace sdl {
         }
 
         return textSurface;
+      }
+
+      utils::Sizef
+      Font::querySize(const std::string& text,
+                      const int size)
+      {
+        // Retrieve the font with the specified size.
+        TTF_Font* font = loadForSize(size);
+        if (font == nullptr) {
+          error(
+            std::string("Could not query size for text \"") + text + "\"",
+            std::string("Could not load font \"") + getName() + "\" for size " + std::to_string(size)
+          );
+        }
+
+        int wTxt = 0, hTxt = 0;
+        int status = TTF_SizeText(font, text.c_str(), &wTxt, &hTxt);
+
+        if (status != 0) {
+          error(
+            std::string("Caught error while querying size of text \"") + text + "\" with font \"" + getName() + "\"",
+            TTF_GetError()
+          );
+        }
+
+        return utils::Sizef(1.0f * wTxt, 1.0f * hTxt);
       }
 
       inline
@@ -65,7 +91,7 @@ namespace sdl {
         // Check that we could effectively load the font.
         if (newFont == nullptr) {
           error(
-            std::string("Could not load font with size ") + std::to_string(size),
+            std::string("Could not load font \"") + getName() + "\" with size " + std::to_string(size),
             TTF_GetError()
           );
         }
