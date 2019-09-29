@@ -162,6 +162,21 @@ namespace sdl {
           virtual utils::Sizef
           queryTexture(const utils::Uuid& uuid) = 0;
 
+          /**
+           * @brief - Used to perform a dummy rendering of the input `text` with the specified
+           *          font in order to retrieve the size occupied by the text. Note that no
+           *          whether or not an actual rendering is performed is not specified by this
+           *          interface. If the underlying `API` allows to query the text size without
+           *          actually rendering anything it is encouraged to do so.
+           * @param text - the text whose size should be determined.
+           * @param font - the identifier of the font with which the text should be rendered.
+           * @return - a size corresponding to the dimensions of the text should it be rendered
+           *           with the input `font`.
+           */
+          virtual utils::Sizef
+          getTextSize(const std::string& text,
+                      const utils::Uuid& font) = 0;
+
           virtual void
           destroyTexture(const utils::Uuid& uuid) = 0;
 

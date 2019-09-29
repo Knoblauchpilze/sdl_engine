@@ -128,6 +128,10 @@ namespace sdl {
           utils::Sizef
           queryTexture(const utils::Uuid& uuid) override;
 
+          utils::Sizef
+          getTextSize(const std::string& text,
+                      const utils::Uuid& font) override;
+
           void
           destroyTexture(const utils::Uuid& uuid) override;
 

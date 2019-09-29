@@ -143,6 +143,14 @@ namespace sdl {
       }
 
       inline
+      utils::Sizef
+      EngineDecorator::getTextSize(const std::string& text,
+                                   const utils::Uuid& font)
+      {
+        return m_engine->getTextSize(text, font);
+      }
+
+      inline
       void
       EngineDecorator::destroyTexture(const utils::Uuid& uuid) {
         m_engine->destroyTexture(uuid);

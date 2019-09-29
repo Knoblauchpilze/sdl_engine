@@ -248,6 +248,20 @@ namespace sdl {
         return win->queryTexture(uuid);
       }
 
+      utils::Sizef
+      SdlEngine::getTextSize(const std::string& text,
+                             const utils::Uuid& font)
+      {
+        std::lock_guard<std::mutex> guard(m_locker);
+
+        // Retrieve the font associated to the input identifier.
+        ColoredFontShPtr fontImpl = getFontOrThrow(font);
+
+        // Use the dedicated handler of the font to return the size
+        // of the input text should it be rendered with this font.
+        return fontImpl->querySize(text);
+      }
+
       void
       SdlEngine::destroyTexture(const utils::Uuid& uuid) {
         std::lock_guard<std::mutex> guard(m_locker);
