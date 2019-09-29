@@ -35,6 +35,12 @@ namespace sdl {
         m_palette = palette;
       }
 
+      inline
+      utils::Sizef
+      ColoredFont::querySize(const std::string& text) {
+        return m_font->querySize(text, getSize());
+      }
+
     }
   }
 }
