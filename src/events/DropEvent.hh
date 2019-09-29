@@ -16,7 +16,7 @@ namespace sdl {
            * @brief - Create a new drop event with the provided starting position and
            *          end position. Both position describe the position of the cursor
            *          when the drag and drop operation started while the end position
-           *          describe the position where the drop occured.
+           *          describe the position where the drop occurred.
            * @param startPos - the position where the drag and drop event started.
            * @param endPos - the position where the drop operation was issued.
            */
