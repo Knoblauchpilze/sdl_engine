@@ -168,6 +168,10 @@ namespace sdl {
            *          whether or not an actual rendering is performed is not specified by this
            *          interface. If the underlying `API` allows to query the text size without
            *          actually rendering anything it is encouraged to do so.
+           *          The `exact` boolean indicates whether the returned size should account
+           *          for precisely the size of the font or if it shoud do _as if_ the text was
+           *          rendered to be displayed. This has to do with the glyph metrics as can
+           *          be found here: https://www.freetype.org/freetype2/docs/glyphs/glyphs-3.html.
            * @param text - the text whose size should be determined.
            * @param font - the identifier of the font with which the text should be rendered.
            * @return - a size corresponding to the dimensions of the text should it be rendered
@@ -175,7 +179,8 @@ namespace sdl {
            */
           virtual utils::Sizef
           getTextSize(const std::string& text,
-                      const utils::Uuid& font) = 0;
+                      const utils::Uuid& font,
+                      bool exact) = 0;
 
           virtual void
           destroyTexture(const utils::Uuid& uuid) = 0;

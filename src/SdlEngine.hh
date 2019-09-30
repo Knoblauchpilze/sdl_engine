@@ -130,7 +130,8 @@ namespace sdl {
 
           utils::Sizef
           getTextSize(const std::string& text,
-                      const utils::Uuid& font) override;
+                      const utils::Uuid& font,
+                      bool exact) override;
 
           void
           destroyTexture(const utils::Uuid& uuid) override;

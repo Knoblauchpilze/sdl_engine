@@ -250,7 +250,8 @@ namespace sdl {
 
       utils::Sizef
       SdlEngine::getTextSize(const std::string& text,
-                             const utils::Uuid& font)
+                             const utils::Uuid& font,
+                             bool exact)
       {
         std::lock_guard<std::mutex> guard(m_locker);
 
@@ -259,7 +260,7 @@ namespace sdl {
 
         // Use the dedicated handler of the font to return the size
         // of the input text should it be rendered with this font.
-        return fontImpl->querySize(text);
+        return fontImpl->querySize(text, exact);
       }
 
       void

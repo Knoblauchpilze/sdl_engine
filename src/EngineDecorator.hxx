@@ -145,9 +145,10 @@ namespace sdl {
       inline
       utils::Sizef
       EngineDecorator::getTextSize(const std::string& text,
-                                   const utils::Uuid& font)
+                                   const utils::Uuid& font,
+                                   bool exact)
       {
-        return m_engine->getTextSize(text, font);
+        return m_engine->getTextSize(text, font, exact);
       }
 
       inline

@@ -37,8 +37,10 @@ namespace sdl {
 
       inline
       utils::Sizef
-      ColoredFont::querySize(const std::string& text) {
-        return m_font->querySize(text, getSize());
+      ColoredFont::querySize(const std::string& text,
+                             bool exact)
+      {
+        return m_font->querySize(text, getSize(), exact);
       }
 
     }

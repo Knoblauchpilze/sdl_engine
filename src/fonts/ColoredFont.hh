@@ -43,11 +43,15 @@ namespace sdl {
            *          if it was to be rendered with `this` font Note that no
            *          actual rendering is performed by this method.
            * @param text - the text to be rendered with this font.
+           * @param exact - specifies whether the glyph metric should be used to
+           *                determine the exact size of the text or if we can do
+           *                as if the text was rendered instead.
            * @return - the size of the text if it were to be rendered with this
            *           font.
            */
           utils::Sizef
-          querySize(const std::string& text);
+          querySize(const std::string& text,
+                    bool exact);
 
         private:
 
