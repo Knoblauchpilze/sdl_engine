@@ -107,7 +107,7 @@ namespace sdl {
            * @bried - Retrieves the position of the mouse at the beginning of the
            *          current action. Most of the time this value will be identical
            *          to the one returned by `getMousePosition` but in the case of
-           *          a drag evetn for example, this position will be keeping the
+           *          a drag event for example, this position will be keeping the
            *          position of the cursor at the moment the mouse started to be
            *          dragged: this allows to easily perform some update while the
            *          mouse is being dragged.
