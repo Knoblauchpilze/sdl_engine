@@ -16,7 +16,6 @@ namespace sdl {
         // We want to update the last click position only in the case of a drag
         // event. In any other case the last mouse position should be set to be
         // equal to the value returned by `getMousePosition`.
-
         if (getType() != Event::Type::MouseDrag) {
           m_initMousePosition = getMousePosition();
 
