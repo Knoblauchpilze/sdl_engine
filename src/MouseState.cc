@@ -125,6 +125,10 @@ namespace sdl {
           // TODO: The init mouse position only describe the click for the drag event of the button
           // but not the init position if for example we have a drag event containing only one button
           // and then the user starts to drag the mouse with an additional button.
+          // We could maybe modify the `MouseEvent` class to change the `getInitMousePosition()` to
+          // `getInitMousePosition(mouse::Button button)`, i.e. include the notion of the button in
+          // the last click. This would mean providing a method like `updateLastClickPosition` with a
+          // button in parameter in addition to the click position.
           event.updateLastClickPosition(*desc.lastClick);
         }
       }

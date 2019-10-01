@@ -30,6 +30,11 @@ namespace sdl {
         TTF_Font* font = loadForSize(size);
 
         // Proceed to rendering.
+        // TODO: To fix some issues with positionning we should probably use some sort
+        // of custom rendering where we only render a glyph rather than the full text
+        // and then perform the blit of each individual glyph surface to the general
+        // canvas. This is much less simple but could maybe solve the issues with the
+        // position of the text.
         SDL_Surface* textSurface = TTF_RenderUTF8_Blended(font, text.c_str(), color.toSDLColor());
         if (textSurface == nullptr) {
           error(
