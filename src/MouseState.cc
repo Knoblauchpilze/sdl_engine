@@ -122,6 +122,9 @@ namespace sdl {
             return;
           }
 
+          // TODO: The init mouse position only describe the click for the drag event of the button
+          // but not the init position if for example we have a drag event containing only one button
+          // and then the user starts to drag the mouse with an additional button.
           event.updateLastClickPosition(*desc.lastClick);
         }
       }
