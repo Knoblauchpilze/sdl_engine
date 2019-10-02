@@ -44,8 +44,6 @@ namespace sdl {
         mouse::Buttons b = event.getButtons();
 
         bool valid = false;
-        mouse::Button best = mouse::Button::Left;
-        Timestamp tick;
 
         if (b.isSet(mouse::Button::Left)) {
           // Retrieve the button's data.
@@ -57,9 +55,18 @@ namespace sdl {
             desc.dragStart = getTimestamp();
           }
 
-          // Initialize the best button found so far.
-          valid = true;
-          tick = desc.dragStart;
+          // Initialize the click position for this button.
+          if (desc.lastClick == nullptr) {
+            log(
+              std::string("Could not assign initial position of button ") + mouse::getNameFromButton(mouse::Button::Left) +
+              std::string(" which has not been clicked yet"),
+              utils::Level::Warning
+            );
+          }
+          else {
+            valid = true;
+            event.updateLastClickPosition(mouse::Button::Left, *desc.lastClick);
+          }
         }
 
         if (b.isSet(mouse::Button::Middle)) {
@@ -72,10 +79,17 @@ namespace sdl {
             desc.dragStart = getTimestamp();
           }
 
-          if (!valid || tick < desc.dragStart) {
+          // Initialize the click position for this button.
+          if (desc.lastClick == nullptr) {
+            log(
+              std::string("Could not assign initial position of button ") + mouse::getNameFromButton(mouse::Button::Middle) +
+              std::string(" which has not been clicked yet"),
+              utils::Level::Warning
+            );
+          }
+          else {
             valid = true;
-            tick = desc.dragStart;
-            best = mouse::Button::Middle;
+            event.updateLastClickPosition(mouse::Button::Middle, *desc.lastClick);
           }
         }
 
@@ -89,10 +103,17 @@ namespace sdl {
             desc.dragStart = getTimestamp();
           }
 
-          if (!valid || tick < desc.dragStart) {
+          // Initialize the click position for this button.
+          if (desc.lastClick == nullptr) {
+            log(
+              std::string("Could not assign initial position of button ") + mouse::getNameFromButton(mouse::Button::Right) +
+              std::string(" which has not been clicked yet"),
+              utils::Level::Warning
+            );
+          }
+          else {
             valid = true;
-            tick = desc.dragStart;
-            best = mouse::Button::Right;
+            event.updateLastClickPosition(mouse::Button::Right, *desc.lastClick);
           }
         }
 
@@ -108,28 +129,6 @@ namespace sdl {
           );
 
           return;
-        }
-        else {
-          ButtonDesc& desc = getDescForButton(best);
-
-          if (desc.lastClick == nullptr) {
-            log(
-              std::string("Could not assign initial position of button ") + mouse::getNameFromButton(best) +
-              std::string(" which has not been clicked yet"),
-              utils::Level::Warning
-            );
-
-            return;
-          }
-
-          // TODO: The init mouse position only describe the click for the drag event of the button
-          // but not the init position if for example we have a drag event containing only one button
-          // and then the user starts to drag the mouse with an additional button.
-          // We could maybe modify the `MouseEvent` class to change the `getInitMousePosition()` to
-          // `getInitMousePosition(mouse::Button button)`, i.e. include the notion of the button in
-          // the last click. This would mean providing a method like `updateLastClickPosition` with a
-          // button in parameter in addition to the click position.
-          event.updateLastClickPosition(*desc.lastClick);
         }
       }
 
