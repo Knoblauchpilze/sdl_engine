@@ -52,7 +52,9 @@ namespace sdl {
         m_initMousePositions(),
         m_mousePosition(),
 
-        m_buttons()
+        m_buttons(),
+
+        m_wasDragged(false)
       {
         init();
       }
@@ -68,7 +70,9 @@ namespace sdl {
         m_initMousePositions(),
         m_mousePosition(),
 
-        m_buttons()
+        m_buttons(),
+
+        m_wasDragged(false)
       {
         init();
       }
@@ -84,7 +88,9 @@ namespace sdl {
         m_initMousePositions(),
         m_mousePosition(),
 
-        m_buttons()
+        m_buttons(),
+
+        m_wasDragged(false)
       {
         init();
       }
@@ -141,6 +147,12 @@ namespace sdl {
       }
 
       inline
+      bool
+      MouseEvent::wasDragged() const noexcept {
+        return m_wasDragged;
+      }
+
+      inline
       utils::Vector2f
       MouseEvent::getInitMousePosition(const mouse::Button& button) const noexcept {
         // Try to retrieve the position associated to this button.
@@ -193,6 +205,12 @@ namespace sdl {
         }
 
         return utils::Vector2i();
+      }
+
+      inline
+      void
+      MouseEvent::updateDraggedState(bool dragged) noexcept {
+        m_wasDragged = dragged;
       }
 
       inline

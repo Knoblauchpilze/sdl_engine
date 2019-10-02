@@ -148,6 +148,9 @@ namespace sdl {
           // Untick the `dragged` flag.
           desc.dragged = false;
 
+          // Update the dragged status for the event.
+          event.updateDraggedState(true);
+
           // Issue a `Drop` event if possible.
           if (desc.lastClick == nullptr) {
             log(

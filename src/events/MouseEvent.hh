@@ -104,6 +104,18 @@ namespace sdl {
           isRelease() const noexcept;
 
           /**
+           * @brief - Returns `true` if this event is a mouse button released which
+           *          occurs right after a drag event. The mouse button associated
+           *          to this event must have been part of the drag event for this
+           *          method to return `true`.
+           *          In any other case the method returns `false`.
+           * @return - `true` if this event is a mouse button release event of a
+           *           button which was part of a drag event and `false` otherwise.
+           */
+          bool
+          wasDragged() const noexcept;
+
+          /**
            * @bried - Retrieves the position of the mouse at the beginning of the
            *          current action. Most of the time this value will be identical
            *          to the one returned by `getMousePosition` but in the case of
@@ -157,6 +169,17 @@ namespace sdl {
           void
           updateLastClickPosition(const mouse::Button& button,
                                   const utils::Vector2f& click) noexcept;
+
+          /**
+           * @brief - Used to update the internal draggd state of this event with the
+           *          input value.
+           *          Note that in case this event does not describe a mouse button
+           *          release, nothing happens.
+           * @param dragged - `true` if this mouse button release event corresponds to
+           *                  the first event generated after a drag event.
+           */
+          void
+          updateDraggedState(bool dragged) noexcept;
 
           /**
            * @brief - Used to transform the internal mouse position to
@@ -255,6 +278,12 @@ namespace sdl {
            *          the same time.
            */
           mouse::Buttons m_buttons;
+
+          /**
+           * @brief - Set to `true` if this event is the first mouse button release event generated after
+           *          a drag event of the corresponding button. Set to `false` in any other case.
+           */
+          bool m_wasDragged;
 
       };
 
