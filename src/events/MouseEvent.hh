@@ -111,12 +111,18 @@ namespace sdl {
            *          position of the cursor at the moment the mouse started to be
            *          dragged: this allows to easily perform some update while the
            *          mouse is being dragged.
+           *          In the case of a drag event the `button` is used to retrieve
+           *          the adequate position. If the button does not exist in the
+           *          event (i.e. does not exist in the `getButtons` method), we
+           *          return the `getMousePosition` value.
+           * @param button - the button for which the initial position should be
+           *                 retrieved.
            * @return - the position of the mouse at the beginning of the current
            *           action. Usually equal to the value returned by the method
            *           `getMousePosition` but might differ in some cases.
            */
           utils::Vector2f
-          getInitMousePosition() const noexcept;
+          getInitMousePosition(const mouse::Button& button) const noexcept;
 
           /**
            * @brief - Returns the mouse position as a vector expressed in the
@@ -141,14 +147,16 @@ namespace sdl {
           /**
            * @brief - Used to update the last position of the the mouse when a click
            *          was detected. This allows to update internally the attribute
-           *          `m_mouseInitPosition`.
+           *          `m_mouseInitPositions` for the specified button.
            *          Note that the input position is expected to be valid in the
            *          window associated to this event: no further conversion will be
            *          performed on the provided value.
+           * @param button - the button for which the position should be associated.
            * @param click - the last position of the mouse when a click was detected.
            */
           void
-          updateLastClickPosition(const utils::Vector2f& click) noexcept;
+          updateLastClickPosition(const mouse::Button& button,
+                                  const utils::Vector2f& click) noexcept;
 
           /**
            * @brief - Used to transform the internal mouse position to
@@ -217,18 +225,28 @@ namespace sdl {
 
         private:
 
+          /**
+           * @brief - Convenience define to refer to a map describing a position associated to a single
+           *          button.
+           */
+          using ButtonsPositions = std::unordered_map<mouse::Button, utils::Vector2f>;
+
           std::shared_ptr<SDL_MouseButtonEvent> m_button;
           std::shared_ptr<SDL_MouseMotionEvent> m_motion;
           std::shared_ptr<SDL_MouseWheelEvent> m_wheel;
 
           /**
-           * @brief - The following attribute are used to keep track of the position of the mouse. The
+           * @brief - The following attributes are used to keep track of the position of the mouse. The
            *          `m_mousePosition` is always populated with the current position of the cursor
-           *          while `m_initMousePosition` is populated with the position of the mouse at the
-           *          beginning of the current action. It is equivalent to `m_mousePosition` in most
+           *          while `m_initMousePositions` is populated with the position of the mouse at the
+           *          beginning of the current action for each of the button. Indeed it is possible that
+           *          a drag event is generated with a button and then along the way the user presses a
+           *          new button: in this case we need to have a way to distinguish between the initial
+           *          position of each button.
+           *          It is equivalent to `m_mousePosition` in most
            *          cases but can differ for example in the event of the mouse being dragged.
            */
-          utils::Vector2f m_initMousePosition;
+          ButtonsPositions m_initMousePositions;
           utils::Vector2f m_mousePosition;
 
           /**

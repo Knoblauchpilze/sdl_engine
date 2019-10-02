@@ -49,7 +49,7 @@ namespace sdl {
         m_motion(nullptr),
         m_wheel(nullptr),
 
-        m_initMousePosition(),
+        m_initMousePositions(),
         m_mousePosition(),
 
         m_buttons()
@@ -65,7 +65,7 @@ namespace sdl {
         m_motion(std::make_shared<SDL_MouseMotionEvent>(event)),
         m_wheel(nullptr),
 
-        m_initMousePosition(),
+        m_initMousePositions(),
         m_mousePosition(),
 
         m_buttons()
@@ -81,7 +81,7 @@ namespace sdl {
         m_motion(nullptr),
         m_wheel(std::make_shared<SDL_MouseWheelEvent>(event)),
 
-        m_initMousePosition(),
+        m_initMousePositions(),
         m_mousePosition(),
 
         m_buttons()
@@ -142,8 +142,16 @@ namespace sdl {
 
       inline
       utils::Vector2f
-      MouseEvent::getInitMousePosition() const noexcept {
-        return m_initMousePosition;
+      MouseEvent::getInitMousePosition(const mouse::Button& button) const noexcept {
+        // Try to retrieve the position associated to this button.
+        ButtonsPositions::const_iterator it = m_initMousePositions.find(button);
+        if (it == m_initMousePositions.cend()) {
+          // Returns the same value as `getMousePosition`.
+          return getMousePosition();
+        }
+
+        // Return the value associated to this button.
+        return it->second;
       }
 
       inline

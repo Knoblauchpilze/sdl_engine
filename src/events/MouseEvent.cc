@@ -12,17 +12,32 @@ namespace sdl {
       }
 
       void
-      MouseEvent::updateLastClickPosition(const utils::Vector2f& click) noexcept {
+      MouseEvent::updateLastClickPosition(const mouse::Button& button,
+                                          const utils::Vector2f& click) noexcept
+      {
         // We want to update the last click position only in the case of a drag
         // event. In any other case the last mouse position should be set to be
         // equal to the value returned by `getMousePosition`.
         if (getType() != Event::Type::MouseDrag) {
-          m_initMousePosition = getMousePosition();
-
           return;
         }
 
-        m_initMousePosition = click;
+        // Also check whether this button is already registered: if this the
+        // case this is a problem.
+        ButtonsPositions::iterator it = m_initMousePositions.find(button);
+
+        if (it != m_initMousePositions.end()) {
+          log(
+            std::string("Registering last click position for button ") + mouse::getNameFromButton(button) +
+            " but value already exist at " +it->second.toString(),
+            utils::Level::Warning
+          );
+
+          it->second = click;
+        }
+        else {
+          m_initMousePositions[button] = click;
+        }
       }
 
       void
