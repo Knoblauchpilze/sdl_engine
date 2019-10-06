@@ -30,6 +30,23 @@ namespace sdl {
       {}
 
       inline
+      bool
+      Color::operator==(const Color& rhs) const noexcept {
+        return
+          std::abs(m_r - rhs.m_r) < std::numeric_limits<float>::min() &&
+          std::abs(m_g - rhs.m_g) < std::numeric_limits<float>::min() &&
+          std::abs(m_b - rhs.m_b) < std::numeric_limits<float>::min() &&
+          std::abs(m_a - rhs.m_a) < std::numeric_limits<float>::min()
+        ;
+      }
+
+      inline
+      bool
+      Color::operator!=(const Color& rhs) const noexcept {
+        return !operator==(rhs);
+      }
+
+      inline
       const float&
       Color::r() const noexcept {
         return m_r;

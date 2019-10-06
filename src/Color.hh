@@ -38,6 +38,12 @@ namespace sdl {
 
           ~Color() = default;
 
+          bool
+          operator==(const Color& rhs) const noexcept;
+
+          bool
+          operator!=(const Color& rhs) const noexcept;
+
           const float&
           r() const noexcept;
 
