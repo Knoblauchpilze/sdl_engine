@@ -5,10 +5,11 @@
 # include <string>
 # include <memory>
 # include <unordered_map>
-# include <SDL2/SDL_ttf.h>
+# include <SDL2/SDL.h>
 # include <maths_utils/Size.hh>
 # include <core_utils/CoreObject.hh>
 # include "Color.hh"
+# include "FontCache.hh"
 
 namespace sdl {
   namespace core {
@@ -49,7 +50,16 @@ namespace sdl {
 
         private:
 
-          TTF_Font*
+          /**
+           * @brief - Used to perform the loading of this font using the specified
+           *          size. In case the font already exists we return it otherwise
+           *          it is loaded from memory.
+           *          Note that the font is loaded as a `FontCache` object which
+           *          allows efficient management of the glyphs produced by the
+           *          font.
+           * @param size - the size with which the font should be loaded.
+           */
+          FontCacheShPtr
           loadForSize(const int& size);
 
           void
@@ -58,7 +68,7 @@ namespace sdl {
         private:
 
           std::shared_ptr<std::mutex> m_cacheLocker;
-          std::unordered_map<int, TTF_Font*> m_fonts;
+          std::unordered_map<int, FontCacheShPtr> m_fonts;
 
       };
 

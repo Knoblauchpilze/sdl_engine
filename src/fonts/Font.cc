@@ -27,23 +27,10 @@ namespace sdl {
                    const Color& color)
       {
         // Load the font if needed.
-        TTF_Font* font = loadForSize(size);
+        FontCacheShPtr font = loadForSize(size);
 
         // Proceed to rendering.
-        // TODO: To fix some issues with positionning we should probably use some sort
-        // of custom rendering where we only render a glyph rather than the full text
-        // and then perform the blit of each individual glyph surface to the general
-        // canvas. This is much less simple but could maybe solve the issues with the
-        // position of the text.
-        SDL_Surface* textSurface = TTF_RenderUTF8_Blended(font, text.c_str(), color.toSDLColor());
-        if (textSurface == nullptr) {
-          error(
-            std::string("Could not render text \"") + text + "\"",
-            TTF_GetError()
-          );
-        }
-
-        return textSurface;
+        return font->render(text, color);
       }
 
       utils::Sizef
@@ -52,68 +39,22 @@ namespace sdl {
                       bool exact)
       {
         // Retrieve the font with the specified size.
-        TTF_Font* font = loadForSize(size);
+        FontCacheShPtr font = loadForSize(size);
 
-        // Use the glyph size of each individual character of the input string
-        // to determine the size of the text. Depending on the value of the
-        // `exact` boolean we will either add only the size of the characters
-        // encountered or the advance size in total.
-        int gMinY = std::numeric_limits<int>::max();
-        int gMaxY = std::numeric_limits<int>::lowest();
-
-        int accumulatedW = 0;
-
-        for (unsigned id = 0u ; id < text.size() ; ++id) {
-          // Check whether this character is part of the font.
-          if (!TTF_GlyphIsProvided(font, text[id])) {
-            log(
-              std::string("Could not determine size of glyph '") + text[id] + "' (not found in font \"" + getName() + "\"",
-              utils::Level::Warning
-            );
-
-            // The size will probably be inaccurate but what can we do ?
-            continue;
-          }
-
-          // Retrieve the needed metrics: the advance for this glyph and its height.
-          int advance;
-          int minX, maxX;
-          int minY, maxY;
-          int success = TTF_GlyphMetrics(font, text[id], &minX, &maxX, &minY, &maxY, &advance);
-
-          if (success != 0) {
-            log(
-              std::string("Error while determining size of glyph ") + text[id] + " for font \"" + getName() + "\" " +
-              "(err: \"" + TTF_GetError() + "\")",
-              utils::Level::Warning
-            );
-
-            // Here as well we don't have other choice but to continue.
-            continue;
-          }
-
-          // Accumulate the maximum extent in `y`.
-          gMinY = std::min(gMinY, minY);
-          gMaxY = std::max(gMaxY, maxY);
-
-          // Accumulate the width of this glyph depending on whether the exact size
-          // should be accumulated.
-          accumulatedW += (exact ? maxX - minX : advance);
-        }
-
-        return utils::Sizef(1.0f * accumulatedW, 1.0f * (gMaxY - gMinY));
+        // Use it to determine the size of the text.
+        return font->querySize(text, exact);
       }
 
       inline
-      TTF_Font*
+      FontCacheShPtr
       Font::loadForSize(const int& size) {
         // Acquire the lock to prevent concurrent addition of fonts.
         std::lock_guard<std::mutex> guard(*m_cacheLocker);
 
         // Check whether the font for the input `size` already exists in the local cache.
-        const std::unordered_map<int, TTF_Font*>::const_iterator font = m_fonts.find(size);
-        if (font != m_fonts.cend()) {
-          return font->second;
+        const std::unordered_map<int, FontCacheShPtr>::const_iterator fontIt = m_fonts.find(size);
+        if (fontIt != m_fonts.cend()) {
+          return fontIt->second;
         }
 
         // The font for this `size` is not loaded yet: create it.
@@ -130,11 +71,14 @@ namespace sdl {
         // Disable kerning.
         TTF_SetFontKerning(newFont, 0);
 
+        // Create the font cache associated with this font.
+        FontCacheShPtr font = std::make_shared<FontCache>(getName(), newFont);
+
         // Add this font to the cache.
-        m_fonts[size] = newFont;
+        m_fonts[size] = font;
 
         // Return the loaded font.
-        return newFont;
+        return font;
       }
 
     }
