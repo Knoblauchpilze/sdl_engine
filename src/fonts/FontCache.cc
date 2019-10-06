@@ -35,12 +35,6 @@ namespace sdl {
         // will then be returned.
         FontMetrics fm = getMetrics();
 
-        // TODO: To fix some issues with positionning we should probably use some sort
-        // of custom rendering where we only render a glyph rather than the full text
-        // and then perform the blit of each individual glyph surface to the general
-        // canvas. This is much less simple but could maybe solve the issues with the
-        // position of the text.
-
         // First allocate the texture which will receive each individual glyph. To do
         // that we have to retrieve the dimensions of the text.
         utils::Sizef size = querySize(text, exact);
