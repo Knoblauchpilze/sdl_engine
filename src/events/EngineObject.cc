@@ -226,7 +226,7 @@ namespace sdl {
             }
             else {
               Events::reverse_iterator it = m_events.rbegin();
-              while (it != m_events.rend() && !engine::belongsToPass((*it)->getType(), pass)) {
+              while (it != m_events.rend() && !belongsToPass((*it)->getType(), pass)) {
                 ++it;
               }
 

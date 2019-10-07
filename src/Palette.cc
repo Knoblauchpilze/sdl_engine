@@ -6,7 +6,7 @@ namespace sdl {
     namespace engine {
 
       Palette
-      Palette::fromButtonColor(const engine::Color& color) noexcept {
+      Palette::fromButtonColor(const Color& color) noexcept {
         Palette palette;
 
         // Initialize the palette from the input button color.
