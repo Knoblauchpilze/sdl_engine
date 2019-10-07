@@ -61,8 +61,13 @@ namespace sdl {
       inline
       bool
       KeyEvent::isAlphaNumeric() const noexcept {
-        return engine::isKeyAlphanumeric(getKey());
-        ;
+        return isKeyAlphanumeric(getKey());
+      }
+
+      inline
+      bool
+      KeyEvent::isPrintable() const noexcept {
+        return isKeyPrintable(getKey());
       }
 
       inline
@@ -70,10 +75,10 @@ namespace sdl {
       KeyEvent::getChar() const {
         // Check whether the key is alpha numeric: if this is not the case we can't really
         // provide an equivalent char.
-        if (!isAlphaNumeric()) {
+        if (!isPrintable()) {
           error(
-            std::string("Cannot return equivalent char to key"),
-            std::string("Key is not alphanumeric")
+            std::string("Cannot return equivalent char to key '") + std::to_string(static_cast<int>(m_converted)) + "'",
+            std::string("Key is not printable")
           );
         }
 

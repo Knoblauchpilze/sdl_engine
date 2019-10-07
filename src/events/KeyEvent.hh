@@ -50,6 +50,16 @@ namespace sdl {
           isAlphaNumeric() const noexcept;
 
           /**
+           * @brief - Used to determine whether the code of the key pressed or released
+           *          corresponds to a printable character.
+           *          This is useful in order to determine whether we can display this
+           *          character for example in a text box.
+           * @return - `true` if the character can be displayed, `false` otherwise.
+           */
+          bool
+          isPrintable() const noexcept;
+
+          /**
            * @brief - Used to return the char code equivalent to the alpha numeric key
            *          pressed or released. Note that if the key is not alpha numeric an
            *          error is raised. One can check if this is the case using the above
