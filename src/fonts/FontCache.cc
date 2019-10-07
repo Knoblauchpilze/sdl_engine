@@ -154,8 +154,10 @@ namespace sdl {
       FontCache::renderGlyph(char c,
                              const Color& color)
       {
+        std::string key = makeKey(c, color);
+
         // Check whether the input character has already been loaded in the cache.
-        Glyphs::const_iterator it = m_glyphs.find(c);
+        Glyphs::const_iterator it = m_glyphs.find(key);
 
         if (it != m_glyphs.cend()) {
           // TODO: We should correct this.
@@ -175,7 +177,7 @@ namespace sdl {
           );
         }
 
-        m_glyphs[c] = GlyphData{glyph, color};
+        m_glyphs[key] = GlyphData{glyph, color};
 
         return glyph;
       }

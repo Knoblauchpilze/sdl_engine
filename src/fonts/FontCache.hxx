@@ -83,6 +83,20 @@ namespace sdl {
         return m;
       }
 
+      inline
+      std::string
+      FontCache::makeKey(char c,
+                         const Color& color) noexcept
+      {
+        return std::string() +
+          c +
+          std::to_string(color.r()) +
+          std::to_string(color.g()) +
+          std::to_string(color.b()) +
+          std::to_string(color.a())
+        ;
+      }
+
     }
   }
 }

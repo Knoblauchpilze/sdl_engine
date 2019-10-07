@@ -165,13 +165,26 @@ namespace sdl {
           GlyphMetrics
           getMetrics(char c) const noexcept;
 
+          /**
+           * @brief - Used to perform the creation of a valid key from an input character and
+           *          a color. This key can be used to insert elements in the internal `m_glyphs`
+           *          array.
+           * @param c - the character to use to create the key.
+           * @param color - the color to use to create the key.
+           * @return - a string representing the key built from the character and color.
+           */
+          static
+          std::string
+          makeKey(char c,
+                  const Color& color) noexcept;
+
         private:
 
           /**
            * @brief - Describes a glyph tables used to register all the glyphs loaded so far
            *          for a font.
            */
-          using Glyphs = std::unordered_map<char, GlyphData>;
+          using Glyphs = std::unordered_map<std::string, GlyphData>;
 
           /**
            * @brief - The font associated to this cache. Represents the underlying `API`
