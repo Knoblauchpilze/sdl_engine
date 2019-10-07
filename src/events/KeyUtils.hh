@@ -165,11 +165,21 @@ namespace sdl {
       /**
        * @brief - Used to determine whether the input key corresponds to a alphanumeric character.
        * @param k - the key which should be checked for the alphanumeric status.
-       * @return - `true` if the key is alphanumeric (i.e. belongs to `[a-z0-9]`) and `false` if
+       * @return - `true` if the key is alphanumeric (i.e. belongs to `[a-A-Z0-9]`) and `false` if
        *           this is not the case.
        */
       bool
       isKeyAlphanumeric(const Key& k) noexcept;
+
+      /**
+       * @brief - Used to determine whether the input key can be displayed or not. This allows to
+       *          filter special key which do not have a visual representation (like modifiers and
+       *          motion keys).
+       * @param k - the key which should be checked for displayability.
+       * @return - `true` if the key can be displayed and `false` if this is not the case.
+       */
+      bool
+      isKeyPrintable(const Key& k) noexcept;
 
       /**
        * @brief - Returns the character value associated to the input key. Works well for alphanumeric

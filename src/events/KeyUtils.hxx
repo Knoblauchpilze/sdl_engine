@@ -340,6 +340,99 @@ namespace sdl {
       }
 
       inline
+      bool
+      isKeyPrintable(const Key& k) noexcept {
+        switch(k) {
+          case Key::Space:
+          case Key::Exclaim:
+          case Key::DoubleQuote:
+          case Key::Hash:
+          case Key::Percent:
+          case Key::Dollar:
+          case Key::Ampersand:
+          case Key::Quote:
+          case Key::LeftParenthesis:
+          case Key::RightParenthesis:
+          case Key::Asterisk:
+          case Key::Plus:
+          case Key::Comma:
+          case Key::Minus:
+          case Key::Period:
+          case Key::Slash:
+          case Key::Zero:
+          case Key::One:
+          case Key::Two:
+          case Key::Three:
+          case Key::Four:
+          case Key::Five:
+          case Key::Six:
+          case Key::Seven:
+          case Key::Eight:
+          case Key::Nine:
+          case Key::Colon:
+          case Key::Semicolon:
+          case Key::Less:
+          case Key::Equals:
+          case Key::Greater:
+          case Key::Question:
+          case Key::At:
+          case Key::LeftBracket:
+          case Key::Backslash:
+          case Key::RightBracket:
+          case Key::Caret:
+          case Key::Underscore:
+          case Key::Backquote:
+          case Key::A:
+          case Key::B:
+          case Key::C:
+          case Key::D:
+          case Key::E:
+          case Key::F:
+          case Key::G:
+          case Key::H:
+          case Key::I:
+          case Key::J:
+          case Key::K:
+          case Key::L:
+          case Key::M:
+          case Key::N:
+          case Key::O:
+          case Key::P:
+          case Key::Q:
+          case Key::R:
+          case Key::S:
+          case Key::T:
+          case Key::U:
+          case Key::V:
+          case Key::W:
+          case Key::X:
+          case Key::Y:
+          case Key::Z:
+          case Key::KPDivide:
+          case Key::KPMultiply:
+          case Key::KPMinus:
+          case Key::KPPlus:
+          case Key::KPEnter:
+          case Key::KP1:
+          case Key::KP2:
+          case Key::KP3:
+          case Key::KP4:
+          case Key::KP5:
+          case Key::KP6:
+          case Key::KP7:
+          case Key::KP8:
+          case Key::KP9:
+          case Key::KP0:
+          case Key::KPPeriod:
+            // Key is printable.
+            return true;
+          default:
+            // Not printable.
+            return false;
+        }
+      }
+
+      inline
       char
       getCharFromKey(const Key& k,
                      const KeyModifier& m) noexcept
@@ -349,6 +442,38 @@ namespace sdl {
         const char offset = (shiftEnabled(m) ? ' ' : '\0');
 
         switch (k) {
+          case Key::Space:
+            return ' ';
+          case Key::Exclaim:
+            return '!';
+          case Key::DoubleQuote:
+            return '"';
+          case Key::Hash:
+            return '#';
+          case Key::Percent:
+            return '%';
+          case Key::Dollar:
+            return '$';
+          case Key::Ampersand:
+            return '&';
+          case Key::Quote:
+            return '\'';
+          case Key::LeftParenthesis:
+            return '(';
+          case Key::RightParenthesis:
+            return ')';
+          case Key::Asterisk:
+            return '*';
+          case Key::Plus:
+            return '+';
+          case Key::Comma:
+            return ',';
+          case Key::Minus:
+            return '-';
+          case Key::Period:
+            return '.';
+          case Key::Slash:
+            return '/';
           case Key::Zero:
             return '0';
           case Key::One:
@@ -369,6 +494,32 @@ namespace sdl {
             return '8';
           case Key::Nine:
             return '9';
+          case Key::Colon:
+            return ':';
+          case Key::Semicolon:
+            return ';';
+          case Key::Less:
+            return '<';
+          case Key::Equals:
+            return '=';
+          case Key::Greater:
+            return '>';
+          case Key::Question:
+            return '?';
+          case Key::At:
+            return '@';
+          case Key::LeftBracket:
+            return '[';
+          case Key::Backslash:
+            return '\\';
+          case Key::RightBracket:
+            return ']';
+          case Key::Caret:
+            return '^';
+          case Key::Underscore:
+            return '_';
+          case Key::Backquote:
+            return '`';
           case Key::A:
             return 'a' - offset;
           case Key::B:
@@ -421,6 +572,36 @@ namespace sdl {
             return 'y' - offset;
           case Key::Z:
             return 'z' - offset;
+          case Key::KPDivide:
+            return '/';
+          case Key::KPMultiply:
+            return '*';
+          case Key::KPMinus:
+            return '-';
+          case Key::KPPlus:
+            return '+';
+          case Key::KP1:
+            return '1';
+          case Key::KP2:
+            return '2';
+          case Key::KP3:
+            return '3';
+          case Key::KP4:
+            return '4';
+          case Key::KP5:
+            return '5';
+          case Key::KP6:
+            return '6';
+          case Key::KP7:
+            return '7';
+          case Key::KP8:
+            return '8';
+          case Key::KP9:
+            return '9';
+          case Key::KP0:
+            return '0';
+          case Key::KPPeriod:
+            return '.';
           default:
             // Not an alphanumeric character, return a default value.
             return '\0';
