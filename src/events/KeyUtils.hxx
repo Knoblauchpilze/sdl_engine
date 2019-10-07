@@ -441,6 +441,10 @@ namespace sdl {
         // We also need to consider the input modifiers.
         const char offset = (shiftEnabled(m) ? ' ' : '\0');
 
+        // TODO: We should probably change the way we handle the keys to something
+        // maybe similar to here: https://www.libsdl.org/release/SDL-1.2.15/docs/html/guideinputkeyboard.html.
+        // This would help to account for more characters and the layout.
+
         switch (k) {
           case Key::Space:
             return ' ';
