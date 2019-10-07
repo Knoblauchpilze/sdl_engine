@@ -160,7 +160,6 @@ namespace sdl {
         Glyphs::const_iterator it = m_glyphs.find(key);
 
         if (it != m_glyphs.cend()) {
-          // TODO: We should correct this.
           if (color != it->second.c) {
             log("Using glyph with color " + color.toString() + " while cached glyph has color " + it->second.c.toString(), utils::Level::Error);
           }
