@@ -444,6 +444,13 @@ namespace sdl {
         // TODO: We should probably change the way we handle the keys to something
         // maybe similar to here: https://www.libsdl.org/release/SDL-1.2.15/docs/html/guideinputkeyboard.html.
         // This would help to account for more characters and the layout.
+        // Apparently the best way would be to use scan codes instead of key codes. So we should
+        // probably do that as well. So basically the process would be to use scan code and translate it into
+        // our own key code if needed.
+        // The thing is that we would modify this function to actually account for the various conditions.
+        // So typically if the user press the `è` key on a `AZERTY` keyboard we would produce an event with the
+        // key `Key::Seven` and only translates it to `è` in this method based on whether we're on a `QWERTY`
+        // keyboard or `AZERTY` keyboard.
 
         switch (k) {
           case Key::Space:
