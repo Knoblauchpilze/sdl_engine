@@ -158,7 +158,7 @@ namespace sdl {
 
           // If the conversion was successful and that it corresponds to the `Escape`
           // key, we need to check the internal status to determine the next action.
-          if (keyEvent != nullptr && keyEvent->isEscape() && m_exitOnEscape) {
+          if (keyEvent != nullptr && keyEvent->getRawKey() == Key::Escape && m_exitOnEscape) {
             // Replace the input event with a quit event.
             dispatchEventToListeners(std::make_shared<QuitEvent>());
 
