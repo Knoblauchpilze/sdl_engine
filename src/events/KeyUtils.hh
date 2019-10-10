@@ -13,53 +13,11 @@ namespace sdl {
        * @brief - Convenience enumeration describing the handled keys by this type of
        *          event. Any key that is not defined here will be mapped to the `None`
        *          value.
+       *          Note that this describes physical keys as logical position on the
+       *          keyboard: in order to get the full set of keys we need to account
+       *          for the modifiers and the keyboard layout.
        */
-      enum class Key {
-        // ASCII characters
-        None,
-        Return,
-        Escape,
-        BackSpace,
-        Tab,
-        Space,
-        Exclaim,
-        DoubleQuote,
-        Hash,
-        Percent,
-        Dollar,
-        Ampersand,
-        Quote,
-        LeftParenthesis,
-        RightParenthesis,
-        Asterisk,
-        Plus,
-        Comma,
-        Minus,
-        Period,
-        Slash,
-        Zero,
-        One,
-        Two,
-        Three,
-        Four,
-        Five,
-        Six,
-        Seven,
-        Eight,
-        Nine,
-        Colon,
-        Semicolon,
-        Less,
-        Equals,
-        Greater,
-        Question,
-        At,
-        LeftBracket,
-        Backslash,
-        RightBracket,
-        Caret,
-        Underscore,
-        Backquote,
+      enum class RawKey {
         A,
         B,
         C,
@@ -86,9 +44,37 @@ namespace sdl {
         X,
         Y,
         Z,
-        // Caps lock
+        One,
+        Two,
+        Three,
+        Four,
+        Five,
+        Six,
+        Seven,
+        Eight,
+        Nine,
+        Zero,
+
+        Return,
+        Escape,
+        BackSpace,
+        Tab,
+        Space,
+
+        Minus,
+        Equals,
+        LeftBracket,
+        RightBracket,
+        Backslash,
+        /* SDL_SCANCODE_NONUSHASH */
+        Semicolon,
+        Apostrophe,
+        Grave,
+        Comma,
+        Period,
+        Slash,
         CapsLock,
-        // Function keys
+
         F1,
         F2,
         F3,
@@ -101,7 +87,7 @@ namespace sdl {
         F10,
         F11,
         F12,
-        // Access keys
+
         PrintScreen,
         ScrollLock,
         Pause,
@@ -115,7 +101,7 @@ namespace sdl {
         Left,
         Down,
         Up,
-        // Keypad
+
         NumLockClear,
         KPDivide,
         KPMultiply,
@@ -133,24 +119,178 @@ namespace sdl {
         KP9,
         KP0,
         KPPeriod,
-        // Modifiers
+
+        /* SDL_SCANCODE_NONUSBACKSLASH */
+        /* SDL_SCANCODE_APPLICATION */
+        /* SDL_SCANCODE_POWER */
+        /* SDL_SCANCODE_KP_EQUALS */
+        /* SDL_SCANCODE_F13 */
+        /* SDL_SCANCODE_F14 */
+        /* SDL_SCANCODE_F15 */
+        /* SDL_SCANCODE_F16 */
+        /* SDL_SCANCODE_F17 */
+        /* SDL_SCANCODE_F18 */
+        /* SDL_SCANCODE_F19 */
+        /* SDL_SCANCODE_F20 */
+        /* SDL_SCANCODE_F21 */
+        /* SDL_SCANCODE_F22 */
+        /* SDL_SCANCODE_F23 */
+        /* SDL_SCANCODE_F24 */
+        /* SDL_SCANCODE_EXECUTE */
+        /* SDL_SCANCODE_HELP */
+        /* SDL_SCANCODE_MENU */
+        /* SDL_SCANCODE_SELECT */
+        /* SDL_SCANCODE_STOP */
+        /* SDL_SCANCODE_AGAIN */
+        /* SDL_SCANCODE_UNDO */
+        /* SDL_SCANCODE_CUT */
+        /* SDL_SCANCODE_COPY */
+        /* SDL_SCANCODE_PASTE */
+        /* SDL_SCANCODE_FIND */
+        /* SDL_SCANCODE_MUTE */
+        /* SDL_SCANCODE_VOLUMEUP */
+        /* SDL_SCANCODE_VOLUMEDOWN */
+
+        /* SDL_SCANCODE_KP_COMMA */
+        /* SDL_SCANCODE_KP_EQUALSAS400 */
+
+        /* SDL_SCANCODE_INTERNATIONAL1 */
+        /* SDL_SCANCODE_INTERNATIONAL2 */
+        /* SDL_SCANCODE_INTERNATIONAL3 */
+        /* SDL_SCANCODE_INTERNATIONAL4 */
+        /* SDL_SCANCODE_INTERNATIONAL5 */
+        /* SDL_SCANCODE_INTERNATIONAL6 */
+        /* SDL_SCANCODE_INTERNATIONAL7 */
+        /* SDL_SCANCODE_INTERNATIONAL8 */
+        /* SDL_SCANCODE_INTERNATIONAL9 */
+        /* SDL_SCANCODE_LANG1 */
+        /* SDL_SCANCODE_LANG2 */
+        /* SDL_SCANCODE_LANG3 */
+        /* SDL_SCANCODE_LANG4 */
+        /* SDL_SCANCODE_LANG5 */
+        /* SDL_SCANCODE_LANG6 */
+        /* SDL_SCANCODE_LANG7 */
+        /* SDL_SCANCODE_LANG8 */
+        /* SDL_SCANCODE_LANG9 */
+
+        /* SDL_SCANCODE_ALTERASE */
+        /* SDL_SCANCODE_SYSREQ */
+        /* SDL_SCANCODE_CANCEL */
+        /* SDL_SCANCODE_CLEAR */
+        /* SDL_SCANCODE_PRIOR */
+        /* SDL_SCANCODE_RETURN2 */
+        /* SDL_SCANCODE_SEPARATOR */
+        /* SDL_SCANCODE_OUT */
+        /* SDL_SCANCODE_OPER */
+        /* SDL_SCANCODE_CLEARAGAIN */
+        /* SDL_SCANCODE_CRSEL */
+        /* SDL_SCANCODE_EXSEL */
+
+        /* SDL_SCANCODE_KP_00 */
+        /* SDL_SCANCODE_KP_000 */
+        /* SDL_SCANCODE_THOUSANDSSEPARATOR */
+        /* SDL_SCANCODE_DECIMALSEPARATOR */
+        /* SDL_SCANCODE_CURRENCYUNIT */
+        /* SDL_SCANCODE_CURRENCYSUBUNIT */
+        /* SDL_SCANCODE_KP_LEFTPAREN */
+        /* SDL_SCANCODE_KP_RIGHTPAREN */
+        /* SDL_SCANCODE_KP_LEFTBRACE */
+        /* SDL_SCANCODE_KP_RIGHTBRACE */
+        /* SDL_SCANCODE_KP_TAB */
+        /* SDL_SCANCODE_KP_BACKSPACE */
+        /* SDL_SCANCODE_KP_A */
+        /* SDL_SCANCODE_KP_B */
+        /* SDL_SCANCODE_KP_C */
+        /* SDL_SCANCODE_KP_D */
+        /* SDL_SCANCODE_KP_E */
+        /* SDL_SCANCODE_KP_F */
+        /* SDL_SCANCODE_KP_XOR */
+        /* SDL_SCANCODE_KP_POWER */
+        /* SDL_SCANCODE_KP_PERCENT */
+        /* SDL_SCANCODE_KP_LESS */
+        /* SDL_SCANCODE_KP_GREATER */
+        /* SDL_SCANCODE_KP_AMPERSAND */
+        /* SDL_SCANCODE_KP_DBLAMPERSAND */
+        /* SDL_SCANCODE_KP_VERTICALBAR */
+        /* SDL_SCANCODE_KP_DBLVERTICALBAR */
+        /* SDL_SCANCODE_KP_COLON */
+        /* SDL_SCANCODE_KP_HASH */
+        /* SDL_SCANCODE_KP_SPACE */
+        /* SDL_SCANCODE_KP_AT */
+        /* SDL_SCANCODE_KP_EXCLAM */
+        /* SDL_SCANCODE_KP_MEMSTORE */
+        /* SDL_SCANCODE_KP_MEMRECALL */
+        /* SDL_SCANCODE_KP_MEMCLEAR */
+        /* SDL_SCANCODE_KP_MEMADD */
+        /* SDL_SCANCODE_KP_MEMSUBTRACT */
+        /* SDL_SCANCODE_KP_MEMMULTIPLY */
+        /* SDL_SCANCODE_KP_MEMDIVIDE */
+        /* SDL_SCANCODE_KP_PLUSMINUS */
+        /* SDL_SCANCODE_KP_CLEAR */
+        /* SDL_SCANCODE_KP_CLEARENTRY */
+        /* SDL_SCANCODE_KP_BINARY */
+        /* SDL_SCANCODE_KP_OCTAL */
+        /* SDL_SCANCODE_KP_DECIMAL */
+        /* SDL_SCANCODE_KP_HEXADECIMAL */
+
         LeftCtrl,
         LeftShift,
         LeftAlt,
+        LeftCommand,
         RightCtrl,
         RightShift,
-        RightAlt
+        RightAlt,
+        RightCommand,
+
+        /* SDL_SCANCODE_MODE */
+        /* SDL_SCANCODE_AUDIONEXT */
+        /* SDL_SCANCODE_AUDIOPREV */
+        /* SDL_SCANCODE_AUDIOSTOP */
+        /* SDL_SCANCODE_AUDIOPLAY */
+        /* SDL_SCANCODE_AUDIOMUTE */
+        /* SDL_SCANCODE_MEDIASELECT */
+        /* SDL_SCANCODE_WWW */
+        /* SDL_SCANCODE_MAIL */
+        /* SDL_SCANCODE_CALCULATOR */
+        /* SDL_SCANCODE_COMPUTER */
+        /* SDL_SCANCODE_AC_SEARCH */
+        /* SDL_SCANCODE_AC_HOME */
+        /* SDL_SCANCODE_AC_BACK */
+        /* SDL_SCANCODE_AC_FORWARD */
+        /* SDL_SCANCODE_AC_STOP */
+        /* SDL_SCANCODE_AC_REFRESH */
+        /* SDL_SCANCODE_AC_BOOKMARKS */
+
+        /* SDL_SCANCODE_BRIGHTNESSDOWN */
+        /* SDL_SCANCODE_BRIGHTNESSUP */
+        /* SDL_SCANCODE_DISPLAYSWITCH */
+        /* SDL_SCANCODE_KBDILLUMTOGGLE */
+        /* SDL_SCANCODE_KBDILLUMDOWN */
+        /* SDL_SCANCODE_KBDILLUMUP */
+        /* SDL_SCANCODE_EJECT */
+        /* SDL_SCANCODE_SLEEP */
+
+        /* SDL_SCANCODE_APP1 */
+        /* SDL_SCANCODE_APP2 */
+
+        /* SDL_SCANCODE_AUDIOREWIND */
+        /* SDL_SCANCODE_AUDIOFASTFORWARD */
+        /* SDL_NUM_SCANCODES */
+
+        None
       };
 
       /**
-       * @brief - Converts the input `SDL` key code to an equivalent key enumeration. If no such
+       * @brief - Converts the input `SDL` scan code to an equivalent key enumeration. If no such
        *          conversion can be performed the value `None` is used.
-       * @param k - the `SDL` key code to convert.
+       *          Note that a scan code is linked to a physical position of a key on the keyboard
+       *          and does not take into consideration the layout of the keyboard.
+       * @param k - the `SDL` scan code to convert.
        * @return - the enumeration value corresponding to the input `SDL` code or `None` if no
        *           such value exist.
        */
       Key
-      fromSDLKey(const SDL_Keycode& k);
+      fromSDLScancode(const SDL_Scancode& k);
 
       /**
        * @brief - Converts the input `SDL` key modifier to an equivalent enumeration. If no such
