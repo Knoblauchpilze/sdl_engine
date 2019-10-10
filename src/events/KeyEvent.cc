@@ -42,18 +42,36 @@ namespace sdl {
           );
         }
 
+        // The type of the event is determined from the undelrying `API` event.
         Event::Type type = Event::Type::KeyPress;
         if (m_key.type == SDL_KEYUP) {
           type = Event::Type::KeyRelease;
         }
 
-        m_converted = fromSDLKey(m_key.keysym.sym);
+        // Build both the raw and converted key values.
+        m_raw = fromSDLScancode(m_key.keysym.scancode);
+        // TODO: We should retrieve this somehow.
+        m_interpreted = fromRawKey(m_raw, keyboard::Mode::Azerty);
+
+        // Retrieve the key modifiers.
         m_mods = fromSDLMod(m_key.keysym.mod);
+
+        log(
+          std::string("Pressed ") +
+          "key " + std::to_string(m_key.keysym.sym) + " " +
+          "(scan: " + std::to_string(m_key.keysym.scancode) + ", name: \"" + SDL_GetKeyName(m_key.keysym.sym) + "\") " +
+          "converted to " + std::to_string(static_cast<int>(m_raw)) + " "
+          "interpreted in " + std::to_string(static_cast<int>(m_interpreted))
+        );
 
         setType(type);
 
         setSDLWinID(m_key.windowID);
       }
+
+      Key
+      KeyEvent::fromRawKey(const Key& key,
+                           const keyboard::Mode& mode) noexcept;
 
     }
   }

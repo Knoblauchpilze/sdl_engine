@@ -13,7 +13,9 @@ namespace sdl {
         Event(Event::Type::None, nullptr, std::string("key_event_") + std::to_string(event.keysym.sym)),
         m_key(event),
 
-        m_converted(Key::None),
+        m_raw(Key::None),
+        m_interpreted(Key::None),
+
         m_mods()
       {
         init();
@@ -24,8 +26,14 @@ namespace sdl {
 
       inline
       Key
-      KeyEvent::getKey() const noexcept {
-        return m_converted;
+      KeyEvent::getRawKey() const noexcept {
+        return m_raw;
+      }
+
+      inline
+      Key
+      KeyEvent::getInterpretedKey() const noexcept {
+        return m_interpreted;
       }
 
       inline
@@ -54,20 +62,14 @@ namespace sdl {
 
       inline
       bool
-      KeyEvent::isEscape() const noexcept {
-        return getKey() == Key::Escape;
-      }
-
-      inline
-      bool
       KeyEvent::isAlphaNumeric() const noexcept {
-        return isKeyAlphanumeric(getKey());
+        return isKeyAlphanumeric(getInterpretedKey());
       }
 
       inline
       bool
       KeyEvent::isPrintable() const noexcept {
-        return isKeyPrintable(getKey());
+        return isKeyPrintable(getInterpretedKey());
       }
 
       inline
@@ -83,14 +85,14 @@ namespace sdl {
         }
 
         // Use the dedicated handler.
-        return getCharFromKey(getKey(), getModifiers());
+        return getCharFromKey(getInterpretedKey(), getModifiers());
       }
 
       inline
       bool
       KeyEvent::equal(const Event& other) const noexcept {
         const KeyEvent& e = dynamic_cast<const KeyEvent&>(other);
-        return Event::equal(other) && getKey() == e.getKey() && getModifiers() == e.getModifiers();
+        return Event::equal(other) && getRawKey() == e.getRawKey() && getModifiers() == e.getModifiers();
       }
 
     }
