@@ -41,7 +41,7 @@ namespace sdl {
            *          to get an interpreted version of the key that has been pressed.
            * @return - an identifier for the physical key linked to this event.
            */
-          Key
+          RawKey
           getRawKey() const noexcept;
 
           /**
@@ -178,7 +178,7 @@ namespace sdl {
            */
           static
           Key
-          fromRawKey(const Key& key,
+          fromRawKey(const RawKey& key,
                      const keyboard::Mode& mode) noexcept;
 
         private:
@@ -193,7 +193,7 @@ namespace sdl {
            *          the layout of the keyboard. This way no matter the layout processes
            *          will always be triggered by the keys at the same position.
            */
-          Key m_raw;
+          RawKey m_raw;
 
           /**
            * @brief - Holds the interpreted key for this event. This key takes the layout

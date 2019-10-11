@@ -70,8 +70,16 @@ namespace sdl {
       }
 
       Key
-      KeyEvent::fromRawKey(const Key& key,
-                           const keyboard::Mode& mode) noexcept;
+      KeyEvent::fromRawKey(const RawKey& key,
+                           const keyboard::Mode& mode) noexcept
+      {
+        error(
+          std::string("Cannot convert from raw key"),
+          std::string("Not implemented")
+        );
+
+        return Key::None;
+      }
 
     }
   }

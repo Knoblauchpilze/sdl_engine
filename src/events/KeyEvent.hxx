@@ -13,7 +13,7 @@ namespace sdl {
         Event(Event::Type::None, nullptr, std::string("key_event_") + std::to_string(event.keysym.sym)),
         m_key(event),
 
-        m_raw(Key::None),
+        m_raw(RawKey::None),
         m_interpreted(Key::None),
 
         m_mods()
@@ -25,7 +25,7 @@ namespace sdl {
       KeyEvent::~KeyEvent() {}
 
       inline
-      Key
+      RawKey
       KeyEvent::getRawKey() const noexcept {
         return m_raw;
       }
@@ -79,7 +79,7 @@ namespace sdl {
         // provide an equivalent char.
         if (!isPrintable()) {
           error(
-            std::string("Cannot return equivalent char to key '") + std::to_string(static_cast<int>(m_converted)) + "'",
+            std::string("Cannot return equivalent char to key '") + std::to_string(static_cast<int>(getInterpretedKey())) + "'",
             std::string("Key is not printable")
           );
         }

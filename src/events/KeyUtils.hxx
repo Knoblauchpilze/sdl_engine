@@ -8,206 +8,206 @@ namespace sdl {
     namespace engine {
 
       inline
-      Key
+      RawKey
       fromSDLScancode(const SDL_Scancode& k) {
         // Handle each value and set `None` for unrecognized ones.
         switch (k) {
           case SDL_SCANCODE_A:
-            return Key::A;
+            return RawKey::A;
           case SDL_SCANCODE_B:
-            return Key::B;
+            return RawKey::B;
           case SDL_SCANCODE_C:
-            return Key::C;
+            return RawKey::C;
           case SDL_SCANCODE_D:
-            return Key::D;
+            return RawKey::D;
           case SDL_SCANCODE_E:
-            return Key::E;
+            return RawKey::E;
           case SDL_SCANCODE_F:
-            return Key::F;
+            return RawKey::F;
           case SDL_SCANCODE_G:
-            return Key::G;
+            return RawKey::G;
           case SDL_SCANCODE_H:
-            return Key::H;
+            return RawKey::H;
           case SDL_SCANCODE_I:
-            return Key::I;
+            return RawKey::I;
           case SDL_SCANCODE_J:
-            return Key::J;
+            return RawKey::J;
           case SDL_SCANCODE_K:
-            return Key::K;
+            return RawKey::K;
           case SDL_SCANCODE_L:
-            return Key::L;
+            return RawKey::L;
           case SDL_SCANCODE_M:
-            return Key::M;
+            return RawKey::M;
           case SDL_SCANCODE_N:
-            return Key::N;
+            return RawKey::N;
           case SDL_SCANCODE_O:
-            return Key::O;
+            return RawKey::O;
           case SDL_SCANCODE_P:
-            return Key::P;
+            return RawKey::P;
           case SDL_SCANCODE_Q:
-            return Key::Q;
+            return RawKey::Q;
           case SDL_SCANCODE_R:
-            return Key::R;
+            return RawKey::R;
           case SDL_SCANCODE_S:
-            return Key::S;
+            return RawKey::S;
           case SDL_SCANCODE_T:
-            return Key::T;
+            return RawKey::T;
           case SDL_SCANCODE_U:
-            return Key::U;
+            return RawKey::U;
           case SDL_SCANCODE_V:
-            return Key::V;
+            return RawKey::V;
           case SDL_SCANCODE_W:
-            return Key::W;
+            return RawKey::W;
           case SDL_SCANCODE_X:
-            return Key::X;
+            return RawKey::X;
           case SDL_SCANCODE_Y:
-            return Key::Y;
+            return RawKey::Y;
           case SDL_SCANCODE_Z:
-            return Key::Z;
+            return RawKey::Z;
           case SDL_SCANCODE_1:
-            return Key::One;
+            return RawKey::One;
           case SDL_SCANCODE_2:
-            return Key::Two;
+            return RawKey::Two;
           case SDL_SCANCODE_3:
-            return Key::Three;
+            return RawKey::Three;
           case SDL_SCANCODE_4:
-            return Key::Four;
+            return RawKey::Four;
           case SDL_SCANCODE_5:
-            return Key::Five;
+            return RawKey::Five;
           case SDL_SCANCODE_6:
-            return Key::Six;
+            return RawKey::Six;
           case SDL_SCANCODE_7:
-            return Key::Seven;
+            return RawKey::Seven;
           case SDL_SCANCODE_8:
-            return Key::Eight;
+            return RawKey::Eight;
           case SDL_SCANCODE_9:
-            return Key::Nine;
+            return RawKey::Nine;
           case SDL_SCANCODE_0:
-            return Key::Zero;
+            return RawKey::Zero;
 
           case SDL_SCANCODE_RETURN:
-            return Key::Return;
+            return RawKey::Return;
           case SDL_SCANCODE_ESCAPE:
-            return Key::Escape;
+            return RawKey::Escape;
           case SDL_SCANCODE_BACKSPACE:
-            return Key::BackSpace;
+            return RawKey::BackSpace;
           case SDL_SCANCODE_TAB:
-            return Key::Tab;
+            return RawKey::Tab;
           case SDL_SCANCODE_SPACE:
-            return Key::Space;
+            return RawKey::Space;
 
           case SDL_SCANCODE_MINUS:
-            return Key::Minus;
+            return RawKey::Minus;
           case SDL_SCANCODE_EQUALS:
-            return Key::Equals;
+            return RawKey::Equals;
           case SDL_SCANCODE_LEFTBRACKET:
-            return Key::LeftBracket;
+            return RawKey::LeftBracket;
           case SDL_SCANCODE_RIGHTBRACKET:
-            return Key::RightBracket;
+            return RawKey::RightBracket;
           case SDL_SCANCODE_BACKSLASH:
-            return Key::Backslash;
+            return RawKey::Backslash;
           /* SDL_SCANCODE_NONUSHASH */
           case SDL_SCANCODE_SEMICOLON:
-            return Key::Semicolon;
+            return RawKey::Semicolon;
           case SDL_SCANCODE_APOSTROPHE:
-            return Key::Apostrophe;
+            return RawKey::Apostrophe;
           case SDL_SCANCODE_GRAVE:
-            return Key::Grave;
+            return RawKey::Grave;
           case SDL_SCANCODE_COMMA:
-            return Key::Comma;
+            return RawKey::Comma;
           case SDL_SCANCODE_PERIOD:
-            return Key::Period;
+            return RawKey::Period;
           case SDL_SCANCODE_SLASH:
-            return Key::Slash;
+            return RawKey::Slash;
           case SDL_SCANCODE_CAPSLOCK:
-            return Key::CapsLock;
+            return RawKey::CapsLock;
 
           case SDL_SCANCODE_F1:
-            return Key::F1;
+            return RawKey::F1;
           case SDL_SCANCODE_F2:
-            return Key::F2;
+            return RawKey::F2;
           case SDL_SCANCODE_F3:
-            return Key::F3;
+            return RawKey::F3;
           case SDL_SCANCODE_F4:
-            return Key::F4;
+            return RawKey::F4;
           case SDL_SCANCODE_F5:
-            return Key::F5;
+            return RawKey::F5;
           case SDL_SCANCODE_F6:
-            return Key::F6;
+            return RawKey::F6;
           case SDL_SCANCODE_F7:
-            return Key::F7;
+            return RawKey::F7;
           case SDL_SCANCODE_F8:
-            return Key::F8;
+            return RawKey::F8;
           case SDL_SCANCODE_F9:
-            return Key::F9;
+            return RawKey::F9;
           case SDL_SCANCODE_F10:
-            return Key::F10;
+            return RawKey::F10;
           case SDL_SCANCODE_F11:
-            return Key::F11;
+            return RawKey::F11;
           case SDL_SCANCODE_F12:
-            return Key::F12;
+            return RawKey::F12;
 
           case SDL_SCANCODE_PRINTSCREEN:
-            return Key::PrintScreen;
+            return RawKey::PrintScreen;
           case SDL_SCANCODE_SCROLLLOCK:
-            return Key::ScrollLock;
+            return RawKey::ScrollLock;
           case SDL_SCANCODE_PAUSE:
-            return Key::Pause;
+            return RawKey::Pause;
           case SDL_SCANCODE_INSERT:
-            return Key::Insert;
+            return RawKey::Insert;
           case SDL_SCANCODE_HOME:
-            return Key::Home;
+            return RawKey::Home;
           case SDL_SCANCODE_PAGEUP:
-            return Key::PageUp;
+            return RawKey::PageUp;
           case SDL_SCANCODE_DELETE:
-            return Key::Delete;
+            return RawKey::Delete;
           case SDL_SCANCODE_END:
-            return Key::End;
+            return RawKey::End;
           case SDL_SCANCODE_PAGEDOWN:
-            return Key::PageDown;
+            return RawKey::PageDown;
           case SDL_SCANCODE_RIGHT:
-            return Key::Right;
+            return RawKey::Right;
           case SDL_SCANCODE_LEFT:
-            return Key::Left;
+            return RawKey::Left;
           case SDL_SCANCODE_DOWN:
-            return Key::Down;
+            return RawKey::Down;
           case SDL_SCANCODE_UP:
-            return Key::Up;
+            return RawKey::Up;
 
           case SDL_SCANCODE_NUMLOCKCLEAR:
-            return Key::NumLockClear;
+            return RawKey::NumLockClear;
           case SDL_SCANCODE_KP_DIVIDE:
-            return Key::KPDivide;
+            return RawKey::KPDivide;
           case SDL_SCANCODE_KP_MULTIPLY:
-            return Key::KPMultiply;
+            return RawKey::KPMultiply;
           case SDL_SCANCODE_KP_MINUS:
-            return Key::KPMinus;
+            return RawKey::KPMinus;
           case SDL_SCANCODE_KP_PLUS:
-            return Key::KPPlus;
+            return RawKey::KPPlus;
           case SDL_SCANCODE_KP_ENTER:
-            return Key::KPEnter;
+            return RawKey::KPEnter;
           case SDL_SCANCODE_KP_1:
-            return Key::KP1;
+            return RawKey::KP1;
           case SDL_SCANCODE_KP_2:
-            return Key::KP2;
+            return RawKey::KP2;
           case SDL_SCANCODE_KP_3:
-            return Key::KP3;
+            return RawKey::KP3;
           case SDL_SCANCODE_KP_4:
-            return Key::KP4;
+            return RawKey::KP4;
           case SDL_SCANCODE_KP_5:
-            return Key::KP5;
+            return RawKey::KP5;
           case SDL_SCANCODE_KP_6:
-            return Key::KP6;
+            return RawKey::KP6;
           case SDL_SCANCODE_KP_7:
-            return Key::KP7;
+            return RawKey::KP7;
           case SDL_SCANCODE_KP_8:
-            return Key::KP8;
+            return RawKey::KP8;
           case SDL_SCANCODE_KP_9:
-            return Key::KP9;
+            return RawKey::KP9;
           case SDL_SCANCODE_KP_0:
-            return Key::KP0;
+            return RawKey::KP0;
           case SDL_SCANCODE_KP_PERIOD:
-            return Key::KPPeriod;
+            return RawKey::KPPeriod;
 
           /* SDL_SCANCODE_NONUSBACKSLASH */
           /* SDL_SCANCODE_APPLICATION */
@@ -323,21 +323,21 @@ namespace sdl {
           /* SDL_SCANCODE_KP_HEXADECIMAL */
 
           case SDL_SCANCODE_LCTRL:
-            return Key::LeftCtrl;
+            return RawKey::LeftCtrl;
           case SDL_SCANCODE_LSHIFT:
-            return Key::LeftShift;
+            return RawKey::LeftShift;
           case SDL_SCANCODE_LALT:
-            return Key::LeftAlt;
+            return RawKey::LeftAlt;
           case SDL_SCANCODE_LGUI:
-            return Key::LeftCommand;
+            return RawKey::LeftCommand;
           case SDL_SCANCODE_RCTRL:
-            return Key::RightCtrl;
+            return RawKey::RightCtrl;
           case SDL_SCANCODE_RSHIFT:
-            return Key::RightShift;
+            return RawKey::RightShift;
           case SDL_SCANCODE_RALT:
-            return Key::RightAlt;
+            return RawKey::RightAlt;
           case SDL_SCANCODE_RGUI:
-            return Key::RightCommand;
+            return RawKey::RightCommand;
 
           /* SDL_SCANCODE_MODE */
           /* SDL_SCANCODE_AUDIONEXT */
@@ -374,13 +374,13 @@ namespace sdl {
           /* SDL_SCANCODE_AUDIOFASTFORWARD */
           /* SDL_NUM_SCANCODES */
           default:
-            return Key::None;
+            return RawKey::None;
         }
       }
 
       inline
       KeyModifier
-      fromSDLMod(const std::uint16_t& m) {
+      fromSDLMod(std::uint16_t m) {
         // Handle each value and set `None` for unrecognized ones.
         KeyModifier mods;
 
