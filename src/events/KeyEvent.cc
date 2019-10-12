@@ -94,8 +94,7 @@ namespace sdl {
       }
 
       Key
-      KeyEvent::fromRawToQWERTY(const RawKey& key) const noexcept
-      {
+      KeyEvent::fromRawToQWERTY(const RawKey& key) const noexcept {
         // TODO: Interpret mode.
         switch (key) {
           case RawKey::A:
