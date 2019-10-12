@@ -68,7 +68,7 @@ namespace sdl {
         Backslash,
         /* SDL_SCANCODE_NONUSHASH */
         Semicolon,
-        Apostrophe,
+        /* SDL_SCANCODE_APOSTROPHE */
         Grave,
         Comma,
         Period,

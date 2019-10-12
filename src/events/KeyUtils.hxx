@@ -109,8 +109,7 @@ namespace sdl {
           /* SDL_SCANCODE_NONUSHASH */
           case SDL_SCANCODE_SEMICOLON:
             return RawKey::Semicolon;
-          case SDL_SCANCODE_APOSTROPHE:
-            return RawKey::Apostrophe;
+          /* SDL_SCANCODE_APOSTROPHE */
           case SDL_SCANCODE_GRAVE:
             return RawKey::Grave;
           case SDL_SCANCODE_COMMA:
@@ -587,272 +586,10 @@ namespace sdl {
       inline
       char
       getCharFromKey(const Key& k,
-                     const KeyModifier& m) noexcept
+                     const KeyModifier& /*m*/) noexcept
       {
         // Distinguish based on the input key.
-        switch (k) {
-          case Key::Return:
-          case Key::Escape:
-          case Key::Backspace:
-          case Key::Tab:
-          case Key::Space:
-          case Key::Exclaim:
-          case Key::DoubleQuote:
-          case Key::Hash:
-          case Key::Percent:
-          case Key::Dollar:
-          case Key::Ampersand:
-          case Key::Quote:
-          case Key::LeftParenthesis:
-          case Key::RightParenthesis:
-          case Key::Asterisk:
-          case Key::Plus:
-          case Key::Comma:
-          case Key::Minus:
-          case Key::Period:
-          case Key::Slash:
-          case Key::Zero:
-          case Key::One:
-          case Key::Two:
-          case Key::Three:
-          case Key::Four:
-          case Key::Five:
-          case Key::Six:
-          case Key::Seven:
-          case Key::Eight:
-          case Key::Nine:
-          case Key::Colon:
-          case Key::Semicolon:
-          case Key::Less:
-          case Key::Equals:
-          case Key::Greater:
-          case Key::Question:
-          case Key::At:
-
-          case Key::LeftBracket:
-          case Key::Backslash:
-          case Key::RightBracket:
-          case Key::Caret:
-          case Key::Underscore:
-          case Key::Backquote:
-          case Key::A:
-          case Key::B:
-          case Key::C:
-          case Key::D:
-          case Key::E:
-          case Key::F:
-          case Key::G:
-          case Key::H:
-          case Key::I:
-          case Key::J:
-          case Key::K:
-          case Key::L:
-          case Key::M:
-          case Key::N:
-          case Key::O:
-          case Key::P:
-          case Key::Q:
-          case Key::R:
-          case Key::S:
-          case Key::T:
-          case Key::U:
-          case Key::V:
-          case Key::W:
-          case Key::X:
-          case Key::Y:
-          case Key::Z:
-
-          case Key::CapsLock:
-
-          case Key::F1:
-          case Key::F2:
-          case Key::F3:
-          case Key::F4:
-          case Key::F5:
-          case Key::F6:
-          case Key::F7:
-          case Key::F8:
-          case Key::F9:
-          case Key::F10:
-          case Key::F11:
-          case Key::F12:
-
-          case Key::PrintScreen:
-          case Key::ScrollLock:
-          case Key::Pause:
-          case Key::Insert:
-          case Key::Home:
-          case Key::PageUp:
-          case Key::Delete:
-          case Key::End:
-          case Key::PageDown:
-          case Key::Right:
-          case Key::Left:
-          case Key::Down:
-          case Key::Up:
-
-          case Key::NumLockClear:
-          case Key::KPDivide:
-          case Key::KPMultiply:
-          case Key::KPMinus:
-          case Key::KPPlus:
-          case Key::KPEnter:
-          case Key::KP1:
-          case Key::KP2:
-          case Key::KP3:
-          case Key::KP4:
-          case Key::KP5:
-          case Key::KP6:
-          case Key::KP7:
-          case Key::KP8:
-          case Key::KP9:
-          case Key::KP0:
-          case Key::KPPeriod:
-
-          /* SDLK_APPLICATION */
-          /* SDLK_POWER */
-          /* SDLK_KP_EQUALS */
-          /* SDLK_F13 */
-          /* SDLK_F14 */
-          /* SDLK_F15 */
-          /* SDLK_F16 */
-          /* SDLK_F17 */
-          /* SDLK_F18 */
-          /* SDLK_F19 */
-          /* SDLK_F20 */
-          /* SDLK_F21 */
-          /* SDLK_F22 */
-          /* SDLK_F23 */
-          /* SDLK_F24 */
-          /* SDLK_EXECUTE */
-          /* SDLK_HELP */
-          /* SDLK_MENU */
-          /* SDLK_SELECT */
-          /* SDLK_STOP */
-          /* SDLK_AGAIN */
-          /* SDLK_UNDO */
-          /* SDLK_CUT */
-          /* SDLK_COPY */
-          /* SDLK_PASTE */
-          /* SDLK_FIND */
-          /* SDLK_MUTE */
-          /* SDLK_VOLUMEUP */
-          /* SDLK_VOLUMEDOWN */
-          /* SDLK_KP_COMMA */
-          /* SDLK_KP_EQUALSAS400 */
-
-          /* SDLK_ALTERASE */
-          /* SDLK_SYSREQ */
-          /* SDLK_CANCEL */
-          /* SDLK_CLEAR */
-          /* SDLK_PRIOR */
-          /* SDLK_RETURN2 */
-          /* SDLK_SEPARATOR */
-          /* SDLK_OUT */
-          /* SDLK_OPER */
-          /* SDLK_CLEARAGAIN */
-          /* SDLK_CRSEL */
-          /* SDLK_EXSEL */
-
-          /* SDLK_KP_00 */
-          /* SDLK_KP_000 */
-          /* SDLK_THOUSANDSSEPARATOR */
-          /* SDLK_DECIMALSEPARATOR */
-          /* SDLK_CURRENCYUNIT */
-          /* SDLK_CURRENCYSUBUNIT */
-          /* SDLK_KP_LEFTPAREN */
-          /* SDLK_KP_RIGHTPAREN */
-          /* SDLK_KP_LEFTBRACE */
-          /* SDLK_KP_RIGHTBRACE */
-          /* SDLK_KP_TAB */
-          /* SDLK_KP_BACKSPACE */
-          /* SDLK_KP_A */
-          /* SDLK_KP_B */
-          /* SDLK_KP_C */
-          /* SDLK_KP_D */
-          /* SDLK_KP_E */
-          /* SDLK_KP_F */
-          /* SDLK_KP_XOR */
-          /* SDLK_KP_POWER */
-          /* SDLK_KP_PERCENT */
-          /* SDLK_KP_LESS */
-          /* SDLK_KP_GREATER */
-          /* SDLK_KP_AMPERSAND */
-          /* SDLK_KP_DBLAMPERSAND */
-          /* SDLK_KP_VERTICALBAR */
-          /* SDLK_KP_DBLVERTICALBAR */
-          /* SDLK_KP_COLON */
-          /* SDLK_KP_HASH */
-          /* SDLK_KP_SPACE */
-          /* SDLK_KP_AT */
-          /* SDLK_KP_EXCLAM */
-          /* SDLK_KP_MEMSTORE */
-          /* SDLK_KP_MEMRECALL */
-          /* SDLK_KP_MEMCLEAR */
-          /* SDLK_KP_MEMADD */
-          /* SDLK_KP_MEMSUBTRACT */
-          /* SDLK_KP_MEMMULTIPLY */
-          /* SDLK_KP_MEMDIVIDE */
-          /* SDLK_KP_PLUSMINUS */
-          /* SDLK_KP_CLEAR */
-          /* SDLK_KP_CLEARENTRY */
-          /* SDLK_KP_BINARY */
-          /* SDLK_KP_OCTAL */
-          /* SDLK_KP_DECIMAL */
-          /* SDLK_KP_HEXADECIMAL */
-
-          case Key::LeftCtrl:
-          case Key::LeftShift:
-          case Key::LeftAlt:
-          case Key::LeftCommand:
-          case Key::RightCtrl:
-          case Key::RightShift:
-          case Key::RightAlt:
-          case Key::RightCommand:
-
-          /* SDLK_MODE */
-
-          /* SDLK_AUDIONEXT */
-          /* SDLK_AUDIOPREV */
-          /* SDLK_AUDIOSTOP */
-          /* SDLK_AUDIOPLAY */
-          /* SDLK_AUDIOMUTE */
-          /* SDLK_MEDIASELECT */
-          /* SDLK_WWW */
-          /* SDLK_MAIL */
-          /* SDLK_CALCULATOR */
-          /* SDLK_COMPUTER */
-          /* SDLK_AC_SEARCH */
-          /* SDLK_AC_HOME */
-          /* SDLK_AC_BACK */
-          /* SDLK_AC_FORWARD */
-          /* SDLK_AC_STOP */
-          /* SDLK_AC_REFRESH */
-          /* SDLK_AC_BOOKMARKS */
-
-          /* SDLK_BRIGHTNESSDOWN */
-          /* SDLK_BRIGHTNESSUP */
-          /* SDLK_DISPLAYSWITCH */
-          /* SDLK_KBDILLUMTOGGLE */
-          /* SDLK_KBDILLUMDOWN */
-          /* SDLK_KBDILLUMUP */
-          /* SDLK_EJECT */
-          /* SDLK_SLEEP */
-          /* SDLK_APP1 */
-          /* SDLK_APP2 */
-
-          /* SDLK_AUDIOREWIND */
-          /* SDLK_AUDIOFASTFORWARD */
-
-          case Key::None
-          case Key::default:
-          case Key::  break;
-        }
-
-        // If the key is not alpha numeric, we can't do much.
-        // We also need to consider the input modifiers.
-        const char offset = (shiftEnabled(m) ? ' ' : '\0');
-
+        // TODO: Handle modifiers.
         // TODO: We should probably change the way we handle the keys to something
         // maybe similar to here: https://www.libsdl.org/release/SDL-1.2.15/docs/html/guideinputkeyboard.html.
         // This would help to account for more characters and the layout.
@@ -863,8 +600,11 @@ namespace sdl {
         // So typically if the user press the `è` key on a `AZERTY` keyboard we would produce an event with the
         // key `Key::Seven` and only translates it to `è` in this method based on whether we're on a `QWERTY`
         // keyboard or `AZERTY` keyboard.
-
         switch (k) {
+          case Key::Return:
+          case Key::Escape:
+          case Key::Backspace:
+          case Key::Tab:
           case Key::Space:
             return ' ';
           case Key::Exclaim:
@@ -931,6 +671,7 @@ namespace sdl {
             return '?';
           case Key::At:
             return '@';
+
           case Key::LeftBracket:
             return '[';
           case Key::Backslash:
@@ -944,57 +685,58 @@ namespace sdl {
           case Key::Backquote:
             return '`';
           case Key::A:
-            return 'a' - offset;
+            return 'a';
           case Key::B:
-            return 'b' - offset;
+            return 'b';
           case Key::C:
-            return 'c' - offset;
+            return 'c';
           case Key::D:
-            return 'd' - offset;
+            return 'd';
           case Key::E:
-            return 'e' - offset;
+            return 'e';
           case Key::F:
-            return 'f' - offset;
+            return 'f';
           case Key::G:
-            return 'g' - offset;
+            return 'g';
           case Key::H:
-            return 'h' - offset;
+            return 'h';
           case Key::I:
-            return 'i' - offset;
+            return 'i';
           case Key::J:
-            return 'j' - offset;
+            return 'j';
           case Key::K:
-            return 'k' - offset;
+            return 'k';
           case Key::L:
-            return 'l' - offset;
+            return 'l';
           case Key::M:
-            return 'm' - offset;
+            return 'm';
           case Key::N:
-            return 'n' - offset;
+            return 'n';
           case Key::O:
-            return 'o' - offset;
+            return 'o';
           case Key::P:
-            return 'p' - offset;
+            return 'p';
           case Key::Q:
-            return 'q' - offset;
+            return 'q';
           case Key::R:
-            return 'r' - offset;
+            return 'r';
           case Key::S:
-            return 's' - offset;
+            return 's';
           case Key::T:
-            return 't' - offset;
+            return 't';
           case Key::U:
-            return 'u' - offset;
+            return 'u';
           case Key::V:
-            return 'v' - offset;
+            return 'v';
           case Key::W:
-            return 'w' - offset;
+            return 'w';
           case Key::X:
-            return 'x' - offset;
+            return 'x';
           case Key::Y:
-            return 'y' - offset;
+            return 'y';
           case Key::Z:
-            return 'z' - offset;
+            return 'z';
+
           case Key::KPDivide:
             return '/';
           case Key::KPMultiply:
@@ -1025,6 +767,7 @@ namespace sdl {
             return '0';
           case Key::KPPeriod:
             return '.';
+
           default:
             // Not an alphanumeric character, return a default value.
             return '\0';
