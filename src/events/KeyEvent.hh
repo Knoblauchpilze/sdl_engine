@@ -176,10 +176,25 @@ namespace sdl {
            * @param mode - the keyboard layout to convert the key into.
            * @return - the interpreted key from the physical position in input.
            */
-          static
           Key
           fromRawKey(const RawKey& key,
-                     const keyboard::Mode& mode) noexcept;
+                     const keyboard::Mode& mode) const noexcept;
+
+          /**
+           * @brief - Used to convert from a raw key into ain interpreted one which given
+           *          that the keyboard layout is `AZERTY`.
+           * @param key - the key to convert.
+           */
+          Key
+          fromRawToQWERTY(const RawKey& key) const noexcept;
+
+          /**
+           * @brief - Used to convert from a raw key into ain interpreted one which given
+           *          that the keyboard layout is `AZERTY`.
+           * @param key - the key to convert.
+           */
+          Key
+          fromRawToAZERTY(const RawKey& key) const noexcept;
 
         private:
 
