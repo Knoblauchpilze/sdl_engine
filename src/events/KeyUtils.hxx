@@ -420,6 +420,17 @@ namespace sdl {
       bool
       isKeyAlphanumeric(const Key& k) noexcept {
         switch (k) {
+          case Key::Zero:
+          case Key::One:
+          case Key::Two:
+          case Key::Three:
+          case Key::Four:
+          case Key::Five:
+          case Key::Six:
+          case Key::Seven:
+          case Key::Eight:
+          case Key::Nine:
+
           case Key::A:
           case Key::B:
           case Key::C:
@@ -446,19 +457,35 @@ namespace sdl {
           case Key::X:
           case Key::Y:
           case Key::Z:
-          case Key::Zero:
-          case Key::One:
-          case Key::Two:
-          case Key::Three:
-          case Key::Four:
-          case Key::Five:
-          case Key::Six:
-          case Key::Seven:
-          case Key::Eight:
-          case Key::Nine:
+
+          case Key::CapsLock:
+
+          case Key::F1:
+          case Key::F2:
+          case Key::F3:
+          case Key::F4:
+          case Key::F5:
+          case Key::F6:
+          case Key::F7:
+          case Key::F8:
+          case Key::F9:
+          case Key::F10:
+          case Key::F11:
+          case Key::F12:
+
+          case Key::KP1:
+          case Key::KP2:
+          case Key::KP3:
+          case Key::KP4:
+          case Key::KP5:
+          case Key::KP6:
+          case Key::KP7:
+          case Key::KP8:
+          case Key::KP9:
+          case Key::KP0:
             return true;
           default:
-            // Not an alphanumeric character.
+            // This key is not alpha-numeric.
             return false;
         }
       }
@@ -500,6 +527,7 @@ namespace sdl {
           case Key::Greater:
           case Key::Question:
           case Key::At:
+
           case Key::LeftBracket:
           case Key::Backslash:
           case Key::RightBracket:
@@ -532,6 +560,7 @@ namespace sdl {
           case Key::X:
           case Key::Y:
           case Key::Z:
+
           case Key::KPDivide:
           case Key::KPMultiply:
           case Key::KPMinus:
@@ -548,12 +577,11 @@ namespace sdl {
           case Key::KP9:
           case Key::KP0:
           case Key::KPPeriod:
-            // Key is printable.
             return true;
           default:
-            // Not printable.
+            // The key is not printable.
             return false;
-        }
+        };
       }
 
       inline
