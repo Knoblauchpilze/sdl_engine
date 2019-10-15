@@ -9,6 +9,18 @@ namespace sdl {
   namespace core {
     namespace engine {
 
+      namespace keyboard {
+
+        /**
+         * @brief - Describes the available keyboard layouts.
+         */
+        enum class Mode {
+          Qwerty,
+          Azerty
+        };
+
+      }
+
       /**
        * @brief - Convenience enumeration describing the handled keys by this type of
        *          event. Any key that is not defined here will be mapped to the `None`
@@ -570,6 +582,7 @@ namespace sdl {
 
       /**
        * @brief - Used to determine whether the input key corresponds to a alphanumeric character.
+       *          TODO: We should probably rely also on the modifiers and keyboard layout.
        * @param k - the key which should be checked for the alphanumeric status.
        * @return - `true` if the key is alphanumeric (i.e. belongs to `[a-A-Z0-9]`) and `false` if
        *           this is not the case.
@@ -581,6 +594,7 @@ namespace sdl {
        * @brief - Used to determine whether the input key can be displayed or not. This allows to
        *          filter special key which do not have a visual representation (like modifiers and
        *          motion keys).
+       *          TODO: We should probably rely also on the modifiers and keyboard layout.
        * @param k - the key which should be checked for displayability.
        * @return - `true` if the key can be displayed and `false` if this is not the case.
        */
@@ -592,13 +606,15 @@ namespace sdl {
        *          characters and return '\0' for non alphanumeric values.
        *          Note that one can check whether a character is alphanumeric using the above method.
        * @param k - the key for which the corresponding character should be retrieved.
-       * @param m - the modifier currently set. Might modify the corresponding character returned.
+       * @param mods - the modifier currently set. Might modify the corresponding character returned.
+       * @param mode - the keyboard mode.
        * @return - the character corresponding to the input key or '\0' if no character can be associated
        *           to the key.
        */
       char
-      getCharFromKey(const Key& k,
-                     const KeyModifier& m) noexcept;
+      getCharFromKey(const RawKey& k,
+                     const KeyModifier& mods,
+                     const keyboard::Mode& mode) noexcept;
 
     }
   }

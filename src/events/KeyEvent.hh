@@ -11,18 +11,6 @@ namespace sdl {
   namespace core {
     namespace engine {
 
-      namespace keyboard {
-
-        /**
-         * @brief - Describes the available keyboard layouts.
-         */
-        enum class Mode {
-          Qwerty,
-          Azerty
-        };
-
-      }
-
       class KeyEvent: public Event {
         public:
 
@@ -62,6 +50,15 @@ namespace sdl {
            */
           KeyModifier
           getModifiers() const noexcept;
+
+          /**
+           * @brief - Return the determined layout for the keyboard that produced this event.
+           *          Note that this indication might not always be reliable.
+           * @return - an enumeration describing the layout of the keyboard that generated this
+           *           event.
+           */
+          const keyboard::Mode&
+          getKeyboardLayout() const noexcept;
 
           /**
            * @brief - Returns `true` if the key associated to this event has been pressed.
@@ -170,6 +167,14 @@ namespace sdl {
           init();
 
           /**
+           * @brief - Used to try to perform a guess of the keyboard layout for this
+           *          event. Used in order to associate the correct keys to the raw
+           *          physical key codes provided by the `API`.
+           */
+          void
+          guessKeyboardLayout() noexcept;
+
+          /**
            * @brief - Used to convert from a raw key into ain interpreted one which takes
            *          the keyboard layout into account.
            * @param key - the key to convert.
@@ -225,6 +230,14 @@ namespace sdl {
            *          modifier.
            */
           KeyModifier m_mods;
+
+          /**
+           * @brief - Description of the layout used by the keyboard that generated the
+           *          key event.
+           *          This mode is determined by querying the underlying `API` to get a
+           *          feel of the layout. It might not always be reliable.
+           */
+          keyboard::Mode m_keyboardLayout;
       };
 
       using KeyEventShPtr = std::shared_ptr<KeyEvent>;

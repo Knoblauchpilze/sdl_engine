@@ -16,7 +16,9 @@ namespace sdl {
         m_raw(RawKey::None),
         m_interpreted(Key::None),
 
-        m_mods()
+        m_mods(),
+
+        m_keyboardLayout(keyboard::Mode::Qwerty)
       {
         init();
       }
@@ -40,6 +42,12 @@ namespace sdl {
       KeyModifier
       KeyEvent::getModifiers() const noexcept {
         return m_mods;
+      }
+
+      inline
+      const keyboard::Mode&
+      KeyEvent::getKeyboardLayout() const noexcept {
+        return m_keyboardLayout;
       }
 
       inline
@@ -85,14 +93,19 @@ namespace sdl {
         }
 
         // Use the dedicated handler.
-        return getCharFromKey(getInterpretedKey(), getModifiers());
+        return getCharFromKey(getRawKey(), getModifiers(), getKeyboardLayout());
       }
 
       inline
       bool
       KeyEvent::equal(const Event& other) const noexcept {
         const KeyEvent& e = dynamic_cast<const KeyEvent&>(other);
-        return Event::equal(other) && getRawKey() == e.getRawKey() && getModifiers() == e.getModifiers();
+        return
+          Event::equal(other) &&
+          getRawKey() == e.getRawKey() &&
+          getModifiers() == e.getModifiers() &&
+          getKeyboardLayout() == e.getKeyboardLayout()
+        ;
       }
 
     }

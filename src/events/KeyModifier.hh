@@ -41,31 +41,70 @@ namespace sdl {
 
       /**
        * @brief - Returns `true` if any of the `Alt` keys is active.
+       *          The user can specify whether a specific key should
+       *          be checked by specifying a `false` value for `both`
+       *          and specifying whether the left or right key is to
+       *          be checked.
        * @param modifier - the modifier which should be checked for
        *                   `Alt` keys active.
+       * @param both - `true` if any of the two alt keys should be
+       *               checked and `false` if the `left` value should
+       *               be retrieved to get the key to check.
+       *               Note that using `false` for this value (default)
+       *               will make the `left` parameter ignored.
+       * @param left - ignored if `both` is `true`, allows to specify
+       *               which of the alt keys should be checked.
        * @return - `true` if any `Alt` keys is active.
        */
       bool
-      altEnabled(const KeyModifier& modifier) noexcept;
+      altEnabled(const KeyModifier& modifier,
+                 bool both = true,
+                 bool left = true) noexcept;
 
       /**
        * @brief - Returns `true` if any of the `Ctrl` keys is active.
+       *          The user can specify whether a specific key should
+       *          be checked by specifying a `false` value for `both`
+       *          and specifying whether the left or right key is to
+       *          be checked.
        * @param modifier - the modifier which should be checked for
        *                   `Ctrl` keys active.
+       * @param both - `true` if any of the two control keys should be
+       *               checked and `false` if the `left` value should
+       *               be retrieved to get the key to check.
+       *               Note that using `false` for this value (default)
+       *               will make the `left` parameter ignored.
+       * @param left - ignored if `both` is `true`, allows to specify
+       *               which of the control keys should be checked.
        * @return - `true` if any `Ctrl` keys is active.
        */
       bool
-      ctrlEnabled(const KeyModifier& modifier) noexcept;
+      ctrlEnabled(const KeyModifier& modifier,
+                   bool both = true,
+                   bool left = true) noexcept;
 
       /**
        * @brief - Returns `true` if any of the `Shift` keys is active.
+       *          The user can specify whether a specific key should
+       *          be checked by specifying a `false` value for `both`
+       *          and specifying whether the left or right key is to
+       *          be checked.
        *          Note that this include the `CapsLock` key.
        * @param modifier - the modifier which should be checked for
        *                   `Shift` keys active.
+       * @param both - `true` if any of the two shift keys should be
+       *               checked and `false` if the `left` value should
+       *               be retrieved to get the key to check.
+       *               Note that using `false` for this value (default)
+       *               will make the `left` parameter ignored.
+       * @param left - ignored if `both` is `true`, allows to specify
+       *               which of the shift keys should be checked.
        * @return - `true` if any `Shift` keys is active.
        */
       bool
-      shiftEnabled(const KeyModifier& modifier) noexcept;
+      shiftEnabled(const KeyModifier& modifier,
+                   bool both = true,
+                   bool left = true) noexcept;
 
       /**
        * @brief - Returns `true` if the keypad is enabled.

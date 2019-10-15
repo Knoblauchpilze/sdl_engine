@@ -48,10 +48,12 @@ namespace sdl {
           type = Event::Type::KeyRelease;
         }
 
+        // Determine the layout of the keyboard.
+        guessKeyboardLayout();
+
         // Build both the raw and converted key values.
         m_raw = fromSDLScancode(m_key.keysym.scancode);
-        // TODO: We should retrieve this somehow.
-        m_interpreted = fromRawKey(m_raw, keyboard::Mode::Azerty);
+        m_interpreted = fromRawKey(m_raw, getKeyboardLayout());
 
         // Retrieve the key modifiers.
         m_mods = fromSDLMod(m_key.keysym.mod);
@@ -67,6 +69,12 @@ namespace sdl {
         setType(type);
 
         setSDLWinID(m_key.windowID);
+      }
+
+      void
+      KeyEvent::guessKeyboardLayout() noexcept {
+        // TODO: Should be determined at runtime.
+        m_keyboardLayout = keyboard::Mode::Azerty;
       }
 
       Key
@@ -198,25 +206,7 @@ namespace sdl {
             return Key::Semicolon;
           /* SDL_SCANCODE_APOSTROPHE */
           case RawKey::Grave:
-            /**< Located in the top left corner (on both ANSI
-             *   and ISO keyboards). Produces GRAVE ACCENT and
-             *   TILDE in a US Windows layout and in US and UK
-             *   Mac layouts on ANSI keyboards, GRAVE ACCENT
-             *   and NOT SIGN in a UK Windows layout, SECTION
-             *   SIGN and PLUS-MINUS SIGN in US and UK Mac
-             *   layouts on ISO keyboards, SECTION SIGN and
-             *   DEGREE SIGN in a Swiss German layout (Mac:
-             *   only on ISO keyboards), CIRCUMFLEX ACCENT and
-             *   DEGREE SIGN in a German layout (Mac: only on
-             *   ISO keyboards), SUPERSCRIPT TWO and TILDE in a
-             *   French Windows layout, COMMERCIAL AT and
-             *   NUMBER SIGN in a French Mac layout on ISO
-             *   keyboards, and LESS-THAN SIGN and GREATER-THAN
-             *   SIGN in a Swiss German, German, or French Mac
-             *   layout on ANSI keyboards.
-             */
-            // TODO: Handle this.
-            return Key::None;
+            return Key::Backquote;
           case RawKey::Comma:
             return Key::Comma;
           case RawKey::Period:
@@ -604,24 +594,7 @@ namespace sdl {
             return Key::M;
           /* SDL_SCANCODE_APOSTROPHE */
           case RawKey::Grave:
-            /**< Located in the top left corner (on both ANSI
-             *   and ISO keyboards). Produces GRAVE ACCENT and
-             *   TILDE in a US Windows layout and in US and UK
-             *   Mac layouts on ANSI keyboards, GRAVE ACCENT
-             *   and NOT SIGN in a UK Windows layout, SECTION
-             *   SIGN and PLUS-MINUS SIGN in US and UK Mac
-             *   layouts on ISO keyboards, SECTION SIGN and
-             *   DEGREE SIGN in a Swiss German layout (Mac:
-             *   only on ISO keyboards), CIRCUMFLEX ACCENT and
-             *   DEGREE SIGN in a German layout (Mac: only on
-             *   ISO keyboards), SUPERSCRIPT TWO and TILDE in a
-             *   French Windows layout, COMMERCIAL AT and
-             *   NUMBER SIGN in a French Mac layout on ISO
-             *   keyboards, and LESS-THAN SIGN and GREATER-THAN
-             *   SIGN in a Swiss German, German, or French Mac
-             *   layout on ANSI keyboards.
-             */
-            // TODO: Handle this.
+            // TODO: Should produce a `²` and `~`
             return Key::None;
           case RawKey::Comma:
             return Key::Semicolon;

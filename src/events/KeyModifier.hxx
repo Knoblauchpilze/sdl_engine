@@ -38,29 +38,63 @@ namespace sdl {
 
       inline
       bool
-      altEnabled(const KeyModifier& modifier) noexcept {
+      altEnabled(const KeyModifier& modifier,
+                 bool both,
+                 bool left) noexcept
+      {
+        if (both) {
+          return
+            modifier.isSet(modifier::Mode::LeftAlt) ||
+            modifier.isSet(modifier::Mode::RightAlt)
+          ;
+        }
+
         return
-          modifier.isSet(modifier::Mode::LeftAlt) ||
-          modifier.isSet(modifier::Mode::RightAlt)
+          (modifier.isSet(modifier::Mode::LeftAlt) && left) ||
+          (modifier.isSet(modifier::Mode::RightAlt) && !left)
         ;
       }
 
       inline
       bool
-      ctrlEnabled(const KeyModifier& modifier) noexcept {
+      ctrlEnabled(const KeyModifier& modifier,
+                  bool both,
+                  bool left) noexcept
+      {
+        if (both) {
+          return
+            modifier.isSet(modifier::Mode::LeftCtrl) ||
+            modifier.isSet(modifier::Mode::RightCtrl)
+          ;
+        }
+
         return
-          modifier.isSet(modifier::Mode::LeftCtrl) ||
-          modifier.isSet(modifier::Mode::RightCtrl)
+          (modifier.isSet(modifier::Mode::LeftCtrl) && left) ||
+          (modifier.isSet(modifier::Mode::RightCtrl) && !left)
         ;
       }
 
       inline
       bool
-      shiftEnabled(const KeyModifier& modifier) noexcept {
+      shiftEnabled(const KeyModifier& modifier,
+                   bool both,
+                   bool left) noexcept
+      {
+        // Caps lock accounts for both shift keys.
+        if (modifier.isSet(modifier::Mode::Caps)) {
+          return true;
+        }
+
+        if (both) {
+          return
+            modifier.isSet(modifier::Mode::LeftShift) ||
+            modifier.isSet(modifier::Mode::RightShift)
+          ;
+        }
+
         return
-          modifier.isSet(modifier::Mode::LeftShift) ||
-          modifier.isSet(modifier::Mode::RightShift) ||
-          modifier.isSet(modifier::Mode::Caps)
+          (modifier.isSet(modifier::Mode::LeftShift) && left) ||
+          (modifier.isSet(modifier::Mode::RightShift) && !left)
         ;
       }
 
