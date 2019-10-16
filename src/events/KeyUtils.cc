@@ -1099,9 +1099,6 @@ namespace sdl {
   namespace core {
     namespace engine {
 
-
-
-      inline
       bool
       isKeyAlphanumeric(const RawKey& key,
                         const KeyModifier& mods,
@@ -1116,7 +1113,6 @@ namespace sdl {
         }
       }
 
-      inline
       bool
       isKeyPrintable(const RawKey& key,
                      const KeyModifier& mods,
