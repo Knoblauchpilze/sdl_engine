@@ -19,6 +19,29 @@ namespace sdl {
           Azerty
         };
 
+        /**
+         * @brief - Used to try to guess the keyboard layout by interpreting the
+         *          associations made by the underlying `API` between the scan
+         *          codes of the keys (i.e. their physical positions) and their
+         *          key codes (i.e. their logical positions).
+         *          Note that an exception is raised if the layout cannot be
+         *          guessed.
+         * @return - the guessed keyboard layout.
+         */
+        Mode
+        guessLayout();
+
+        /**
+         * @brief - Assigns a human-readable name to a keyboard mode. Note that if
+         *          the keyboard layout cannot be recognized the string `Unknown`
+         *          is returned.
+         * @param m - the layout which should be transformed to a human readable
+         *            string.
+         * @return - the corresponding human-readable string.
+         */
+        std::string
+        toString(const Mode& m) noexcept;
+
       }
 
       /**
@@ -625,7 +648,7 @@ namespace sdl {
        * @return - the character corresponding to the input key or '\0' if no character can be associated
        *           to the key.
        */
-      char
+      std::string
       getCharFromKey(const RawKey& key,
                      const KeyModifier& mods,
                      const keyboard::Mode& mode) noexcept;

@@ -63,18 +63,13 @@ namespace sdl {
           "key " + std::to_string(m_key.keysym.sym) + " " +
           "(scan: " + std::to_string(m_key.keysym.scancode) + ", name: \"" + SDL_GetKeyName(m_key.keysym.sym) + "\") " +
           "converted to " + std::to_string(static_cast<int>(m_raw)) + " "
-          "interpreted in " + std::to_string(static_cast<int>(m_interpreted))
+          "interpreted in " + std::to_string(static_cast<int>(m_interpreted)) +
+          " (mode: " + keyboard::toString(getKeyboardLayout()) + ")"
         );
 
         setType(type);
 
         setSDLWinID(m_key.windowID);
-      }
-
-      void
-      KeyEvent::guessKeyboardLayout() noexcept {
-        // TODO: Should be determined at runtime.
-        m_keyboardLayout = keyboard::Mode::Azerty;
       }
 
       Key

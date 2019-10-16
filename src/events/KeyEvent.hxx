@@ -81,7 +81,7 @@ namespace sdl {
       }
 
       inline
-      char
+      std::string
       KeyEvent::getChar() const {
         // Check whether the key is alpha numeric: if this is not the case we can't really
         // provide an equivalent char.
@@ -106,6 +106,13 @@ namespace sdl {
           getModifiers() == e.getModifiers() &&
           getKeyboardLayout() == e.getKeyboardLayout()
         ;
+      }
+
+      inline
+      void
+      KeyEvent::guessKeyboardLayout() noexcept {
+        // Use the dedicated handler.
+        m_keyboardLayout = keyboard::guessLayout();
       }
 
     }

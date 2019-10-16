@@ -126,7 +126,7 @@ namespace sdl {
            * @return - a char which vaule corresponds to the ASCII code of the character
            *           associated to the key of this event.
            */
-          char
+          std::string
           getChar() const;
 
         protected:
