@@ -480,10 +480,8 @@ namespace sdl {
 
       Key
       KeyEvent::fromRawToAZERTY(const RawKey& key) const noexcept {
-        // TODO: Implementation.
-        // The `QWERTY` mode corresponds to the physical position of keys so
-        // there's no real conversion happening, just a transform of the raw
-        // key into the corresponding interpretated enumeration value.
+        // The `AZERTY` mode notably inverts the `Q` with the `A` and the
+        // `W` with the `Z` keys among others.
         switch (key) {
           case RawKey::A:
             return Key::Q;
