@@ -582,37 +582,51 @@ namespace sdl {
 
       /**
        * @brief - Used to determine whether the input key corresponds to a alphanumeric character.
-       *          TODO: We should probably rely also on the modifiers and keyboard layout.
-       * @param k - the key which should be checked for the alphanumeric status.
+       *          The key alone is not enough to determine whether it is alphanumeric because some
+       *          modifiers might transform a non-alphanumeric key into a digit or a letter.
+       *          Also the keyboard layout is important to determine whether the physical key is
+       *          mapped to an alphanumeric character.
+       * @param key - the key which should be checked for the alphanumeric status.
+       * @param modes - the modifiers associated to the physical key in input.
+       * @param mode - the keyboard layout which produced the input key.
        * @return - `true` if the key is alphanumeric (i.e. belongs to `[a-A-Z0-9]`) and `false` if
        *           this is not the case.
        */
       bool
-      isKeyAlphanumeric(const Key& k) noexcept;
+      isKeyAlphanumeric(const RawKey& key,
+                        const KeyModifier& mods,
+                        const keyboard::Mode& mode) noexcept;
 
       /**
        * @brief - Used to determine whether the input key can be displayed or not. This allows to
        *          filter special key which do not have a visual representation (like modifiers and
        *          motion keys).
-       *          TODO: We should probably rely also on the modifiers and keyboard layout.
-       * @param k - the key which should be checked for displayability.
+       *          The key alone is not enough to determine whether it is alphanumeric because some
+       *          modifiers might transform a non-alphanumeric key into a digit or a letter.
+       *          Also the keyboard layout is important to determine whether the physical key is
+       *          mapped to an alphanumeric character.
+       * @param key - the key which should be checked for displayability.
+       * @param modes - the modifiers associated to the physical key in input.
+       * @param mode - the keyboard layout which produced the input key.
        * @return - `true` if the key can be displayed and `false` if this is not the case.
        */
       bool
-      isKeyPrintable(const Key& k) noexcept;
+      isKeyPrintable(const RawKey& key,
+                     const KeyModifier& mods,
+                     const keyboard::Mode& mode) noexcept;
 
       /**
        * @brief - Returns the character value associated to the input key. Works well for alphanumeric
        *          characters and return '\0' for non alphanumeric values.
        *          Note that one can check whether a character is alphanumeric using the above method.
-       * @param k - the key for which the corresponding character should be retrieved.
+       * @param key - the key for which the corresponding character should be retrieved.
        * @param mods - the modifier currently set. Might modify the corresponding character returned.
        * @param mode - the keyboard mode.
        * @return - the character corresponding to the input key or '\0' if no character can be associated
        *           to the key.
        */
       char
-      getCharFromKey(const RawKey& k,
+      getCharFromKey(const RawKey& key,
                      const KeyModifier& mods,
                      const keyboard::Mode& mode) noexcept;
 

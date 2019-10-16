@@ -71,13 +71,13 @@ namespace sdl {
       inline
       bool
       KeyEvent::isAlphaNumeric() const noexcept {
-        return isKeyAlphanumeric(getInterpretedKey());
+        return isKeyAlphanumeric(getRawKey(), getModifiers(), getKeyboardLayout());
       }
 
       inline
       bool
       KeyEvent::isPrintable() const noexcept {
-        return isKeyPrintable(getInterpretedKey());
+        return isKeyPrintable(getRawKey(), getModifiers(), getKeyboardLayout());
       }
 
       inline
