@@ -13,12 +13,13 @@ namespace {
     const bool shift = shiftEnabled(mods);
     const bool altGr = altEnabled(mods, false, false);
 
+    // We have several case based on whether the key always produce a alphanumeric
+    // character or only based on some modifiers. Certain keys also never produce
+    // any alphanumeric characters.
     switch (key) {
       case RawKey::A:
-      case RawKey::B:
-      case RawKey::C:
-      case RawKey::D:
       case RawKey::E:
+      case RawKey::B:
       case RawKey::F:
       case RawKey::G:
       case RawKey::H:
@@ -26,82 +27,18 @@ namespace {
       case RawKey::J:
       case RawKey::K:
       case RawKey::L:
-      case RawKey::M:
       case RawKey::N:
       case RawKey::O:
       case RawKey::P:
       case RawKey::Q:
-      case RawKey::R:
-      case RawKey::S:
-      case RawKey::T:
       case RawKey::U:
       case RawKey::V:
       case RawKey::W:
       case RawKey::X:
       case RawKey::Y:
-      case RawKey::Z:
-      case RawKey::One:
-      case RawKey::Two:
-      case RawKey::Three:
-      case RawKey::Four:
-      case RawKey::Five:
-      case RawKey::Six:
-      case RawKey::Seven:
-      case RawKey::Eight:
-      case RawKey::Nine:
-      case RawKey::Zero:
 
-      case RawKey::Return:
-      case RawKey::Escape:
-      case RawKey::BackSpace:
-      case RawKey::Tab:
       case RawKey::Space:
 
-      case RawKey::Minus:
-      case RawKey::Equals:
-      case RawKey::LeftBracket:
-      case RawKey::RightBracket:
-      case RawKey::Backslash:
-      case RawKey::Semicolon:
-      case RawKey::Grave:
-      case RawKey::Comma:
-      case RawKey::Period:
-      case RawKey::Slash:
-      case RawKey::CapsLock:
-
-      case RawKey::F1:
-      case RawKey::F2:
-      case RawKey::F3:
-      case RawKey::F4:
-      case RawKey::F5:
-      case RawKey::F6:
-      case RawKey::F7:
-      case RawKey::F8:
-      case RawKey::F9:
-      case RawKey::F10:
-      case RawKey::F11:
-      case RawKey::F12:
-
-      case RawKey::PrintScreen:
-      case RawKey::ScrollLock:
-      case RawKey::Pause:
-      case RawKey::Insert:
-      case RawKey::Home:
-      case RawKey::PageUp:
-      case RawKey::Delete:
-      case RawKey::End:
-      case RawKey::PageDown:
-      case RawKey::Right:
-      case RawKey::Left:
-      case RawKey::Down:
-      case RawKey::Up:
-
-      case RawKey::NumLockClear:
-      case RawKey::KPDivide:
-      case RawKey::KPMultiply:
-      case RawKey::KPMinus:
-      case RawKey::KPPlus:
-      case RawKey::KPEnter:
       case RawKey::KP1:
       case RawKey::KP2:
       case RawKey::KP3:
@@ -112,19 +49,37 @@ namespace {
       case RawKey::KP8:
       case RawKey::KP9:
       case RawKey::KP0:
-      case RawKey::KPPeriod:
+        return true;
 
-      case RawKey::LeftCtrl:
-      case RawKey::LeftShift:
-      case RawKey::LeftAlt:
-      case RawKey::LeftCommand:
-      case RawKey::RightCtrl:
-      case RawKey::RightShift:
-      case RawKey::RightAlt:
-      case RawKey::RightCommand:
+      case RawKey::S:
+        return !shift || !altGr;
 
-      case RawKey::None:
-        // TODO: Implementation.
+      case RawKey::One:
+      case RawKey::Two:
+      case RawKey::Three:
+      case RawKey::Four:
+      case RawKey::Five:
+      case RawKey::Six:
+      case RawKey::Seven:
+      case RawKey::Eight:
+      case RawKey::Nine:
+      case RawKey::Zero:
+        return !shift && !altGr;
+
+      case RawKey::C:
+      case RawKey::T:
+      case RawKey::Z:
+        return !altGr;
+
+      case RawKey::Comma:
+        return altGr;
+
+      case RawKey::D:
+      case RawKey::M:
+      case RawKey::R:
+        return shift || !altGr;
+
+      default:
         return false;
     }
   }
@@ -139,95 +94,25 @@ namespace {
     const bool shift = shiftEnabled(mods);
     const bool altGr = altEnabled(mods, false, false);
 
+    // We have several case based on whether the key always produce an alphanumeric
+    // character or only based on some modifiers. Certain keys also never produce
+    // any alphanumeric characters.
     switch (key) {
       case RawKey::A:
-      case RawKey::B:
-      case RawKey::C:
       case RawKey::D:
-      case RawKey::E:
-      case RawKey::F:
-      case RawKey::G:
-      case RawKey::H:
-      case RawKey::I:
       case RawKey::J:
       case RawKey::K:
-      case RawKey::L:
-      case RawKey::M:
-      case RawKey::N:
-      case RawKey::O:
+      case RawKey::I:
       case RawKey::P:
-      case RawKey::Q:
       case RawKey::R:
-      case RawKey::S:
-      case RawKey::T:
       case RawKey::U:
-      case RawKey::V:
       case RawKey::W:
-      case RawKey::X:
       case RawKey::Y:
-      case RawKey::Z:
-      case RawKey::One:
-      case RawKey::Two:
-      case RawKey::Three:
-      case RawKey::Four:
-      case RawKey::Five:
-      case RawKey::Six:
-      case RawKey::Seven:
-      case RawKey::Eight:
-      case RawKey::Nine:
-      case RawKey::Zero:
 
-      case RawKey::Return:
-      case RawKey::Escape:
-      case RawKey::BackSpace:
-      case RawKey::Tab:
       case RawKey::Space:
 
-      case RawKey::Minus:
-      case RawKey::Equals:
-      case RawKey::LeftBracket:
-      case RawKey::RightBracket:
-      case RawKey::Backslash:
       case RawKey::Semicolon:
-      case RawKey::Grave:
-      case RawKey::Comma:
-      case RawKey::Period:
-      case RawKey::Slash:
-      case RawKey::CapsLock:
 
-      case RawKey::F1:
-      case RawKey::F2:
-      case RawKey::F3:
-      case RawKey::F4:
-      case RawKey::F5:
-      case RawKey::F6:
-      case RawKey::F7:
-      case RawKey::F8:
-      case RawKey::F9:
-      case RawKey::F10:
-      case RawKey::F11:
-      case RawKey::F12:
-
-      case RawKey::PrintScreen:
-      case RawKey::ScrollLock:
-      case RawKey::Pause:
-      case RawKey::Insert:
-      case RawKey::Home:
-      case RawKey::PageUp:
-      case RawKey::Delete:
-      case RawKey::End:
-      case RawKey::PageDown:
-      case RawKey::Right:
-      case RawKey::Left:
-      case RawKey::Down:
-      case RawKey::Up:
-
-      case RawKey::NumLockClear:
-      case RawKey::KPDivide:
-      case RawKey::KPMultiply:
-      case RawKey::KPMinus:
-      case RawKey::KPPlus:
-      case RawKey::KPEnter:
       case RawKey::KP1:
       case RawKey::KP2:
       case RawKey::KP3:
@@ -238,33 +123,61 @@ namespace {
       case RawKey::KP8:
       case RawKey::KP9:
       case RawKey::KP0:
-      case RawKey::KPPeriod:
+        return true;
 
-      case RawKey::LeftCtrl:
-      case RawKey::LeftShift:
-      case RawKey::LeftAlt:
-      case RawKey::LeftCommand:
-      case RawKey::RightCtrl:
-      case RawKey::RightShift:
-      case RawKey::RightAlt:
-      case RawKey::RightCommand:
+      case RawKey::RightBracket:
+        return altGr;
 
-      case RawKey::None:
-        // TODO: Implementation.
+      case RawKey::B:
+      case RawKey::C:
+      case RawKey::E:
+      case RawKey::F:
+      case RawKey::G:
+      case RawKey::L:
+      case RawKey::N:
+      case RawKey::O:
+      case RawKey::Q:
+      case RawKey::T:
+      case RawKey::V:
+      case RawKey::X:
+      case RawKey::Z:
+        return !altGr;
+
+      case RawKey::Four:
+      case RawKey::Five:
+      case RawKey::Six:
+      case RawKey::Eight:
+        return shift && !altGr;
+
+      case RawKey::H:
+
+      case RawKey::Zero:
+      case RawKey::Two:
+      case RawKey::Seven:
+      case RawKey::Nine:
+        return shift || !altGr;
+
+      case RawKey::One:
+      case RawKey::Three:
+        return shift;
+
+      case RawKey::S:
+        return !shift || !altGr;
+
+      default:
         return false;
     }
   }
 
   bool
   isQWERTYKeyPrintable(const ::sdl::core::engine::RawKey& key,
-                       const ::sdl::core::engine::KeyModifier& mods) noexcept
+                       const ::sdl::core::engine::KeyModifier& /*mods*/) noexcept
   {
     using namespace sdl::core::engine;
 
-    // Compute information on the modifiers.
-    const bool shift = shiftEnabled(mods);
-    const bool altGr = altEnabled(mods, false, false);
-
+    // We have several case based on whether the key always produce a displayable
+    // character or only based on some modifiers. Certain keys also never produce
+    // any displayable characters.
     switch (key) {
       case RawKey::A:
       case RawKey::B:
@@ -292,6 +205,7 @@ namespace {
       case RawKey::X:
       case RawKey::Y:
       case RawKey::Z:
+      case RawKey::Zero:
       case RawKey::One:
       case RawKey::Two:
       case RawKey::Three:
@@ -301,12 +215,7 @@ namespace {
       case RawKey::Seven:
       case RawKey::Eight:
       case RawKey::Nine:
-      case RawKey::Zero:
 
-      case RawKey::Return:
-      case RawKey::Escape:
-      case RawKey::BackSpace:
-      case RawKey::Tab:
       case RawKey::Space:
 
       case RawKey::Minus:
@@ -319,41 +228,11 @@ namespace {
       case RawKey::Comma:
       case RawKey::Period:
       case RawKey::Slash:
-      case RawKey::CapsLock:
 
-      case RawKey::F1:
-      case RawKey::F2:
-      case RawKey::F3:
-      case RawKey::F4:
-      case RawKey::F5:
-      case RawKey::F6:
-      case RawKey::F7:
-      case RawKey::F8:
-      case RawKey::F9:
-      case RawKey::F10:
-      case RawKey::F11:
-      case RawKey::F12:
-
-      case RawKey::PrintScreen:
-      case RawKey::ScrollLock:
-      case RawKey::Pause:
-      case RawKey::Insert:
-      case RawKey::Home:
-      case RawKey::PageUp:
-      case RawKey::Delete:
-      case RawKey::End:
-      case RawKey::PageDown:
-      case RawKey::Right:
-      case RawKey::Left:
-      case RawKey::Down:
-      case RawKey::Up:
-
-      case RawKey::NumLockClear:
       case RawKey::KPDivide:
       case RawKey::KPMultiply:
       case RawKey::KPMinus:
       case RawKey::KPPlus:
-      case RawKey::KPEnter:
       case RawKey::KP1:
       case RawKey::KP2:
       case RawKey::KP3:
@@ -365,32 +244,22 @@ namespace {
       case RawKey::KP9:
       case RawKey::KP0:
       case RawKey::KPPeriod:
-
-      case RawKey::LeftCtrl:
-      case RawKey::LeftShift:
-      case RawKey::LeftAlt:
-      case RawKey::LeftCommand:
-      case RawKey::RightCtrl:
-      case RawKey::RightShift:
-      case RawKey::RightAlt:
-      case RawKey::RightCommand:
-
-      case RawKey::None:
-        // TODO: Implementation.
+        return true;
+      default:
+        // Default case is to not be printable.
         return false;
     }
   }
 
   bool
   isAZERTYKeyPrintable(const ::sdl::core::engine::RawKey& key,
-                       const ::sdl::core::engine::KeyModifier& mods) noexcept
+                       const ::sdl::core::engine::KeyModifier& /*mods*/) noexcept
   {
     using namespace sdl::core::engine;
 
-    // Compute information on the modifiers.
-    const bool shift = shiftEnabled(mods);
-    const bool altGr = altEnabled(mods, false, false);
-
+    // We have several case based on whether the key always produce a displayable
+    // character or only based on some modifiers. Certain keys also never produce
+    // any displayable characters.
     switch (key) {
       case RawKey::A:
       case RawKey::B:
@@ -418,6 +287,7 @@ namespace {
       case RawKey::X:
       case RawKey::Y:
       case RawKey::Z:
+      case RawKey::Zero:
       case RawKey::One:
       case RawKey::Two:
       case RawKey::Three:
@@ -427,12 +297,7 @@ namespace {
       case RawKey::Seven:
       case RawKey::Eight:
       case RawKey::Nine:
-      case RawKey::Zero:
 
-      case RawKey::Return:
-      case RawKey::Escape:
-      case RawKey::BackSpace:
-      case RawKey::Tab:
       case RawKey::Space:
 
       case RawKey::Minus:
@@ -445,41 +310,11 @@ namespace {
       case RawKey::Comma:
       case RawKey::Period:
       case RawKey::Slash:
-      case RawKey::CapsLock:
 
-      case RawKey::F1:
-      case RawKey::F2:
-      case RawKey::F3:
-      case RawKey::F4:
-      case RawKey::F5:
-      case RawKey::F6:
-      case RawKey::F7:
-      case RawKey::F8:
-      case RawKey::F9:
-      case RawKey::F10:
-      case RawKey::F11:
-      case RawKey::F12:
-
-      case RawKey::PrintScreen:
-      case RawKey::ScrollLock:
-      case RawKey::Pause:
-      case RawKey::Insert:
-      case RawKey::Home:
-      case RawKey::PageUp:
-      case RawKey::Delete:
-      case RawKey::End:
-      case RawKey::PageDown:
-      case RawKey::Right:
-      case RawKey::Left:
-      case RawKey::Down:
-      case RawKey::Up:
-
-      case RawKey::NumLockClear:
       case RawKey::KPDivide:
       case RawKey::KPMultiply:
       case RawKey::KPMinus:
       case RawKey::KPPlus:
-      case RawKey::KPEnter:
       case RawKey::KP1:
       case RawKey::KP2:
       case RawKey::KP3:
@@ -491,18 +326,9 @@ namespace {
       case RawKey::KP9:
       case RawKey::KP0:
       case RawKey::KPPeriod:
-
-      case RawKey::LeftCtrl:
-      case RawKey::LeftShift:
-      case RawKey::LeftAlt:
-      case RawKey::LeftCommand:
-      case RawKey::RightCtrl:
-      case RawKey::RightShift:
-      case RawKey::RightAlt:
-      case RawKey::RightCommand:
-
-      case RawKey::None:
-        // TODO: Implementation.
+        return true;
+      default:
+        // Default case is to not be printable.
         return false;
     }
   }
@@ -627,7 +453,6 @@ namespace {
         return '-';
       case RawKey::KPPlus:
         return '+';
-      case RawKey::KPEnter:
       case RawKey::KP1:
         return '1';
       case RawKey::KP2:
@@ -805,7 +630,6 @@ namespace {
         return '-';
       case RawKey::KPPlus:
         return '+';
-      case RawKey::KPEnter:
       case RawKey::KP1:
         return '1';
       case RawKey::KP2:
@@ -999,7 +823,6 @@ namespace {
         return '-';
       case RawKey::KPPlus:
         return '+';
-      case RawKey::KPEnter:
       case RawKey::KP1:
         return '1';
       case RawKey::KP2:
@@ -1194,7 +1017,6 @@ namespace {
         return '-';
       case RawKey::KPPlus:
         return '+';
-      case RawKey::KPEnter:
       case RawKey::KP1:
         return '1';
       case RawKey::KP2:
