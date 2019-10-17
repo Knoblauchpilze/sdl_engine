@@ -986,6 +986,8 @@ namespace {
         return (altGr ? ']' : ')');
       case RawKey::Equals:
         return (shift ? '+' : (altGr ? '}' : '='));
+      case RawKey::LeftBracket:
+        return '^';
       case RawKey::RightBracket:
         return '$';
       case RawKey::Backslash:
@@ -1037,7 +1039,6 @@ namespace {
       case RawKey::BackSpace:
       case RawKey::Tab:
 
-      case RawKey::LeftBracket:
       case RawKey::CapsLock:
 
       case RawKey::F1:
