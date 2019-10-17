@@ -25,21 +25,10 @@ namespace sdl {
            * @brief - Retrieve the raw key as received from the underlying `API`. This key
            *          is linked to a physical position in the keyboard which means that it
            *          might not be best suited depending on the layout of the keyboard.
-           *          The user is encouraged to use the `getInterpretedKey` method instead
-           *          to get an interpreted version of the key that has been pressed.
            * @return - an identifier for the physical key linked to this event.
            */
           RawKey
           getRawKey() const noexcept;
-
-          /**
-           * @brief - Retrieve the interpreted key from the raw key returned by the `API`.
-           *          This key takes into account the layout of the keyboard and is more
-           *          suited to be used for text input or commands in general.
-           * @return - an identifier for the physical key linked to this event.
-           */
-          Key
-          getInterpretedKey() const noexcept;
 
           /**
            * @brief - Return a flag describing the modifiers associated to this key event.
@@ -105,10 +94,9 @@ namespace sdl {
            *          corresponds to a printable character. This is useful in order to
            *          determine whether we can display this character for example in a
            *          text box.
-           *          Note that as for the `isAlphaNumeric` method we use the interpreted
-           *          keys rather than the raw value here: this method is mostly meant
-           *          to be used before displaying something but its use is not encouraged
-           *          for any backend processing.
+           *          Note that as for the `isAlphaNumeric` method relies on the physical
+           *          key but also uses the keyboard layout to precisely define if the
+           *          key is associated to some displayable content.
            * @return - `true` if the character can be displayed, `false` otherwise.
            */
           bool
@@ -117,12 +105,9 @@ namespace sdl {
           /**
            * @brief - Used to return the char code equivalent to the key associated to
            *          this event. Basically it allows to get a human-readable display
-           *          of the interpreted key for this event. Note that this function
-           *          uses the internally the `getInterpretedKey` rather than the raw
-           *          value provided by the `API` which helps matching the layout of
-           *          the keyboard.
-           *          Note that an error will be raised in case the interpreted key is
-           *          not printable.
+           *          of the key for this event. Note that this function uses the raw
+           *          key but also accounts for the keyboard layout to get a precise
+           *          idea of the character associated to a key.
            * @return - a char which vaule corresponds to the ASCII code of the character
            *           associated to the key of this event.
            */
@@ -174,33 +159,6 @@ namespace sdl {
           void
           guessKeyboardLayout() noexcept;
 
-          /**
-           * @brief - Used to convert from a raw key into ain interpreted one which takes
-           *          the keyboard layout into account.
-           * @param key - the key to convert.
-           * @param mode - the keyboard layout to convert the key into.
-           * @return - the interpreted key from the physical position in input.
-           */
-          Key
-          fromRawKey(const RawKey& key,
-                     const keyboard::Mode& mode) const noexcept;
-
-          /**
-           * @brief - Used to convert from a raw key into ain interpreted one which given
-           *          that the keyboard layout is `AZERTY`.
-           * @param key - the key to convert.
-           */
-          Key
-          fromRawToQWERTY(const RawKey& key) const noexcept;
-
-          /**
-           * @brief - Used to convert from a raw key into ain interpreted one which given
-           *          that the keyboard layout is `AZERTY`.
-           * @param key - the key to convert.
-           */
-          Key
-          fromRawToAZERTY(const RawKey& key) const noexcept;
-
         private:
 
           SDL_KeyboardEvent m_key;
@@ -214,15 +172,6 @@ namespace sdl {
            *          will always be triggered by the keys at the same position.
            */
           RawKey m_raw;
-
-          /**
-           * @brief - Holds the interpreted key for this event. This key takes the layout
-           *          of the keyboard into account and returns for example `a` on a french
-           *          keyboard even though the physical key pressed is `q`.
-           *          The usage of this field is discouraged in favor of the `m_raw` value
-           *          because it helps building layout independant behaviors.
-           */
-          Key m_interpreted;
 
           /**
            * @brief - The key modifiers associated to this event. Note that the modifier
