@@ -126,7 +126,7 @@ namespace sdl {
           // Check whether the current character is provided by the font.
           if (!exists(text[id])) {
             log(
-              std::string("Could not determine size of glyph '") + text[id] + "' (not found in font \"" + getName() + "\"",
+              std::string("Could not determine size of glyph '") + std::to_string(static_cast<int>(text[id])) + "' (not found in font \"" + getName() + "\"",
               utils::Level::Warning
             );
 
@@ -171,7 +171,7 @@ namespace sdl {
         SDL_Surface* glyph = TTF_RenderGlyph_Blended(m_font, c, color.toSDLColor());
         if (glyph == nullptr) {
           error(
-            std::string("Could not render glyph \"") + c + "\"",
+            std::string("Could not render glyph \"") + std::to_string(static_cast<int>(c)) + "\"",
             TTF_GetError()
           );
         }
