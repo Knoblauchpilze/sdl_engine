@@ -648,7 +648,7 @@ namespace sdl {
        * @return - the character corresponding to the input key or '\0' if no character can be associated
        *           to the key.
        */
-      std::string
+      char
       getCharFromKey(const RawKey& key,
                      const KeyModifier& mods,
                      const keyboard::Mode& mode) noexcept;

@@ -333,7 +333,7 @@ namespace {
     }
   }
 
-# define NOT_ASCII_COMPLIANT
+// # define NOT_ASCII_COMPLIANT
 
 # ifdef NOT_ASCII_COMPLIANT
   std::string
@@ -963,7 +963,7 @@ namespace {
       case RawKey::Two:
         // TODO: Multi-character ???
         // return (shift ? '2' : 'é');
-        return '2';
+        return (shift ? '2' : 'e');
       case RawKey::Three:
         return (shift ? '3' : '"');
       case RawKey::Four:
@@ -975,17 +975,17 @@ namespace {
       case RawKey::Seven:
         // TODO: Multi-character ???
         // return (shift ? '7' : 'è');
-        return '7';
+        return (shift ? '7' : 'e');
       case RawKey::Eight:
         return (shift ? '8' : '_');
       case RawKey::Nine:
         // TODO: Multi-character ???
         // return (shift ? '9' : 'ç');
-        return '9';
+        return (shift ? '9' : 'c');
       case RawKey::Zero:
         // TODO: Multi-character ???
         // return (shift ? '0' : 'à');
-        return '0';
+        return (shift ? '0' : 'a');
 
       case RawKey::Space:
         return ' ';
