@@ -81,7 +81,7 @@ namespace sdl {
       }
 
       inline
-      std::string
+      char
       KeyEvent::getChar() const {
         // Check whether the key is alpha numeric: if this is not the case we can't really
         // provide an equivalent char.

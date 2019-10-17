@@ -538,7 +538,6 @@ namespace sdl {
           case RawKey::One:
             return Key::Ampersand;
           case RawKey::Two:
-            // TODO: Should produce `é`.
             return Key::Two;
           case RawKey::Three:
             return Key::DoubleQuote;
@@ -549,15 +548,12 @@ namespace sdl {
           case RawKey::Six:
             return Key::Minus;
           case RawKey::Seven:
-            // TODO: Should produce `è`.
             return Key::Seven;
           case RawKey::Eight:
             return Key::Underscore;
           case RawKey::Nine:
-            // TODO: Should produce `ç`.
             return Key::Nine;
           case RawKey::Zero:
-            // TODO: Should produce `à`.
             return Key::Zero;
 
           case RawKey::Return:

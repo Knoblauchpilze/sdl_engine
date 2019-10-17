@@ -333,7 +333,9 @@ namespace {
     }
   }
 
-// # define NOT_ASCII_COMPLIANT
+// TODO: We should try to handle some sort of extended ASCII. Maybe we could transform
+// the return value from `char` to some `wchar_t` or `int` altogether and encode our
+// own string class which would allow to use these characters using UNICODE encoding.
 
 # ifdef NOT_ASCII_COMPLIANT
   std::string
@@ -723,9 +725,7 @@ namespace {
 
     // Compute information on the modifiers.
     const bool shift = shiftEnabled(mods);
-# ifdef NOT_ASCII_COMPLIANT
     const bool altGr = altEnabled(mods, false, false);
-# endif
 
     // Distinguish based on the input key.
     switch (key) {
@@ -961,62 +961,44 @@ namespace {
       case RawKey::One:
         return (shift ? '1' : '&');
       case RawKey::Two:
-        // TODO: Multi-character ???
-        // return (shift ? '2' : 'é');
-        return (shift ? '2' : 'e');
+        return (shift ? '2' : (altGr ? '~' : 'e'));
       case RawKey::Three:
-        return (shift ? '3' : '"');
+        return (shift ? '3' : (altGr ? '#' : '\"'));
       case RawKey::Four:
-        return (shift ? '4' : '\'');
+        return (shift ? '4' : (altGr ? '{' : '\''));
       case RawKey::Five:
-        return (shift ? '5' : '(');
+        return (shift ? '5' : (altGr ? '[' : '('));
       case RawKey::Six:
-        return (shift ? '6' : '-');
+        return (shift ? (altGr ? '-' : '6') : (altGr ? '|' : '-'));
       case RawKey::Seven:
-        // TODO: Multi-character ???
-        // return (shift ? '7' : 'è');
-        return (shift ? '7' : 'e');
+        return (shift ? (altGr ? 'E' : '7') : (altGr ? '`' : 'e'));
       case RawKey::Eight:
-        return (shift ? '8' : '_');
+        return (shift ? '8' : (altGr ? '\\' : '_'));
       case RawKey::Nine:
-        // TODO: Multi-character ???
-        // return (shift ? '9' : 'ç');
-        return (shift ? '9' : 'c');
+        return (shift ? (altGr ? 'C' : '9') : (altGr ? '^' : 'c'));
       case RawKey::Zero:
-        // TODO: Multi-character ???
-        // return (shift ? '0' : 'à');
-        return (shift ? '0' : 'a');
+        return (shift ? (altGr ? 'A' : '0') : (altGr ? '@' : 'a'));
 
       case RawKey::Space:
         return ' ';
 
       case RawKey::Minus:
-        // TODO: Multi-character ???
-        // return (shift ? '°' : ')');
-        return ')';
+        return (altGr ? ']' : ')');
       case RawKey::Equals:
-        return (shift ? '+' : '=');
+        return (shift ? '+' : (altGr ? '}' : '='));
       case RawKey::RightBracket:
-        // TODO: Multi-character ???
-        // return (shift ? '£' : '$');
         return '$';
       case RawKey::Backslash:
-        // TODO: Multi-character ???
-        // return (shift ? 'µ' : '*');
         return '*';
       case RawKey::Semicolon:
-        return (shift ? 'M' : 'm');
+        return (shift ? (altGr ? 'O' : 'M') : (altGr ? 'o' : 'm'));
       case RawKey::Grave:
-        // TODO: Multi-character ???
-        // return (shift ? '~' : '²');
         return '~';
       case RawKey::Comma:
         return (shift ? '.' : ';');
       case RawKey::Period:
         return (shift ? '/' : ':');
       case RawKey::Slash:
-        // TODO: Multi-character ???
-        // return (shift ? '§' : '!');
         return '!';
 
       case RawKey::KPDivide:
