@@ -127,7 +127,8 @@ namespace sdl {
         // in the case of a button there's at most on button pressed (which is what
         // is expected) compared to the case of a mouse motion where a state is used
         // leading to potentially several buttons pressed.
-        // We want to 
+        // Note that in both cases we retrieve the mouse state to feed a valid info
+        // to the general context of this event.
         initButtonFromState(SDL_GetMouseState(nullptr, nullptr));
 
         Event::Type type = Event::Type::MouseButtonPress;

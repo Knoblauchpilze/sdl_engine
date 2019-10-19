@@ -30,8 +30,7 @@ namespace sdl {
           populateFromEngineData(Engine& engine) override;
 
           /**
-           * @brief - Return the position of the mouse when the drag and drop 
-           *          started.
+           * @brief - Return the position of the mouse when the drag and drop started.
            * @return - the position of the mouse at the beginning of the operation.
            */
           const utils::Vector2f&

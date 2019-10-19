@@ -151,7 +151,7 @@ namespace sdl {
 
           /**
            * @brief - These booleans keeps track of whether the mouse is currently being
-           *          dragged or not. The default value is `false`. As for the 
+           *          dragged or not. The default value is `false`.
            */
           bool m_mouseDragged;
 

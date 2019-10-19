@@ -60,7 +60,7 @@ namespace sdl {
 
           /**
            * @brief - Used to query the size of the input text given the glyphs associated to this
-           *          font. 
+           *          font.
            * @param text - the text zhich size should be retrieved.
            * @param exact - `true` if the exact size of the text should be retrieved (i.e. pixel
            *                perfect size) and `false` otherwise.
