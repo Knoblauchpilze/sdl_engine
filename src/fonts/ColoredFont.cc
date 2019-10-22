@@ -7,7 +7,7 @@ namespace sdl {
 
       ColoredFont::ColoredFont(FontShPtr font,
                                const Palette& palette,
-                               const int& size):
+                               int size):
         utils::CoreObject(font->getName()),
         m_font(font),
         m_size(size),

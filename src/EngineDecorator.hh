@@ -123,7 +123,7 @@ namespace sdl {
           utils::Uuid
           createColoredFont(const std::string& name,
                             const Palette& palette,
-                            const int& size = 25) override;
+                            int size = 25) override;
 
           void
           destroyColoredFont(const utils::Uuid& uuid) override;

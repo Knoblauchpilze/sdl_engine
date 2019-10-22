@@ -44,25 +44,25 @@ namespace sdl {
           bool
           operator!=(const Color& rhs) const noexcept;
 
-          const float&
+          float
           r() const noexcept;
 
           float&
           r() noexcept;
 
-          const float&
+          float
           g() const noexcept;
 
           float&
           g() noexcept;
 
-          const float&
+          float
           b() const noexcept;
 
           float&
           b() noexcept;
 
-          const float&
+          float
           a() const noexcept;
 
           float&
@@ -78,10 +78,10 @@ namespace sdl {
           brightness() const noexcept;
 
           Color
-          brighten(const float& factor) noexcept;
+          brighten(float factor) noexcept;
 
           Color
-          darken(const float& factor) noexcept;
+          darken(float factor) noexcept;
 
           SDL_Color
           toSDLColor() const noexcept;
@@ -94,23 +94,23 @@ namespace sdl {
 
           static
           Color
-          fromRGB(const float& r,
-                  const float& g,
-                  const float& b) noexcept;
+          fromRGB(float r,
+                  float g,
+                  float b) noexcept;
 
           static
           Color
-          fromRGBA(const float& r,
-                   const float& g,
-                   const float& b,
-                   const float& a) noexcept;
+          fromRGBA(float r,
+                   float g,
+                   float b,
+                   float a) noexcept;
 
         protected:
 
-          Color(const float& r,
-                const float& g,
-                const float& b,
-                const float& a = SDL_ALPHA_OPAQUE);
+          Color(float r,
+                float g,
+                float b,
+                float a = SDL_ALPHA_OPAQUE);
 
           void
           fromNamedColor(const NamedColor& color,

@@ -25,7 +25,7 @@ namespace sdl {
       ColoredFontShPtr
       FontFactory::createColoredFont(const std::string& name,
                                      const Palette& palette,
-                                     const int& size)
+                                     int size)
       {
         return std::make_shared<ColoredFont>(
           createFont(name),

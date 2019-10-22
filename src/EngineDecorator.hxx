@@ -161,7 +161,7 @@ namespace sdl {
       utils::Uuid
       EngineDecorator::createColoredFont(const std::string& name,
                                          const Palette& palette,
-                                         const int& size)
+                                         int size)
       {
         return m_engine->createColoredFont(name, palette, size);
       }

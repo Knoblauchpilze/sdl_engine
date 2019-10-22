@@ -28,7 +28,7 @@ namespace sdl {
 
           SDL_Surface*
           render(const std::string& text,
-                 const int& size,
+                 int size,
                  const Color& color = Color::NamedColor::Black);
 
           /**
@@ -60,7 +60,7 @@ namespace sdl {
            * @param size - the size with which the font should be loaded.
            */
           FontCacheShPtr
-          loadForSize(const int& size);
+          loadForSize(int size);
 
           void
           unloadAll();

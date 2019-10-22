@@ -23,7 +23,7 @@ namespace sdl {
 
       SDL_Surface*
       Font::render(const std::string& text,
-                   const int& size,
+                   int size,
                    const Color& color)
       {
         // Load the font if needed.
@@ -47,7 +47,7 @@ namespace sdl {
 
       inline
       FontCacheShPtr
-      Font::loadForSize(const int& size) {
+      Font::loadForSize(int size) {
         // Acquire the lock to prevent concurrent addition of fonts.
         std::lock_guard<std::mutex> guard(*m_cacheLocker);
 

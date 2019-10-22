@@ -8,7 +8,7 @@ namespace sdl {
   namespace core {
     namespace engine {
 
-      EventsDispatcher::EventsDispatcher(const float& eventHandlingRate,
+      EventsDispatcher::EventsDispatcher(float eventHandlingRate,
                                          EngineShPtr engine,
                                          const bool exitOnEscape,
                                          const std::string& name):

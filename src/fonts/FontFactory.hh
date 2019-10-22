@@ -25,7 +25,7 @@ namespace sdl {
           ColoredFontShPtr
           createColoredFont(const std::string& name,
                             const Palette& palette,
-                            const int& size = 25);
+                            int size = 25);
 
         private:
 

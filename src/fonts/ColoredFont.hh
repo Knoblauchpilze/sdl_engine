@@ -17,15 +17,15 @@ namespace sdl {
           explicit
           ColoredFont(FontShPtr font,
                       const Palette& palette,
-                      const int& size);
+                      int size);
 
           ~ColoredFont();
 
-          const int&
+          int
           getSize() const noexcept;
 
           void
-          setSize(const int& size) noexcept;
+          setSize(int size) noexcept;
 
           const Palette&
           getPalette() const noexcept;

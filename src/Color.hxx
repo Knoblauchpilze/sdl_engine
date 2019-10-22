@@ -19,10 +19,10 @@ namespace sdl {
       }
 
       inline
-      Color::Color(const float& r,
-                   const float& g,
-                   const float& b,
-                   const float& a):
+      Color::Color(float r,
+                   float g,
+                   float b,
+                   float a):
         m_r(r),
         m_g(g),
         m_b(b),
@@ -47,7 +47,7 @@ namespace sdl {
       }
 
       inline
-      const float&
+      float
       Color::r() const noexcept {
         return m_r;
       }
@@ -59,7 +59,7 @@ namespace sdl {
       }
 
       inline
-      const float&
+      float
       Color::g() const noexcept {
         return m_g;
       }
@@ -71,7 +71,7 @@ namespace sdl {
       }
 
       inline
-      const float&
+      float
       Color::b() const noexcept {
         return m_b;
       }
@@ -83,7 +83,7 @@ namespace sdl {
       }
 
       inline
-      const float&
+      float
       Color::a() const noexcept {
         return m_a;
       }
@@ -114,7 +114,7 @@ namespace sdl {
 
       inline
       Color
-      Color::brighten(const float& factor) noexcept {
+      Color::brighten(float factor) noexcept {
         return fromRGBA(
           std::min(1.0f, m_r * std::abs(factor)),
           std::min(1.0f, m_g * std::abs(factor)),
@@ -125,7 +125,7 @@ namespace sdl {
 
       inline
       Color
-      Color::darken(const float& factor) noexcept {
+      Color::darken(float factor) noexcept {
         return fromRGBA(
           std::min(1.0f, m_r * std::abs(factor)),
           std::min(1.0f, m_g * std::abs(factor)),
@@ -169,19 +169,19 @@ namespace sdl {
 
       inline
       Color
-      Color::fromRGB(const float& r,
-                     const float& g,
-                     const float& b) noexcept
+      Color::fromRGB(float r,
+                     float g,
+                     float b) noexcept
       {
         return Color(r, g, b, sk_opaqueAlpha);
       }
 
       inline
       Color
-      Color::fromRGBA(const float& r,
-                      const float& g,
-                      const float& b,
-                      const float& a) noexcept
+      Color::fromRGBA(float r,
+                      float g,
+                      float b,
+                      float a) noexcept
       {
         return Color(r, g, b, a);
       }

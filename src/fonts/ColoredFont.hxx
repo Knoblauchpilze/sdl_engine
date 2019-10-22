@@ -12,14 +12,14 @@ namespace sdl {
       ColoredFont::~ColoredFont() {}
 
       inline
-      const int&
+      int
       ColoredFont::getSize() const noexcept {
         return m_size;
       }
 
       inline
       void
-      ColoredFont::setSize(const int& size) noexcept {
+      ColoredFont::setSize(int size) noexcept {
         m_size = size;
       }
 

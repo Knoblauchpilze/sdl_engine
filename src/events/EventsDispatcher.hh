@@ -18,10 +18,10 @@ namespace sdl {
         public:
 
           explicit
-          EventsDispatcher(const float& eventHandlingRate = 60.0f,
-                          EngineShPtr engine = nullptr,
-                          const bool exitOnEscape = true,
-                          const std::string& name = std::string("event_dispatcher"));
+          EventsDispatcher(float eventHandlingRate = 60.0f,
+                           EngineShPtr engine = nullptr,
+                           const bool exitOnEscape = true,
+                           const std::string& name = std::string("event_dispatcher"));
 
           ~EventsDispatcher();
 

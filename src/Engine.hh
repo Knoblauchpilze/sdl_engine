@@ -188,7 +188,7 @@ namespace sdl {
           virtual utils::Uuid
           createColoredFont(const std::string& name,
                             const Palette& palette,
-                            const int& size = 25) = 0;
+                            int size = 25) = 0;
 
           virtual void
           destroyColoredFont(const utils::Uuid& uuid) = 0;

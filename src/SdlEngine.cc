@@ -289,7 +289,7 @@ namespace sdl {
       utils::Uuid
       SdlEngine::createColoredFont(const std::string& name,
                                    const Palette& palette,
-                                   const int& size)
+                                   int size)
       {
         std::lock_guard<std::mutex> guard(m_locker);
 
