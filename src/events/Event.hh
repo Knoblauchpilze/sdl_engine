@@ -45,9 +45,6 @@ namespace sdl {
             WindowEnter,         //<! - Mouse leaves the window's boundaries.
             WindowLeave,         //<! - Mouse leaves the window's boundaries.
             WindowResize,        //<! - Size of window has been modified.
-            // TODO: Should handle window maximize and minimize.
-            // case SDL_WINDOWEVENT_MINIMIZED:
-            // case SDL_WINDOWEVENT_MAXIMIZED:
             Quit,                //<! - Main application was closed.
             ZOrderChanged        //<! - The z order for a component has changed.
           };
