@@ -36,6 +36,16 @@ namespace sdl {
           setIcon(const std::string& icon);
 
           /**
+           * @brief - Used to specify the new viewport size for the renderer associated to this
+           *          window. THe size will be assigned only if the current rendering target is
+           *          `null`. Otherwise an error is raised.
+           * @param area - the new viewport size for the renderer of this window. Note that the
+           *               input coordinates will be converted to integer values.
+           */
+          void
+          updateViewport(const utils::Boxf& area);
+
+          /**
            * @brief - Creates a children texture for this window with the specified dimensions and
            *          role. The SDL library that we're using to create the texture needs to parent
            *          each texture to a renderer and a renderer is linked to a window hence the fact

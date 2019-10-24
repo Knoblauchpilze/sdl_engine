@@ -1,5 +1,6 @@
 
 # include "Window.hh"
+# include "TextureUtils.hxx"
 # include "RendererState.hh"
 
 namespace sdl {
@@ -52,6 +53,34 @@ namespace sdl {
 
         // Release resources used to create the icon.
         SDL_FreeSurface(iconAsSurface);
+      }
+
+      void
+      Window::updateViewport(const utils::Boxf& area) {
+        // Check whether the current rendering target is `null`.
+        SDL_Texture* renderTarget = SDL_GetRenderTarget(m_renderer);
+
+        if (renderTarget != nullptr) {
+          error(
+            std::string("Could not update viewport to ") + area.toString(),
+            std::string("Rendering target is not null")
+          );
+        }
+
+        // Convert and assign the viewport of the renderer associated to this
+        // window. This will force the utilization no matter its current size.
+        // Note that this function is mostly here to prevent some issues when
+        // dealing with window resize. It could happen that the viewport did
+        // not get resized for some reasons.
+        SDL_Rect viewport = toSDLRect(area);
+        int ret = SDL_RenderSetViewport(m_renderer, &viewport);
+
+        if (ret != 0) {
+          error(
+            std::string("Could not set viewport to ") + area.toString(),
+            SDL_GetError()
+          );
+        }
       }
 
       void

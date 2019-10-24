@@ -42,6 +42,10 @@ namespace sdl {
           renderWindow(const utils::Uuid& uuid) override;
 
           void
+          updateViewport(const utils::Uuid& uuid,
+                         const utils::Boxf& area) override;
+
+          void
           destroyWindow(const utils::Uuid& uuid) override;
 
           /**

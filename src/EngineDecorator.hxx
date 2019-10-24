@@ -38,6 +38,14 @@ namespace sdl {
 
       inline
       void
+      EngineDecorator::updateViewport(const utils::Uuid& uuid,
+                                      const utils::Boxf& area)
+      {
+        m_engine->updateViewport(uuid, area);
+      }
+
+      inline
+      void
       EngineDecorator::destroyWindow(const utils::Uuid& uuid) {
         m_engine->destroyWindow(uuid);
       }

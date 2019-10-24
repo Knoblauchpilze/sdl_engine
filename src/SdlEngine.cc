@@ -62,6 +62,18 @@ namespace sdl {
         win->render();
       }
 
+      void
+      SdlEngine::updateViewport(const utils::Uuid& uuid,
+                                const utils::Boxf& area)
+      {
+        std::lock_guard<std::mutex> guard(m_locker);
+
+        // Retrieve the required window.
+        WindowShPtr win = getWindowOrThrow(uuid);
+
+        // Update its viewport.
+        win->updateViewport(area);
+      }
 
       void
       SdlEngine::destroyWindow(const utils::Uuid& uuid) {

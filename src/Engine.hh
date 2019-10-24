@@ -43,6 +43,18 @@ namespace sdl {
           virtual void
           renderWindow(const utils::Uuid& uuid) = 0;
 
+          /**
+           * @brief - Updates the viewport for the window described by the `uuid` to the specified
+           *          size.
+           *          Note that the size will be converted to integer coordinates and applied to the
+           *          current rendering target of the renderer associated to the window.
+           * @param uuid - the identifier of the window for which the viewport should be set.
+           * @param area - the new coordinates of the viewport for this window.
+           */
+          virtual void
+          updateViewport(const utils::Uuid& uuid,
+                         const utils::Boxf& area) = 0;
+
           virtual void
           destroyWindow(const utils::Uuid& uuid) = 0;
 

@@ -1,24 +1,7 @@
 
 # include "Texture.hh"
+# include "TextureUtils.hxx"
 # include "RendererState.hh"
-
-namespace {
-  /**
-   * @brief - Builds a top left SDL_Rect object from the input box.
-   * @return - a sdl rect object based on the input description of the box.
-   */
-  template <typename CoordinateType>
-  inline
-  SDL_Rect
-  toSDLRect(const utils::Box<CoordinateType>& box) noexcept {
-    return SDL_Rect{
-      static_cast<int>(box.getLeftBound()),
-      static_cast<int>(box.getBottomBound()),
-      static_cast<int>(box.w()),
-      static_cast<int>(box.h())
-    };
-  }
-}
 
 namespace sdl {
   namespace core {
