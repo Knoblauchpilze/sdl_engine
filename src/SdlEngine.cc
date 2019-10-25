@@ -409,6 +409,36 @@ namespace sdl {
         // Populate the window id.
         utils::Uuid winID = populateWindowIDEvent(event);
 
+        // The window identifier might be invalid: indeed in the case of a user first clicking
+        // on the application and then dragging the mouse outside of the window, an event will
+        // be generated when the mouse button is released. In this case we have a default win
+        // identifier assigned to the underlying `API` event because indeed the event did not
+        // take place in any window (as it is outside of the application).
+        // We could use two strategies: either discard the event or try to make sense of it.
+        // The second solution seems like a better plan because otherwise it means that the
+        // drag and drop event which has started will never be terminated. It will then be the
+        // responsability of anyone handling drag event to detect when the mouse leaves the
+        // application abd react accordingly. This would probably involve a lot of duplicated
+        // code and need to not forget it each time we want to handle a drag and drop event.
+        // Instead correctly handling the event in the engine will not require additional
+        // processes anywhere else.
+        //
+        // That being said, we need to be able to correctly transform the position of the
+        // mouse using a window. As we're not certain which window was initially involved
+        // in the drag and drop event we should rely on the `m_mouseState` to provide a valid
+        // window to work with.
+        if (!winID.valid()) {
+          winID = m_mouseState.updateWithBestSuitedWindow(event);
+        }
+
+        // Check consistency.
+        if (!winID.valid()) {
+          error(
+            std::string("Could not interpret ") + Event::getNameFromEvent(event),
+            std::string("No valid associated window")
+          );
+        }
+
         // We need to convert the coordinates of the mouse event based on the dimensions
         // of the window it's related to.
         // Basically the coordinates of the mouse are provided using a coordinate frame
@@ -442,9 +472,6 @@ namespace sdl {
         // event and transform the coordinates.
 
         // Retrieve the window object from its uuid and transform the coordinates of the event.
-        // TODO: In case the window ID is not set we should not try to access this.
-        // Or maybe we should detect that it's part of a drag and drop event and allow the mouse
-        // state to populate the data correctly.
         WindowShPtr win = getWindowOrThrow(winID);
 
         const utils::Sizef size = win->getSize();
@@ -491,6 +518,9 @@ namespace sdl {
 
         // Assign the corresponding size.
         event.setSize(win->getSize());
+
+        // Finally update the mouse state with this event.
+        m_mouseState.updateFromWindowEvent(event);
       }
 
       void

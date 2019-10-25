@@ -3,7 +3,9 @@
 
 # include <memory>
 # include <core_utils/CoreObject.hh>
+# include <core_utils/Uuid.hh>
 # include "MouseEvent.hh"
+# include "WindowEvent.hh"
 
 namespace sdl {
   namespace core {
@@ -18,6 +20,16 @@ namespace sdl {
           MouseState();
 
           ~MouseState() = default;
+
+          /**
+           * @brief - Used to perform the update of the internal state based on
+           *          the data contained in the input window event. The update
+           *          includes updating the internal attribute to keep track of
+           *          the current active window.
+           * @param e - the window event to process.
+           */
+          void
+          updateFromWindowEvent(const WindowEvent& e) noexcept;
 
           /**
            * @brief - Used to perform the update of both the internal state
@@ -39,6 +51,29 @@ namespace sdl {
            */
           std::vector<EventShPtr>
           updateEvent(MouseEvent& event);
+
+          /**
+           * @brief - Used to try to guess a valid window identifier for the
+           *          input mouse event based on the internal saved state of
+           *          the mouse. The goal is to determine some sort of logic
+           *          when an event is generated outside of any context by
+           *          using the saved data to find the most logical window
+           *          identifier to prolongate the event.
+           *          Note that if this method is unable to determine any id
+           *          which could make sense nothing is changed in the input
+           *          event. Otherwise the best guess at the window identifier
+           *          is filled for the input event.
+           * @param event - the event for which a valid window identifier
+           *                should be determined. Note that this value is
+           *                modified if it has no window identifier associated
+           *                to it upon entering this method and if a valid id
+           *                can be found internally.
+           * @return - the window identifier assigned to the window event if
+           *           any, its initial value if one was already provided or
+           *           an invalid identifier if nothing could be found.
+           */
+          utils::Uuid
+          updateWithBestSuitedWindow(MouseEvent& event);
 
         private:
 
@@ -132,6 +167,25 @@ namespace sdl {
                           std::vector<EventShPtr>& newEvents);
 
           /**
+           * @brief - Updates the click data for the button specified in input given
+           *          the mouse event and pressed buttons as input data. Note that
+           *          this method returns a boolean indicating if the data for the
+           *          specified event was updated or not.
+           *          Note that the input event might be updated in case the button
+           *          exists in the drag data.
+           * @param b - the list of mouse buttons pressed as per calling this method.
+           * @param e - the mouse event which generated the call to this method in
+           *            the first place.
+           * @param button - the button for which the drag data should be updated.
+           * @return - `true` if the input button is pressed and if its drag data
+           *           has been updated, `false` otherwise.
+           */
+          bool
+          updateDragDataForButton(const mouse::Buttons& b,
+                                  MouseEvent& e,
+                                  const mouse::Button& button);
+
+          /**
            * @brief - Retrieve a timestamp to be used to update the internal state for
            *          example
            * @return - a timestamp to be used.
@@ -150,15 +204,26 @@ namespace sdl {
           using ButtonsTable = std::unordered_map<mouse::Button, ButtonDesc>;
 
           /**
-           * @brief - These booleans keeps track of whether the mouse is currently being
-           *          dragged or not. The default value is `false`.
-           */
-          bool m_mouseDragged;
-
-          /**
            * @brief - Contains the information of all the mouse buttons.
            */
            ButtonsTable m_buttons;
+
+          /**
+           * @brief - This boolean allows to keep track of whether the
+           *          mouse is currently inside a window or not. If it
+           *          is the case the `m_lastWinID` represents the id
+           *          of the current window.
+           *          If not the `m_lastWinID` represents the id of
+           *          the last window the mouse was in.
+           */
+           bool m_isInWindow;
+
+           /**
+            * @brief - The identifier of the last window the mouse was
+            *          in. Note that if the mouse has not yet been in
+            *           any window this id might be invalid.
+            */
+           utils::Uuid m_lastWinID;
       };
 
       using MouseStateShPtr = std::shared_ptr<MouseState>;

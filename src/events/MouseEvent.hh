@@ -116,7 +116,7 @@ namespace sdl {
           wasDragged() const noexcept;
 
           /**
-           * @bried - Retrieves the position of the mouse at the beginning of the
+           * @brief - Retrieves the position of the mouse at the beginning of the
            *          current action. Most of the time this value will be identical
            *          to the one returned by `getMousePosition` but in the case of
            *          a drag event for example, this position will be keeping the

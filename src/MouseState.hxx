@@ -32,8 +32,10 @@ namespace sdl {
       MouseState::MouseState():
         utils::CoreObject(std::string("mouse_state")),
 
-        m_mouseDragged(false),
-        m_buttons()
+        m_buttons(),
+
+        m_isInWindow(false),
+        m_lastWinID()
       {
         init();
       }
@@ -63,10 +65,21 @@ namespace sdl {
 
       inline
       void
-      MouseState::updateMotionData(MouseEvent& /*event*/,
+      MouseState::updateMotionData(MouseEvent& event,
                                    std::vector<EventShPtr>& /*newEvents*/)
       {
-        // Nothing to do for now.
+        // A mouse motion can occur inside the window. We want to update the `m_isInWindow`
+        // boolean for the case where the mouse is already inside the application when the
+        // first window is drawn. We need to check whether the input mouse event has an
+        // associated window identifier: if this is the case it means that the motion is
+        // happening inside this window. Indeed otherwise the event system will not be
+        // notified of such events.
+        utils::Uuid id = event.getWindID();
+
+        // If the identifier is valid, we consider that we're inside the window.
+        if (id.valid()) {
+          m_isInWindow = true;
+        }
       }
 
       inline
