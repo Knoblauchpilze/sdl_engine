@@ -216,6 +216,16 @@ namespace sdl {
       }
 
       inline
+      void
+      Event::clearSDLWindID() noexcept {
+        // Indicate that this window does not have any linked `SDL` window ID.
+        m_hasWinID = false;
+
+        // Reset any assigned logical window identifier.
+        m_winID.invalidate();
+      }
+
+      inline
       const utils::Uuid&
       Event::getWindID() const noexcept {
         return m_winID;

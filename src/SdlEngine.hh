@@ -216,6 +216,16 @@ namespace sdl {
           ColoredFontShPtr
           getFontOrThrow(const utils::Uuid& uuid) const;
 
+          /**
+           * @brief - Used to retrieve the logical window identifier associated to the
+           *          input `SDL` window identifier.
+           *          Note that if no valid logical window matching the input identifier
+           *          can be found an invalid identifier is returned. It is up to the
+           *          caller to know what to do about it.
+           * @param winID - the underlying `SDL` identifier.
+           * @return - the logical window identifier associated to the input raw `API`
+           *           data.
+           */
           utils::Uuid
           getWindowUuidFromSDLWinID(const std::uint32_t& winID) const;
 

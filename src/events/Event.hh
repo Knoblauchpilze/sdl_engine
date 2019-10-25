@@ -254,6 +254,9 @@ namespace sdl {
           std::uint32_t
           getSDLWinID() const noexcept;
 
+          void
+          clearSDLWindID() noexcept;
+
           const utils::Uuid&
           getWindID() const noexcept;
 

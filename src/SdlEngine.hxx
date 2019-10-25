@@ -153,15 +153,15 @@ namespace sdl {
       inline
       utils::Uuid
       SdlEngine::getWindowUuidFromSDLWinID(const uint32_t& winID) const {
+        // Try to find the corresponding logical window.
         const SDLWinToWindows::const_iterator win = m_winIDToWindows.find(winID);
 
+        // If we couldn't find anything let's return an invalid identifier.
         if (win == m_winIDToWindows.cend()) {
-          error(
-            std::string("Could not find window uuid from SDL id ") + std::to_string(winID),
-            std::string("Window does not exist")
-          );
+          return utils::Uuid();
         }
 
+        // Return the logical window identifier.
         return win->second;
       }
 

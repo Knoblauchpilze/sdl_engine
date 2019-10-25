@@ -435,13 +435,14 @@ namespace sdl {
         //            O +---------->
         //                         x
         //
-        // With `x`ranging from `[-window_width / 2, window_width / 2]` and `y` ranging from
+        // With `x` ranging from `[-window_width / 2, window_width / 2]` and `y` ranging from
         // `[-window_height / 2; window_height / 2]`.
         //
         // To do so we first need to retrieve the dimensions of the window which generated the
         // event and transform the coordinates.
 
         // Retrieve the window object from its uuid and transform the coordinates of the event.
+        // TODO: In case the window ID is not set we should not try to access this.
         WindowShPtr win = getWindowOrThrow(winID);
 
         const utils::Sizef size = win->getSize();
@@ -513,19 +514,22 @@ namespace sdl {
         // We need to assign the window uuid from the SDL window ID of the event.
         // This can only be done if the window id provided by the event itself is
         // valid.
-
         if (!event.hasSDLWinID()) {
           // Return early.
           return utils::Uuid();
         }
 
-        // Retrieve the internal window id from its SDL counterpart.
-
-        // Retreieve the internal window uuid from the corresponding SDL uuid.
+        // Retrieve the internal window uuid from the corresponding SDL uuid.
         utils::Uuid winID = getWindowUuidFromSDLWinID(event.getSDLWinID());
 
-        // Assign it to the event.
-        event.setWindowID(winID);
+        // Assign it to the event if it is valid: otherwise clear the window
+        // identifier.
+        if (winID.valid()) {
+          event.setWindowID(winID);
+        }
+        else {
+          event.clearSDLWindID();
+        }
 
         return winID;
       }
