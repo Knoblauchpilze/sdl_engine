@@ -443,6 +443,8 @@ namespace sdl {
 
         // Retrieve the window object from its uuid and transform the coordinates of the event.
         // TODO: In case the window ID is not set we should not try to access this.
+        // Or maybe we should detect that it's part of a drag and drop event and allow the mouse
+        // state to populate the data correctly.
         WindowShPtr win = getWindowOrThrow(winID);
 
         const utils::Sizef size = win->getSize();
