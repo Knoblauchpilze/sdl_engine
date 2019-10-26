@@ -10,6 +10,67 @@ namespace sdl {
   namespace core {
     namespace engine {
 
+      namespace update {
+
+        /**
+         * @brief - Describes a coordinate frame for an update region.
+         */
+        enum class Frame {
+          Local, //<! - This value indicates that the area associated to the update
+                 //<!   region is expressed in local coordinate frame.
+          Global //<! - This value indicates that the area associated to the update
+                 //<!   region is expressed in global coordinate frame.
+        };
+
+        /**
+         * @brief - Used to describe an update region associated to a paint event. The typical
+         *          update region is composed of a area representing the actual extent of the
+         *          region to update, and also a value indicating the coordinate frame that it
+         *          is expressed into so that the user knows how to interpret it.
+         */
+        struct Region {
+          utils::Boxf area;
+          Frame frame;
+
+          /**
+           * @brief - Reuses the namespace method to print this region to a string.
+           * @return - a string representing this region as a human-readable data.
+           */
+          std::string
+          toString() const noexcept;
+
+          /**
+           * @brief - Determines whether `this` and `rhs` are equals. In order for
+           *          two regions to be equal they should have the same coordinate
+           *          frame and the same extent.
+           * @param rhs - the element to compare with `this`.
+           * @return - `true` if `rhs` is equal to `this` and `false` otherwise.
+           */
+          bool
+          operator==(const Region& rhs) const noexcept;
+
+          /**
+           * @brief - Determines whether `this` and `rhs` are different. In order for
+           *          two regions to be different they should either have a different
+           *          coordinate frame or a different extent.
+           * @param rhs - the element to compare with `this`.
+           * @return - `true` if `rhs` is different from `this` and `false` otherwise.
+           */
+          bool
+          operator!=(const Region& rhs) const noexcept;
+        };
+
+        /**
+         * @brief - Retrieves a human-readable string for the input frame.
+         * @param frame - the coordinate frame to convert to a string.
+         * @return - a string representing a name for the input coordinate frame or "unknown"
+         *           if the coordinate frame is unknown.
+         */
+        std::string
+        getNameFromFrame(const Frame& frame) noexcept;
+
+      }
+
       class PaintEvent: public Event {
         public:
 
@@ -28,11 +89,15 @@ namespace sdl {
            * @brief - Creates an event which is used to repaint the area defined by the
            *          `updateRegion` of the object described by the `receiver` or to be
            *          transmitted to all registered elements if it is left empty.
+           *          The user should specify the coordinate frame into which the area
+           *          is expressed.
            * @param updateRegion - the region to update for the component.
+           * @param frame - the coordinate frame into which the `updateRegion` exists.
            * @param receiver - the object which will receive this paint event. If left
            *                   empty all registered elements will receive it.
            */
           PaintEvent(const utils::Boxf& updateRegion,
+                     const update::Frame& frame = update::Frame::Global,
                      EngineObject* receiver = nullptr);
 
           ~PaintEvent();
@@ -51,17 +116,33 @@ namespace sdl {
            *          of the object.
            * @return - the update regions associated to this paint event.
            */
-          const std::vector<utils::Boxf>&
+          const std::vector<update::Region>&
           getUpdateRegions() const noexcept;
 
           /**
            * @brief - Add the input region as a region to update for this event. Note that
            *          the standard process is used to clean duplicated region and to merge
            *          potentially overlapping regions.
-           * @param region - the region to add as a region to update for this event.
+           *          Also the user should specify whether the input area is expressed in
+           *          local or global coordinate frame.
+           * @param area - the region to add as a region to update for this event.
+           * @param frame - the coordinate frame to use to interpret the region.
+           * @return - `true` if the region was added, `false` otherwise.
            */
-          void
-          addUpdateRegion(const utils::Boxf& region) noexcept;
+          bool
+          addUpdateRegion(const utils::Boxf& area,
+                          const update::Frame& frame = update::Frame::Global) noexcept;
+
+          /**
+           * @brief - Similar method to the `addUpdateRegion` with an area and a frame. This
+           *          method is actually used by the above one.
+           *          Note that a sanitization is performed in order to keep a consistent
+           *          paint event.
+           * @param region - the update region to add to this event.
+           * @return - `true` if the region was added, `false` otherwise.
+           */
+          bool
+          addUpdateRegion(const update::Region& region) noexcept;
 
           /**
            * @brief - Used to copy the update regions of the input paint event `e` into the
@@ -79,13 +160,17 @@ namespace sdl {
            *          can be contained in the input area. This can be used to determine for
            *          example if the area of a widget encompasses all the modifications brought
            *          by the paint event or to replace several areas with a single larger one.
+           *          Note that the user should specify how to interpret the input area, either
+           *          considering it is expressed in local or global frame.
            * @param area - the area which should be checked to determine whether it contains
            *               all the areas associated to this event.
+           * @param frame - the coordinate frame associated to the input `area`.
            * @return - `true` if the input `area` contains all the area associated to this paint
            *           event and `false` otherwise.
            */
           bool
-          isContained(const utils::Boxf& area) const noexcept;
+          isContained(const utils::Boxf& area,
+                      const update::Frame& frame = update::Frame::Global) const noexcept;
 
           void
           populateFromEngineData(Engine& engine) override;
@@ -132,12 +217,12 @@ namespace sdl {
            *          This allows to dynamically insert elements in the `m_updateRegions`
            *          without researching the already inserted elements (for example in
            *          the `meregPrivate` method).
-           * @param area - the area which should be checked for uniqueness.
+           * @param region - the area which should be checked for uniqueness.
            * @return - true if the `area` is not already part of the internal areas,
            *           false ig this ara either exists or is covered by another one.
            */
           bool
-          isUnique(const utils::Boxf& area,
+          isUnique(const update::Region& region,
                    int max = -1) const noexcept;
 
           /**
@@ -154,8 +239,10 @@ namespace sdl {
 
           /**
            * @brief - Contains all the regions to update when processing this event.
+           *          Note that the region are expressed through both their extent
+           *          but also the coordinate frame into which the area is expressed.
            */
-          std::vector<utils::Boxf> m_updateRegions;
+          std::vector<update::Region> m_updateRegions;
 
       };
 

@@ -6,18 +6,23 @@ namespace sdl {
   namespace core {
     namespace engine {
 
-      void
-      PaintEvent::addUpdateRegion(const utils::Boxf& region) noexcept {
+      bool
+      PaintEvent::addUpdateRegion(const update::Region& region) noexcept {
+
         // Add the region to the internal areas if it does not already exist.
         if (isUnique(region)) {
           m_updateRegions.push_back(region);
 
           // Sanitize in case the new region encompasses some old areas.
           sanitize();
+
+          return true;
         }
-        else {
-          log("Discarding region " + region.toString() + " already existing in paint event", utils::Level::Warning);
-        }
+
+        log("Discarding region " + region.toString() + " already existing in paint event", utils::Level::Warning);
+
+        // The region was not added.
+        return false;
       }
 
       void
@@ -54,7 +59,9 @@ namespace sdl {
       }
 
       bool
-      PaintEvent::isContained(const utils::Boxf& area) const noexcept {
+      PaintEvent::isContained(const utils::Boxf& area,
+                              const update::Frame& frame) const noexcept
+      {
         // We need to traverse all the update regions and check whether the input
         // area contains each one.
         int id = 0;
@@ -62,7 +69,7 @@ namespace sdl {
         bool contained = true;
 
         while (id < max && contained) {
-          contained = area.contains(m_updateRegions[id]);
+          contained = m_updateRegions[id].frame == frame && area.contains(m_updateRegions[id].area);
           ++id;
         }
 
@@ -114,7 +121,7 @@ namespace sdl {
       }
 
       bool
-      PaintEvent::isUnique(const utils::Boxf& area,
+      PaintEvent::isUnique(const update::Region& region,
                            int max) const noexcept
       {
         // Determine the maximum: i.e. update it if it is negative.
@@ -123,7 +130,7 @@ namespace sdl {
         }
 
         // Traverse the internal list of regions to update until we
-        // find either this `area` exactly or an area which spans
+        // find either this `region` exactly or an area which spans
         // the input one.
         int id = 0;
         bool found = false;
@@ -132,7 +139,7 @@ namespace sdl {
           // The logic to determine if the area is contained inside the
           // other one already accounts for equality: we consider to
           // equal areas to be contained into each other.
-          found = m_updateRegions[id].contains(area);
+          found = m_updateRegions[id].frame == region.frame && m_updateRegions[id].area.contains(region.area);
           ++id;
         }
 
@@ -148,7 +155,7 @@ namespace sdl {
         // any other.
 
         // First, copy the internal array into a temporary one.
-        std::vector<utils::Boxf> working;
+        std::vector<update::Region> working;
         working.swap(m_updateRegions);
 
         // Traverse the working vector and populate the `m_updateRegions`
@@ -165,7 +172,7 @@ namespace sdl {
               continue;
             }
 
-            contained = working[check].contains(working[id]);
+            contained = (working[check].frame == working[id].frame) && working[check].area.contains(working[id].area);
 
             if (!contained) {
               ++check;
