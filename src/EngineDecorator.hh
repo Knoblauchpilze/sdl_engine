@@ -148,6 +148,9 @@ namespace sdl {
           populateEvent(FocusEvent& event) override;
 
           void
+          populateEvent(HideEvent& event) override;
+
+          void
           populateEvent(KeyEvent& event) override;
 
           void

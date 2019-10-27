@@ -9,6 +9,8 @@
 # include "Event.hh"
 # include "EventsQueue.hh"
 # include "EnterEvent.hh"
+# include "FocusEvent.hh"
+# include "HideEvent.hh"
 # include "KeyEvent.hh"
 # include "MouseEvent.hh"
 # include "PaintEvent.hh"
@@ -298,7 +300,7 @@ namespace sdl {
           geometryUpdateEvent(const Event& e);
 
           virtual bool
-          hideEvent(const Event& e);
+          hideEvent(const HideEvent& e);
 
           virtual bool
           keyboardGrabbedEvent(const Event& e);

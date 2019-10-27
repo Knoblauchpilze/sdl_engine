@@ -212,6 +212,12 @@ namespace sdl {
 
       inline
       void
+      EngineDecorator::populateEvent(HideEvent& event) {
+        m_engine->populateEvent(event);
+      }
+
+      inline
+      void
       EngineDecorator::populateEvent(KeyEvent& event) {
         m_engine->populateEvent(event);
       }

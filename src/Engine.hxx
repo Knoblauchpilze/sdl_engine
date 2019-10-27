@@ -33,6 +33,12 @@ namespace sdl {
 
       inline
       void
+      Engine::populateEvent(HideEvent& /*event*/) {
+        // Empty implementation.
+      }
+
+      inline
+      void
       Engine::populateEvent(KeyEvent& /*event*/) {
         // Empty implementation.
       }

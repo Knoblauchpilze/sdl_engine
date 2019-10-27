@@ -14,6 +14,7 @@
 # include "DropEvent.hh"
 # include "EnterEvent.hh"
 # include "FocusEvent.hh"
+# include "HideEvent.hh"
 # include "KeyEvent.hh"
 # include "MouseEvent.hh"
 # include "PaintEvent.hh"
@@ -219,6 +220,9 @@ namespace sdl {
 
           virtual void
           populateEvent(FocusEvent& event);
+
+          virtual void
+          populateEvent(HideEvent& event);
 
           virtual void
           populateEvent(KeyEvent& event);

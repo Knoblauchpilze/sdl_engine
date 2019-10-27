@@ -340,7 +340,7 @@ namespace sdl {
             case Event::Type::GeometryUpdate:
               return geometryUpdateEvent(*e);
             case Event::Type::Hide:
-              return hideEvent(*e);
+              return hideEvent(*std::dynamic_pointer_cast<HideEvent>(e));
             case Event::Type::KeyboardGrabbed:
               return keyboardGrabbedEvent(*e);
             case Event::Type::KeyboardReleased:

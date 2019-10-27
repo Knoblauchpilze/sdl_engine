@@ -188,7 +188,7 @@ namespace sdl {
 
       inline
       bool
-      EngineObject::hideEvent(const Event& /*e*/) {
+      EngineObject::hideEvent(const HideEvent& /*e*/) {
         // Empty implementation.
         return true;
       }
