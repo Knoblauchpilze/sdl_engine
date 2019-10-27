@@ -70,9 +70,9 @@ namespace sdl {
         private:
 
           utils::Boxf m_region;
-
       };
 
+      using HideEventShPtr = std::shared_ptr<HideEvent>;
     }
   }
 }
