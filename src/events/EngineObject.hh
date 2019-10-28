@@ -132,6 +132,16 @@ namespace sdl {
           clearEvents();
 
           /**
+           * @brief - Performs a removal of all the events emitted by the input `object` in
+           *          the queue of events for this object. If no such events exist this does
+           *          nothing.
+           * @param object - the emitter which should be searched for in the emitters of the
+           *                 events registered for this object.
+           */
+          void
+          removeEventsFrom(EngineObject* object);
+
+          /**
            * @brief - Used to perform the processing of all internal events registered for
            *          this object.
            *          Note that process will loop until no more events are produced for this

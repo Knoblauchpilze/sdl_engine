@@ -133,16 +133,37 @@ namespace sdl {
         }
 
         std::lock_guard<std::mutex> guard(m_listenersLocker);
-        std::remove_if(m_listeners.begin(), m_listeners.end(),
-          [&listener](EngineObject* internalListener) {
-            return &*(listener) == &(*internalListener);
+
+
+        int size = m_listeners.size();
+
+        Listeners::iterator toRemove = std::remove_if(
+          m_listeners.begin(),
+          m_listeners.end(),
+          [listener](EngineObject* internalListener) {
+            return &(*listener) == &(*internalListener);
           }
         );
+
+        // The `remove_if` method actually moves all elements to be
+        // removed (at most one in our case) to the end. So we should
+        // perform the removal of the elements right now.
+        m_listeners.erase(toRemove, m_listeners.end());
 
         // We also need to remove all the events associated to this
         // listener: it is done by directly calling the appropriate
         // method on the listener to remove.
         listener->clearEvents();
+
+        // Finally we need to traverse the internal list of listeners
+        // and check whether some events pending processing are linked
+        // to the listener which have just been removed, for example
+        // events emitted by it.
+        std::for_each(m_listeners.begin(), m_listeners.end(),
+          [listener](EngineObject* internalListener) {
+            internalListener->removeEventsFrom(listener);
+          }
+        );
       }
 
       inline

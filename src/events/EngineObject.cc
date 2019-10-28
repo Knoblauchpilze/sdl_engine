@@ -46,6 +46,31 @@ namespace sdl {
       }
 
       void
+      EngineObject::installEventFilter(EngineObject* filter) {
+        // Check filter validity.
+        if (filter == nullptr) {
+          log(
+            std::string("Cannot install event filter, invalid null filter"),
+            utils::Level::Warning
+          );
+
+          return;
+        }
+
+        // Only add this filter if it does not exist yet.
+        // The `removeFilter` does handle properly the case where
+        // the provided filter does not exist so use it as a cheap
+        // solution to remove the `filter` in all cases.
+        removeFilter(findFilter(filter));
+
+        // Insert this filter at the end of the internal vector.
+        // Based on the mechanism provided by `filterEvent`, if
+        // we insert the filter at the end of the vector it will
+        // be applied first which is what we want.
+        m_filters.push_back(filter);
+      }
+
+      void
       EngineObject::postEvent(EventShPtr e,
                               bool autosetReceiver,
                               bool autosetEmitter) noexcept
@@ -180,6 +205,30 @@ namespace sdl {
       }
 
       void
+      EngineObject::removeEventsFrom(EngineObject* object) {
+        // Acquire the lock to protect from concurrency.
+        std::lock_guard<std::mutex> guard(m_eventsLocker);
+
+        // Scan the internal events array and remove any events which
+        // has been emitted by the input object.
+        Events old;
+        old.swap(m_events);
+
+        for (unsigned id = 0u ; id < old.size() ; ++id) {
+          // Only add the event if it has not been emitted by the input object.
+          if (old[id]->getEmitter() != object) {
+            m_events.push_back(old[id]);
+          }
+          else {
+            log("Removing event " + Event::getNameFromEvent(old[id]) + " emitted by " + object->getName());
+          }
+        }
+
+        // As we're preserving order while removing the elements we shouldn't
+        // need to sort again the events.
+      }
+
+      void
       EngineObject::processEvents(const EventProcessingPass& pass) {
         // We need to handle each and every event registered in this
         // object (and more specifically into the internal `m_events`
@@ -265,31 +314,6 @@ namespace sdl {
       }
 
       void
-      EngineObject::installEventFilter(EngineObject* filter) {
-        // Check filter validity.
-        if (filter == nullptr) {
-          log(
-            std::string("Cannot install event filter, invalid null filter"),
-            utils::Level::Warning
-          );
-
-          return;
-        }
-
-        // Only add this filter if it does not exist yet.
-        // The `removeFilter` does handle properly the case where
-        // the provided filter does not exist so use it as a cheap
-        // solution to remove the `filter` in all cases.
-        removeFilter(findFilter(filter));
-
-        // Insert this filter at the end of the internal vector.
-        // Based on the mechanism provided by `filterEvent`, if
-        // we insert the filter at the end of the vector it will
-        // be applied first which is what we want.
-        m_filters.push_back(filter);
-      }
-
-      void
       EngineObject::removeEvents(const Event::Type& type) noexcept {
         // Traverse the internal events list and remove the ones with
         // the specified input type.
@@ -317,6 +341,13 @@ namespace sdl {
           log(std::string("Dropping invalid null event"), utils::Level::Warning);
           // The event was not recognized.
           return false;
+        }
+
+        if (e->isDirected()) {
+          log("Processing broadcast event of type " + Event::getNameFromEvent(e) + " from " + e->getEmitter()->getName());
+        }
+        else {
+          log("Processing broadcast event of type " + Event::getNameFromEvent(e));
         }
 
         // Handle the event if this element is active or if it is a show event.
