@@ -134,9 +134,6 @@ namespace sdl {
 
         std::lock_guard<std::mutex> guard(m_listenersLocker);
 
-
-        int size = m_listeners.size();
-
         Listeners::iterator toRemove = std::remove_if(
           m_listeners.begin(),
           m_listeners.end(),
