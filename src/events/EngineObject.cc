@@ -343,13 +343,6 @@ namespace sdl {
           return false;
         }
 
-        if (e->isDirected()) {
-          log("Processing broadcast event of type " + Event::getNameFromEvent(e) + " from " + e->getEmitter()->getName());
-        }
-        else {
-          log("Processing broadcast event of type " + Event::getNameFromEvent(e));
-        }
-
         // Handle the event if this element is active or if it is a show event.
         if (isActive(e->getType())) {
           if (e->getType() != Event::Type::MouseMove) {
