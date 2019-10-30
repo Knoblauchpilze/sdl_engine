@@ -157,6 +157,16 @@ namespace sdl {
         protected:
 
           /**
+           * @brief - Used to unregister from the events queue currently associated to this
+           *          object if any. Note that it is safe to call this method even when a
+           *          valid events queue has not been assigned.
+           *          This method should usually not be called as the unregistration is
+           *          handled automatically from the destruction of this object.
+           */
+          void
+          unregisterFromQueue() noexcept;
+
+          /**
            * @brief - Used to deactivate the events processing for this object. Events will
            *          still be queued to the internal queues whenever they are generated but
            *          the `processEvents` method will dicard them.

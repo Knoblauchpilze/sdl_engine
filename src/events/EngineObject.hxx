@@ -11,9 +11,7 @@ namespace sdl {
       inline
       EngineObject::~EngineObject() {
         // Unregister from the event queue if any has been provided.
-        if (m_queue != nullptr) {
-          m_queue->removeListener(this);
-        }
+        unregisterFromQueue();
       }
 
       inline
@@ -64,6 +62,16 @@ namespace sdl {
 
         // No events corresponding to the input pass.
         return false;
+      }
+
+      inline
+      void
+      EngineObject::unregisterFromQueue() noexcept {
+        // Check whether the queue is valid before trying to unregister.
+        if (m_queue != nullptr) {
+          m_queue->removeListener(this);
+          m_queue = nullptr;
+        }
       }
 
       inline
