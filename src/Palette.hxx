@@ -224,6 +224,43 @@ namespace sdl {
         m_inactiveColors = m_activeColors;
       }
 
+      inline
+      std::string
+      Palette::getNameFromRole(const ColorRole& role) noexcept {
+        switch (role) {
+          case ColorRole::Background:
+            return "Background";
+          case ColorRole::WindowText:
+            return "WindowText";
+          case ColorRole::Base:
+            return "Base";
+          case ColorRole::AlternateBase:
+            return "AlternateBase";
+          case ColorRole::Text:
+            return "Text";
+          case ColorRole::Button:
+            return "Button";
+          case ColorRole::ButtonText:
+            return "ButtonText";
+          case ColorRole::BrightText:
+            return "BrightText";
+          case ColorRole::Light:
+            return "Light";
+          case ColorRole::Dark:
+            return "Dark";
+          case ColorRole::Mid:
+            return "Mid";
+          case ColorRole::Shadow:
+            return "Shadow";
+          case ColorRole::Highlight:
+            return "Highlight";
+          case ColorRole::HighlightedText:
+            return "HighlightedText";
+          default:
+            return "unknown";
+        }
+      }
+
     }
   }
 }

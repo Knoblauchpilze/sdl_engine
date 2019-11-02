@@ -45,6 +45,132 @@ namespace sdl {
         setDisabledColor(role, disColor);
       }
 
+      std::string
+      Palette::toString(const ColorGroup& group) const noexcept {
+        std::string out;
+
+        out += "[Group \"";
+        switch (group) {
+          case ColorGroup::Active:
+            out += "active";
+            break;
+          case ColorGroup::Inactive:
+            out += "inactive";
+            break;
+          case ColorGroup::Disabled:
+            out += "disabled";
+            break;
+          default:
+            out += "uknown";
+            break;
+        }
+        out += "\": ";
+
+        Color c;
+        ColorRole r;
+
+        r = ColorRole::Background;
+        c = getColorForRole(group, r);
+        out += getNameFromRole(r);
+        out += ": ";
+        out += c.toString();
+        out += ", ";
+
+        r = ColorRole::WindowText;
+        c = getColorForRole(group, r);
+        out += getNameFromRole(r);
+        out += ": ";
+        out += c.toString();
+        out += ", ";
+
+        r = ColorRole::Base;
+        c = getColorForRole(group, r);
+        out += getNameFromRole(r);
+        out += ": ";
+        out += c.toString();
+        out += ", ";
+
+        r = ColorRole::AlternateBase;
+        c = getColorForRole(group, r);
+        out += getNameFromRole(r);
+        out += ": ";
+        out += c.toString();
+        out += ", ";
+
+        r = ColorRole::Text;
+        c = getColorForRole(group, r);
+        out += getNameFromRole(r);
+        out += ": ";
+        out += c.toString();
+        out += ", ";
+
+        r = ColorRole::Button;
+        c = getColorForRole(group, r);
+        out += getNameFromRole(r);
+        out += ": ";
+        out += c.toString();
+        out += ", ";
+
+        r = ColorRole::ButtonText;
+        c = getColorForRole(group, r);
+        out += getNameFromRole(r);
+        out += ": ";
+        out += c.toString();
+        out += ", ";
+
+        r = ColorRole::BrightText;
+        c = getColorForRole(group, r);
+        out += getNameFromRole(r);
+        out += ": ";
+        out += c.toString();
+        out += ", ";
+
+        r = ColorRole::Light;
+        c = getColorForRole(group, r);
+        out += getNameFromRole(r);
+        out += ": ";
+        out += c.toString();
+        out += ", ";
+
+        r = ColorRole::Dark;
+        c = getColorForRole(group, r);
+        out += getNameFromRole(r);
+        out += ": ";
+        out += c.toString();
+        out += ", ";
+
+        r = ColorRole::Mid;
+        c = getColorForRole(group, r);
+        out += getNameFromRole(r);
+        out += ": ";
+        out += c.toString();
+        out += ", ";
+
+        r = ColorRole::Shadow;
+        c = getColorForRole(group, r);
+        out += getNameFromRole(r);
+        out += ": ";
+        out += c.toString();
+        out += ", ";
+
+        r = ColorRole::Highlight;
+        c = getColorForRole(group, r);
+        out += getNameFromRole(r);
+        out += ": ";
+        out += c.toString();
+        out += ", ";
+
+        r = ColorRole::HighlightedText;
+        c = getColorForRole(group, r);
+        out += getNameFromRole(r);
+        out += ": ";
+        out += c.toString();
+
+        out += "]";
+
+        return out;
+      }
+
       void
       Palette::initFromButtonColor(const Color& color) {
         // The `Background` color is identical to the input button's color.

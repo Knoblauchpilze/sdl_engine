@@ -111,6 +111,20 @@ namespace sdl {
           setColorForRole(const ColorRole& role,
                           const Color& color);
 
+          /**
+           * @brief - Dumps all the color for this palette in a human-readable
+           *          string to ease the way we can check which roles are set
+           *          to which colors. The color group can be specified as input
+           *          because as there are many possible roles displaying all
+           *          the values would result in an incomprehensible mess so we
+           *          chose to restrict the output display to a single color
+           *          group.
+           * @param group - the color group for which colors should be produced.
+           * @return - the string representing the palette.
+           */
+          std::string
+          toString(const ColorGroup& group = ColorGroup::Active) const noexcept;
+
         private:
 
           Palette(const std::string& name = std::string("Palette"));
@@ -167,6 +181,16 @@ namespace sdl {
 
           void
           copyInactiveFromActiveColorGroup() noexcept;
+
+          /**
+           * @brief - Used to retrieve a human-readable string describing the input color
+           *          role in argument.
+           * @param role - the role for which a human-readable name should be retrieved.
+           * @return - a string representing the name of the input color role.
+           */
+          static
+          std::string
+          getNameFromRole(const ColorRole& role) noexcept;
 
         private:
 
