@@ -19,8 +19,6 @@ namespace sdl {
           return true;
         }
 
-        log("Discarding region " + region.toString() + " already existing in paint event", utils::Level::Warning);
-
         // The region was not added.
         return false;
       }
@@ -42,7 +40,6 @@ namespace sdl {
           // check its uniqueness).
           if (!isUnique(e.m_updateRegions[id], max)) {
             // Continue the process.
-            log("Discarding region " + e.m_updateRegions[id].toString() + " already existing in merge operation", utils::Level::Warning);
             continue;
           }
 
@@ -181,7 +178,6 @@ namespace sdl {
 
           // Insert this area if it was not contained in any other area.
           if (contained) {
-            log("Discarding region " + working[id].toString() + " contained in " + working[check].toString(), utils::Level::Warning);
             continue;
           }
 
