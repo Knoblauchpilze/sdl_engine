@@ -3,6 +3,7 @@
 
 # include <memory>
 # include "Event.hh"
+# include "MouseEvent.hh"
 # include <maths_utils/Vector2.hh>
 
 namespace sdl {
@@ -17,11 +18,16 @@ namespace sdl {
            *          end position. Both position describe the position of the cursor
            *          when the drag and drop operation started while the end position
            *          describe the position where the drop occurred.
+           *          The drop event also include the information to determine which
+           *          button was released to generate the drop event.
            * @param startPos - the position where the drag and drop event started.
            * @param endPos - the position where the drop operation was issued.
+           * @param button - the button which has just been released (and thus triggered
+           *                 the drop event).
            */
           DropEvent(const utils::Vector2f& startPos,
                     const utils::Vector2f& endPos,
+                    const mouse::Button& button,
                     EngineObject* receiver = nullptr);
 
           ~DropEvent();
@@ -43,6 +49,15 @@ namespace sdl {
            */
           const utils::Vector2f&
           getEndPosition() const noexcept;
+
+          /**
+           * @brief - Retrieves the button which has generated this drop event when
+           *          being released.
+           * @return - an enumeration value describing the button which generated the
+           *           drop event.
+           */
+          const mouse::Button&
+          getButton() const noexcept;
 
         protected:
 
@@ -80,6 +95,11 @@ namespace sdl {
            */
           utils::Vector2f m_startPosition;
           utils::Vector2f m_endPosition;
+
+          /**
+           * @brief - The button which has just been released and generated the drop event.
+           */
+          mouse::Button m_button;
 
       };
 

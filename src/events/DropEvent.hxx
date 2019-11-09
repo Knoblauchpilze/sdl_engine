@@ -10,13 +10,16 @@ namespace sdl {
       inline
       DropEvent::DropEvent(const utils::Vector2f& startPos,
                            const utils::Vector2f& endPos,
+                           const mouse::Button& button,
                            EngineObject* receiver):
         Event(Event::Type::Drop,
               receiver,
               std::string("drop_event")),
 
         m_startPosition(startPos),
-        m_endPosition(endPos)
+        m_endPosition(endPos),
+
+        m_button(button)
       {}
 
       inline
@@ -32,6 +35,12 @@ namespace sdl {
       const utils::Vector2f&
       DropEvent::getEndPosition() const noexcept {
         return m_endPosition;
+      }
+
+      inline
+      const mouse::Button&
+      DropEvent::getButton() const noexcept {
+        return m_button;
       }
 
       inline
