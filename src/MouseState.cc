@@ -135,7 +135,8 @@ namespace sdl {
           else {
             EventShPtr drop = std::make_shared<DropEvent>(
               *desc.lastClick,
-              event.getMousePosition()
+              event.getMousePosition(),
+              event.getButton()
             );
 
             newEvents.push_back(drop);
