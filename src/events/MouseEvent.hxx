@@ -176,7 +176,10 @@ namespace sdl {
       utils::Vector2i
       MouseEvent::getMove() const noexcept {
         if (m_motion != nullptr) {
-          return utils::Vector2i(m_motion->xrel, m_motion->yrel);
+          // Note that as the `y` axis is inverted compared to the `SDL`
+          // convention we should account for that and return a negated
+          // `y` value.
+          return utils::Vector2i(m_motion->xrel, -m_motion->yrel);
         }
 
         return utils::Vector2i();
