@@ -61,9 +61,15 @@ namespace sdl {
         SDL_Texture* renderTarget = SDL_GetRenderTarget(m_renderer);
 
         if (renderTarget != nullptr) {
+          Uint32 fmt;
+          int access, w, h;
+          SDL_QueryTexture(renderTarget, &fmt, &access, &w, &h);
+
           error(
             std::string("Could not update viewport to ") + area.toString(),
-            std::string("Rendering target is not null")
+            std::string("Rendering target is not null ") +
+            "(format: " + std::to_string(fmt) + ", access: " + std::to_string(access) +
+            ", dims: " + std::to_string(w) + "x" + std::to_string(h) + ")"
           );
         }
 
