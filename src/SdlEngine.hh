@@ -11,7 +11,6 @@
 # include "Engine.hh"
 # include "Window.hh"
 # include "Texture.hh"
-# include "RendererState.hh"
 # include "FontFactory.hh"
 # include "MouseState.hh"
 
