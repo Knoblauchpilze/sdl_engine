@@ -285,7 +285,7 @@ namespace sdl {
             [&event, this]() {
               dispatchEventToListeners(*event);
             },
-            std::string("dispatchEvent")
+            std::string("dispatchEventToListeners")
           );
         }
       }
@@ -347,7 +347,13 @@ namespace sdl {
           // only the listeners which have not yet processed the input `event` receive
           // it in this round.
           for (int id = offset ; id < static_cast<int>(existingListeners.size()) ; ++id) {
-            existingListeners[id]->event(event);
+            EngineObject* lis = existingListeners[id];
+            withSafetyNet(
+              [&event, lis]() {
+                lis->event(event);
+              },
+              lis->getName() + "::event(" + Event::getNameFromEvent(event) + ")"
+            );
           }
 
           // Check whether some listeners were added.
