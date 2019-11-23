@@ -58,13 +58,8 @@ namespace sdl {
             break;
           }
 
-          // Fetch system events.
-          int osEventsDuration = consumeSystemEvents();
-
           // Process events in queue.
-          int allEventsDuration = dispatchEventsFromQueue();
-
-          int processingDuration = osEventsDuration + allEventsDuration;
+          int processingDuration = dispatchEventsFromQueue();
 
           // Check whether the rendering time is compatible with the desired framerate.
           if (1.0f * processingDuration > m_frameDuration) {
@@ -88,25 +83,6 @@ namespace sdl {
         }
 
         log(std::string("Exiting events thread"), utils::Level::Notice);
-      }
-
-      int
-      EventsDispatcher::consumeSystemEvents() {
-        // Start time measurement.
-        auto start = std::chrono::steady_clock::now();
-
-        // Pull all events available in the queue.
-        std::vector<EventShPtr> events = m_engine->pollEvents();
-
-        // Enqueue each event if it is relevant.
-        for (unsigned id = 0u ; id < events.size() ; ++id) {
-          if (events[id] != nullptr && events[id]->getType() != Event::Type::None) {
-            postEvent(events[id]);
-          }
-        }
-
-        // Return the elapsed time.
-        return std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now() - start).count();
       }
 
       int

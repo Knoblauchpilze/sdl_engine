@@ -35,6 +35,18 @@ namespace sdl {
           isRunning();
 
           /**
+           * @brief - Used to update the internal list of events by appending the input list.
+           *          These events are assumed to be a new batch of system events to process.
+           *          It makes sense to allow for external pumping of events as some engines
+           *          might not allow query of events from another thread as the main thread.
+           *          Note that the input vector will be modified by the function and is not
+           *          in a valid state anymore after calling this method.
+           * @param events - the list of events to pump in the internal queue.
+           */
+          void
+          pumpEvents(std::vector<EventShPtr>& events);
+
+          /**
            * @brief - Generic method used to post an event to be processed either by all the
            *          listeners registered by this method or by a specific one. This method
            *          does perform some checks to discard invalid events and request a valid
@@ -74,18 +86,6 @@ namespace sdl {
            */
           void
           fetchSystemEvents();
-
-          /**
-           * @brief - This method queries the underlying events API and post each fetched event
-           *          to the queue of each individual listener. Each system event is created as
-           *          not directed (i.e. no specific receiver) and no particular emitter (the
-           *          system is not a valid destination for events).
-           *          In order to guarantee a certain framerate we return the time took by the
-           *          method to be executed.
-           * @return - returns the duration of this method expressed in milliseconds.
-           */
-          int
-          consumeSystemEvents();
 
           /**
            * @brief - Used to handle an event dispatch cycle. This method is called by the main

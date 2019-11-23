@@ -51,6 +51,15 @@ namespace sdl {
 
       inline
       void
+      EventsDispatcher::pumpEvents(std::vector<EventShPtr>& events) {
+        // Protect from concurrent accesses.
+        std::lock_guard<std::mutex> guard(m_eventsLocker);
+
+        m_broadcastEvents.insert(m_broadcastEvents.end(), events.cbegin(), events.cend());
+      }
+
+      inline
+      void
       EventsDispatcher::postEvent(EventShPtr e) {
         // Check whether this event is valid: we discard null events and
         // events with an invalid type.
