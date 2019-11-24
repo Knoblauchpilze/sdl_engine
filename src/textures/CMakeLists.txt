@@ -1,6 +1,7 @@
 
 set (SOURCES
   ${SOURCES}
+  ${CMAKE_CURRENT_SOURCE_DIR}/Image.cc
   ${CMAKE_CURRENT_SOURCE_DIR}/BasicTexture.cc
   ${CMAKE_CURRENT_SOURCE_DIR}/FileTexture.cc
   ${CMAKE_CURRENT_SOURCE_DIR}/SurfaceTexture.cc

@@ -70,18 +70,18 @@ namespace sdl {
       inline
       utils::Uuid
       EngineDecorator::createTextureFromFile(const utils::Uuid& win,
-                                             const std::string& file,
+                                             ImageShPtr img,
                                              const Palette::ColorRole& role)
       {
-        return m_engine->createTextureFromFile(win, file, role);
+        return m_engine->createTextureFromFile(win, img, role);
       }
 
       inline
       utils::Uuid
-      EngineDecorator::createTextureFromFile(const std::string& file,
+      EngineDecorator::createTextureFromFile(ImageShPtr img,
                                              const Palette::ColorRole& role)
       {
-        return m_engine->createTextureFromFile(file, role);
+        return m_engine->createTextureFromFile(img, role);
       }
 
       inline

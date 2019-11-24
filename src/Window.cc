@@ -2,6 +2,7 @@
 # include "Window.hh"
 # include "TextureUtils.hxx"
 # include "RendererState.hh"
+# include "Image.hh"
 
 namespace sdl {
   namespace core {
@@ -40,19 +41,10 @@ namespace sdl {
       void
       Window::setIcon(const std::string& icon) {
         // Load this icon.
-        SDL_Surface* iconAsSurface = SDL_LoadBMP(icon.c_str());
-        if (iconAsSurface == nullptr) {
-          error(
-            std::string("Could not load icon \"") + icon + "\"",
-            SDL_GetError()
-          );
-        }
+        Image iconData(icon);
 
         // Set the icon to the window.
-        SDL_SetWindowIcon(m_window, iconAsSurface);
-
-        // Release resources used to create the icon.
-        SDL_FreeSurface(iconAsSurface);
+        SDL_SetWindowIcon(m_window, iconData.getSurface());
       }
 
       void

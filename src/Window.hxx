@@ -47,11 +47,11 @@ namespace sdl {
 
       inline
       utils::Uuid
-      Window::createTextureFromFile(const std::string& file,
+      Window::createTextureFromFile(ImageShPtr img,
                                     const Palette::ColorRole& role)
       {
         // Create the texture.
-        TextureShPtr tex = std::make_shared<FileTexture>(m_renderer, role, file);
+        TextureShPtr tex = std::make_shared<FileTexture>(m_renderer, role, img);
 
         // Register and return it.
         return registerTexture(tex);

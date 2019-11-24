@@ -62,11 +62,14 @@ namespace sdl {
 
       inline
       utils::Uuid
-      SdlEngine::createTextureFromFile(const std::string& file,
+      SdlEngine::createTextureFromFile(ImageShPtr img,
                                        const Palette::ColorRole& /*role*/)
       {
         // Not handled in here, we need a window ID.
-        error(std::string("Cannot create texture from file \"") + file + "\" without an active window");
+        error(
+          std::string("Cannot create texture from file \"") + img->getFileName() + "\"",
+          std::string("No active window")
+        );
 
         // Return even though error will always throw.
         return utils::Uuid();

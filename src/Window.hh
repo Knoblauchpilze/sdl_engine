@@ -10,6 +10,7 @@
 # include <core_utils/Uuid.hh>
 # include <maths_utils/Size.hh>
 # include "Texture.hh"
+# include "Image.hh"
 # include "Palette.hh"
 # include "ColoredFont.hh"
 
@@ -61,7 +62,7 @@ namespace sdl {
                         const Palette::ColorRole& role);
 
           utils::Uuid
-          createTextureFromFile(const std::string& file,
+          createTextureFromFile(ImageShPtr img,
                                 const Palette::ColorRole& role);
 
           utils::Uuid

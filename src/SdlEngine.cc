@@ -13,7 +13,7 @@ namespace sdl {
       {
         // Acquire the lock so that we do not create multiple windows at the
         // same time.
-        std::lock_guard<std::mutex> guard(m_locker);
+        Guard guard(m_locker);
 
         // Attempt to create a window with the specified dimensions.
         WindowShPtr window = std::make_shared<Window>(size, resizable, title);
@@ -31,7 +31,7 @@ namespace sdl {
       SdlEngine::setWindowIcon(const utils::Uuid& uuid,
                                const std::string& icon)
       {
-        std::lock_guard<std::mutex> guard(m_locker);
+        Guard guard(m_locker);
 
         // Retrieve the required window.
         WindowShPtr win = getWindowOrThrow(uuid);
@@ -42,7 +42,7 @@ namespace sdl {
 
       void
       SdlEngine::clearWindow(const utils::Uuid& uuid) {
-        std::lock_guard<std::mutex> guard(m_locker);
+        Guard guard(m_locker);
 
         // Retrieve the required window.
         WindowShPtr win = getWindowOrThrow(uuid);
@@ -53,7 +53,7 @@ namespace sdl {
 
       void
       SdlEngine::renderWindow(const utils::Uuid& uuid) {
-        std::lock_guard<std::mutex> guard(m_locker);
+        Guard guard(m_locker);
 
         // Retrieve the required window.
         WindowShPtr win = getWindowOrThrow(uuid);
@@ -66,7 +66,7 @@ namespace sdl {
       SdlEngine::updateViewport(const utils::Uuid& uuid,
                                 const utils::Boxf& area)
       {
-        std::lock_guard<std::mutex> guard(m_locker);
+        Guard guard(m_locker);
 
         // Retrieve the required window.
         WindowShPtr win = getWindowOrThrow(uuid);
@@ -77,7 +77,7 @@ namespace sdl {
 
       void
       SdlEngine::destroyWindow(const utils::Uuid& uuid) {
-        std::lock_guard<std::mutex> guard(m_locker);
+        Guard guard(m_locker);
 
         // Erase the window from the internal map.
         const std::size_t erased = m_windows.erase(uuid);
@@ -98,7 +98,7 @@ namespace sdl {
       {
         // Acquire the lock so that we do not create multiple textures at the
         // same time.
-        std::lock_guard<std::mutex> guard(m_locker);
+        Guard guard(m_locker);
 
         // Try to retrieve the desired window from which the texture should be created.
         WindowShPtr parentWin = getWindowOrThrow(win);
@@ -112,18 +112,18 @@ namespace sdl {
 
       utils::Uuid
       SdlEngine::createTextureFromFile(const utils::Uuid& win,
-                                       const std::string& file,
+                                       ImageShPtr img,
                                        const Palette::ColorRole& role)
       {
         // Acquire the lock so that we do not create multiple textures at the
         // same time.
-        std::lock_guard<std::mutex> guard(m_locker);
+        Guard guard(m_locker);
 
         // Try to retrieve the desired window from which the texture should be created.
         WindowShPtr parentWin = getWindowOrThrow(win);
 
         // Create the desired texture.
-        utils::Uuid tex = parentWin->createTextureFromFile(file, role);
+        utils::Uuid tex = parentWin->createTextureFromFile(img, role);
 
         // Register it into the internal table and return it.
         return registerTextureForWindow(tex, win);
@@ -137,7 +137,7 @@ namespace sdl {
       {
         // Acquire the lock so that we do not create multiple textures at the
         // same time.
-        std::lock_guard<std::mutex> guard(m_locker);
+        Guard guard(m_locker);
 
         // Try to retrieve the desired window from which the texture should be created.
         WindowShPtr parentWin = getWindowOrThrow(win);
@@ -157,7 +157,7 @@ namespace sdl {
                              const Palette& palette,
                              const utils::Boxf* area)
       {
-        std::lock_guard<std::mutex> guard(m_locker);
+        Guard guard(m_locker);
 
         // Retrieve the window associated to the texture to fill.
         WindowShPtr win = getWindowFromTextureOrThrow(uuid);
@@ -170,7 +170,7 @@ namespace sdl {
       SdlEngine::setTextureAlpha(const utils::Uuid& uuid,
                                  const Color& color)
       {
-        std::lock_guard<std::mutex> guard(m_locker);
+        Guard guard(m_locker);
 
         // Retrieve the window associated to the texture for which alpha
         // should be set.
@@ -182,7 +182,7 @@ namespace sdl {
 
       Palette::ColorRole
       SdlEngine::getTextureRole(const utils::Uuid& uuid) {
-        std::lock_guard<std::mutex> guard(m_locker);
+        Guard guard(m_locker);
 
         // Retrieve the window associated to the texture for which the
         // role should be set.
@@ -196,7 +196,7 @@ namespace sdl {
       SdlEngine::setTextureRole(const utils::Uuid& uuid,
                                 const Palette::ColorRole& role)
       {
-        std::lock_guard<std::mutex> guard(m_locker);
+        Guard guard(m_locker);
 
         // Retrieve the window associated to the texture for which the
         // role should be set.
@@ -212,7 +212,7 @@ namespace sdl {
                              const utils::Uuid* on,
                              const utils::Boxf* where)
       {
-        std::lock_guard<std::mutex> guard(m_locker);
+        Guard guard(m_locker);
 
         // We can only blit both textures from the same window.
         // Of course this does not apply if the `on` argument is
@@ -250,7 +250,7 @@ namespace sdl {
 
       utils::Sizef
       SdlEngine::queryTexture(const utils::Uuid& uuid) {
-        std::lock_guard<std::mutex> guard(m_locker);
+        Guard guard(m_locker);
 
         // Retrieve the window associated to the texture which
         // should be queried.
@@ -265,7 +265,7 @@ namespace sdl {
                              const utils::Uuid& font,
                              bool exact)
       {
-        std::lock_guard<std::mutex> guard(m_locker);
+        Guard guard(m_locker);
 
         // Retrieve the font associated to the input identifier.
         ColoredFontShPtr fontImpl = getFontOrThrow(font);
@@ -277,7 +277,7 @@ namespace sdl {
 
       void
       SdlEngine::destroyTexture(const utils::Uuid& uuid) {
-        std::lock_guard<std::mutex> guard(m_locker);
+        Guard guard(m_locker);
 
         // Retrieve the window associated to the texture which
         // should be erased.
@@ -303,7 +303,7 @@ namespace sdl {
                                    const Palette& palette,
                                    int size)
       {
-        std::lock_guard<std::mutex> guard(m_locker);
+        Guard guard(m_locker);
 
         // Create the font using the internal factory.
         ColoredFontShPtr font = m_fontFactory->createColoredFont(name, palette, size);
@@ -317,7 +317,7 @@ namespace sdl {
 
       void
       SdlEngine::destroyColoredFont(const utils::Uuid& uuid) {
-        std::lock_guard<std::mutex> guard(m_locker);
+        Guard guard(m_locker);
 
         // Erase the font from the internal map.
         const std::size_t erased = m_fonts.erase(uuid);

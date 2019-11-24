@@ -67,11 +67,11 @@ namespace sdl {
 
           utils::Uuid
           createTextureFromFile(const utils::Uuid& win,
-                                const std::string& file,
+                                ImageShPtr img,
                                 const Palette::ColorRole& role) override;
 
           utils::Uuid
-          createTextureFromFile(const std::string& file,
+          createTextureFromFile(ImageShPtr img,
                                 const Palette::ColorRole& role) override;
 
           utils::Uuid

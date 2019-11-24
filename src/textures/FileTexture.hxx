@@ -10,13 +10,27 @@ namespace sdl {
       inline
       FileTexture::FileTexture(SDL_Renderer* renderer,
                                const Palette::ColorRole& role,
-                               const std::string& file):
+                               ImageShPtr img):
         Texture(renderer, role, Type::Image),
-        m_file(file)
-      {}
+        m_img(img)
+      {
+        // Check whether the provided image is valid.
+        if (img == nullptr) {
+          error(
+            std::string("Could not create texture from image"),
+            std::string("Invalid null image")
+          );
+        }
+      }
 
       inline
       FileTexture::~FileTexture() {}
+
+      inline
+      utils::Sizef
+      FileTexture::query() {
+        return m_img->getSize();
+      }
 
     }
   }

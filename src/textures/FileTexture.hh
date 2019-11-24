@@ -4,6 +4,7 @@
 # include <memory>
 # include <string>
 # include "Texture.hh"
+# include "Image.hh"
 
 namespace sdl {
   namespace core {
@@ -14,9 +15,19 @@ namespace sdl {
 
           FileTexture(SDL_Renderer* renderer,
                       const Palette::ColorRole& role,
-                      const std::string& file);
+                      ImageShPtr img);
 
           ~FileTexture();
+
+          /**
+           * @brief - Reimplementation of the base `Texture` method. This class can specializes
+           *          the query by directly returning the size of the image used to create it
+           *          instead of relying on the underlying engine. This allows to provide a way
+           *          to query the size of the texture even when it has not yet been loaded.
+           * @return - the size of the texture.
+           */
+          utils::Sizef
+          query() override;
 
         protected:
 
@@ -25,7 +36,7 @@ namespace sdl {
 
         private:
 
-          std::string m_file;
+          ImageShPtr m_img;
       };
 
       using FileTextureShPtr = std::shared_ptr<FileTexture>;

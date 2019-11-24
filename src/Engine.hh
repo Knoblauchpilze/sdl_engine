@@ -93,11 +93,11 @@ namespace sdl {
 
           virtual utils::Uuid
           createTextureFromFile(const utils::Uuid& win,
-                                const std::string& file,
+                                ImageShPtr img,
                                 const Palette::ColorRole& role) = 0;
 
           virtual utils::Uuid
-          createTextureFromFile(const std::string& file,
+          createTextureFromFile(ImageShPtr img,
                                 const Palette::ColorRole& role) = 0;
 
           virtual utils::Uuid
