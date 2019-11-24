@@ -49,7 +49,7 @@ namespace sdl {
       FontCacheShPtr
       Font::loadForSize(int size) {
         // Acquire the lock to prevent concurrent addition of fonts.
-        std::lock_guard<std::mutex> guard(*m_cacheLocker);
+        Guard guard(*m_cacheLocker);
 
         // Check whether the font for the input `size` already exists in the local cache.
         const std::unordered_map<int, FontCacheShPtr>::const_iterator fontIt = m_fonts.find(size);

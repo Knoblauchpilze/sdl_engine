@@ -129,7 +129,7 @@ namespace sdl {
         Events broadcast;
 
         {
-          std::lock_guard<std::mutex> guard(m_eventsLocker);
+          Guard guard(m_eventsLocker);
           broadcast.swap(m_broadcastEvents);
         }
 
@@ -197,7 +197,7 @@ namespace sdl {
             Listeners existingListeners;
             {
               existingListeners.clear();
-              std::lock_guard<std::mutex> guard(m_listenersLocker);
+              Guard guard(m_listenersLocker);
               existingListeners.swap(m_listeners);
             }
 
@@ -228,7 +228,7 @@ namespace sdl {
 
             // Check whether some listeners were added.
             {
-              std::lock_guard<std::mutex> guard(m_listenersLocker);
+              Guard guard(m_listenersLocker);
               someListenersAdded = !m_listeners.empty();
 
               // If some listeners were added, merge them with the
@@ -315,7 +315,7 @@ namespace sdl {
           Listeners existingListeners;
           {
             existingListeners.clear();
-            std::lock_guard<std::mutex> guard(m_listenersLocker);
+            Guard guard(m_listenersLocker);
             existingListeners.swap(m_listeners);
           }
 
@@ -334,7 +334,7 @@ namespace sdl {
 
           // Check whether some listeners were added.
           {
-            std::lock_guard<std::mutex> guard(m_listenersLocker);
+            Guard guard(m_listenersLocker);
             someListenersAdded = !m_listeners.empty();
 
             // If some listeners were added, merge them with the

@@ -145,7 +145,7 @@ namespace sdl {
         // So we have to determine which kind of events already exist in the internal
         // array before inserting the new one.
 
-        std::lock_guard<std::mutex> guard(m_eventsLocker);
+        Guard guard(m_eventsLocker);
 
         // Traverse the existing events and try to find a duplicate, i.e. an event
         // which has same type as the input one.
@@ -200,14 +200,14 @@ namespace sdl {
       void
       EngineObject::clearEvents() {
         // Clear internal events array.
-        std::lock_guard<std::mutex> guard(m_eventsLocker);
+        Guard guard(m_eventsLocker);
         m_events.clear();
       }
 
       void
       EngineObject::removeEventsFrom(EngineObject* object) {
         // Acquire the lock to protect from concurrency.
-        std::lock_guard<std::mutex> guard(m_eventsLocker);
+        Guard guard(m_eventsLocker);
 
         // Scan the internal events array and remove any events which
         // has been emitted by the input object.
@@ -267,7 +267,7 @@ namespace sdl {
           // Additionally we process the first event which belongs
           // to the input events processing pass.
           {
-            std::lock_guard<std::mutex> guard(m_eventsLocker);
+            Guard guard(m_eventsLocker);
 
             // Check if at least one event can be retrieved.
             if (m_events.empty()) {
@@ -317,7 +317,7 @@ namespace sdl {
       EngineObject::removeEvents(const Event::Type& type) noexcept {
         // Traverse the internal events list and remove the ones with
         // the specified input type.
-        std::lock_guard<std::mutex> guard(m_eventsLocker);
+        Guard guard(m_eventsLocker);
 
         Events::iterator event = m_events.begin();
 

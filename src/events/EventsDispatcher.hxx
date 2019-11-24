@@ -10,7 +10,7 @@ namespace sdl {
       inline
       void
       EventsDispatcher::run() {
-        std::lock_guard<std::mutex> guard(m_executionLocker);
+        Guard guard(m_executionLocker);
         if (m_executionThread != nullptr) {
           error(
             std::string("Cannot start event handling"),
@@ -38,14 +38,14 @@ namespace sdl {
         m_executionLocker.unlock();
         m_executionThread->join();
 
-        std::lock_guard<std::mutex> guard(m_executionLocker);
+        Guard guard(m_executionLocker);
         m_executionThread.reset();
       }
 
       inline
       bool
       EventsDispatcher::isRunning() {
-        std::lock_guard<std::mutex> guard(m_executionLocker);
+        Guard guard(m_executionLocker);
         return m_eventsRunning;
       }
 
@@ -53,7 +53,7 @@ namespace sdl {
       void
       EventsDispatcher::pumpEvents(std::vector<EventShPtr>& events) {
         // Protect from concurrent accesses.
-        std::lock_guard<std::mutex> guard(m_eventsLocker);
+        Guard guard(m_eventsLocker);
 
         m_broadcastEvents.insert(m_broadcastEvents.end(), events.cbegin(), events.cend());
       }
@@ -83,7 +83,7 @@ namespace sdl {
         }
 
         // Acquire the events lock.
-        std::lock_guard<std::mutex> guard(m_eventsLocker);
+        Guard guard(m_eventsLocker);
 
         // Post the event in the relevant queue based on whether it is
         // spontaneous or directed to a particular element.
@@ -111,7 +111,7 @@ namespace sdl {
           );
         }
 
-        std::lock_guard<std::mutex> guard(m_listenersLocker);
+        Guard guard(m_listenersLocker);
 
         // Loop through existing listeners to detect whether this `listener`
         // is already registered for this queue.
@@ -141,7 +141,7 @@ namespace sdl {
           );
         }
 
-        std::lock_guard<std::mutex> guard(m_listenersLocker);
+        Guard guard(m_listenersLocker);
 
         Listeners::iterator toRemove = std::remove_if(
           m_listeners.begin(),
