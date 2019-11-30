@@ -35,6 +35,15 @@ namespace sdl {
           getFileName() const noexcept;
 
           /**
+           * @brief - Determine whether this image is actually linked to some data. The
+           *          heuristic used to determine it is to check whether the internal
+           *          file name is empty.
+           * @return - `true` if this image has some associated data and `false` otherwise.
+           */
+          bool
+          hasData() const noexcept;
+
+          /**
            * @brief - Used to retrieve the dimensions of this image. Requires the image to
            *          be loaded. Note that the size is returned using a floating point value
            *          even though images usually have integer coordinates.
@@ -83,7 +92,7 @@ namespace sdl {
           /**
            * @brief - A mutex to protect from concurrent accesses.
            */
-          std::mutex m_locker;
+          mutable std::mutex m_locker;
 
           /**
            * @brief - The name of the file from which the image should be created.

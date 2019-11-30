@@ -20,6 +20,12 @@ namespace sdl {
       }
 
       inline
+      bool
+      Image::hasData() const noexcept {
+        return !getFileName().empty();
+      }
+
+      inline
       utils::Sizef
       Image::getSize() {
         // Acquire the lock.
