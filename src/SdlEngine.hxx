@@ -54,7 +54,10 @@ namespace sdl {
                                const Palette::ColorRole& /*role*/)
       {
         // Not handled in here, we need a window ID.
-        error(std::string("Cannot create texture zith size ") + size.toString() + " without an active window");
+        error(
+          std::string("Cannot create texture with size ") + size.toString(),
+          std::string("No active window")
+        );
 
         // Return even though error will always throw.
         return utils::Uuid();
@@ -82,7 +85,22 @@ namespace sdl {
                                        const Palette::ColorRole& /*role*/)
       {
         // Not handled in here, we need a window ID.
-        error(std::string("Cannot create texture from text \"") + text + "\" without an active window");
+        error(
+          std::string("Cannot create texture from text \"") + text + "\"",
+          std::string("No active window")
+        );
+
+        // Return even though error will always throw.
+        return utils::Uuid();
+      }
+
+      inline
+      utils::Uuid
+      SdlEngine::createTextureFromBrush(BrushShPtr brush) {
+        error(
+          std::string("Cannot create texture from brush \"") + brush->getName() + "\"",
+          std::string("No active window")
+        );
 
         // Return even though error will always throw.
         return utils::Uuid();

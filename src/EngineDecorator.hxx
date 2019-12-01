@@ -104,6 +104,20 @@ namespace sdl {
       }
 
       inline
+      utils::Uuid
+      EngineDecorator::createTextureFromBrush(BrushShPtr brush) {
+        return m_engine->createTextureFromBrush(brush);
+      }
+
+      inline
+      utils::Uuid
+      EngineDecorator::createTextureFromBrush(const utils::Uuid& win,
+                                              BrushShPtr brush)
+      {
+        return m_engine->createTextureFromBrush(win, brush);
+      }
+
+      inline
       void
       EngineDecorator::fillTexture(const utils::Uuid& uuid,
                                    const Palette& palette,

@@ -13,6 +13,7 @@
 # include "Image.hh"
 # include "Palette.hh"
 # include "ColoredFont.hh"
+# include "Brush.hh"
 
 namespace sdl {
   namespace core {
@@ -69,6 +70,9 @@ namespace sdl {
           createTextureFromText(const std::string& text,
                                 ColoredFontShPtr font,
                                 const Palette::ColorRole& role);
+
+          utils::Uuid
+          createTextureFromBrush(BrushShPtr brush);
 
           void
           fill(const utils::Uuid& uuid,

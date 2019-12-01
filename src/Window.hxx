@@ -71,6 +71,16 @@ namespace sdl {
       }
 
       inline
+      utils::Uuid
+      Window::createTextureFromBrush(BrushShPtr brush) {
+        // Create the texture.
+        TextureShPtr tex = brush->render(m_renderer);
+
+        // Register and return it.
+        return registerTexture(tex);
+      }
+
+      inline
       void
       Window::fill(const utils::Uuid& uuid,
                    const Palette& palette,
@@ -171,7 +181,14 @@ namespace sdl {
       inline
       utils::Uuid
       Window::registerTexture(TextureShPtr tex) {
-        // Register this texture in the internal list.
+        // Register this texture in the internal list if it is valid.
+        if (tex == nullptr) {
+          error(
+            std::string("Cannot register texture in window"),
+            std::string("Invalid null texture")
+          );
+        }
+
         utils::Uuid uuid = utils::Uuid::create();
         m_textures[uuid] = tex;
 

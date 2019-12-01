@@ -21,6 +21,7 @@
 # include "QuitEvent.hh"
 # include "ResizeEvent.hh"
 # include "WindowEvent.hh"
+# include "Brush.hh"
 
 namespace sdl {
   namespace core {
@@ -110,6 +111,13 @@ namespace sdl {
           createTextureFromText(const std::string& text,
                                 const utils::Uuid& font,
                                 const Palette::ColorRole& role) = 0;
+
+          virtual utils::Uuid
+          createTextureFromBrush(BrushShPtr brush) = 0;
+
+          virtual utils::Uuid
+          createTextureFromBrush(const utils::Uuid& win,
+                                 BrushShPtr brush) = 0;
 
           virtual void
           fillTexture(const utils::Uuid& uuid,

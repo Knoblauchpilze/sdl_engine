@@ -152,6 +152,24 @@ namespace sdl {
         return registerTextureForWindow(tex, win);
       }
 
+      utils::Uuid
+      SdlEngine::createTextureFromBrush(const utils::Uuid& win,
+                                        BrushShPtr brush)
+      {
+        // Acquire the lock so that we do not create multiple textures at the
+        // same time.
+        Guard guard(m_locker);
+
+        // Try to retrieve the desired window from which the texture should be created.
+        WindowShPtr parentWin = getWindowOrThrow(win);
+
+        // Create the desired texture.
+        utils::Uuid tex = parentWin->createTextureFromBrush(brush);
+
+        // Register it into the internal table and return it.
+        return registerTextureForWindow(tex, win);
+      }
+
       void
       SdlEngine::fillTexture(const utils::Uuid& uuid,
                              const Palette& palette,

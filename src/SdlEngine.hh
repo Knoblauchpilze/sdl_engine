@@ -94,6 +94,13 @@ namespace sdl {
                                 const utils::Uuid& font,
                                 const Palette::ColorRole& role) override;
 
+          utils::Uuid
+          createTextureFromBrush(BrushShPtr brush) override;
+
+          utils::Uuid
+          createTextureFromBrush(const utils::Uuid& win,
+                                 BrushShPtr brush) override;
+
           void
           fillTexture(const utils::Uuid& uuid,
                       const Palette& palette,
