@@ -44,7 +44,7 @@ namespace sdl {
            *               enumeration.
            */
           Gradient(const std::string& name,
-                  const gradient::Mode& mode);
+                   const gradient::Mode& mode);
 
           /**
            * @brief - Creates a gradient with the specified mode and name. Two
