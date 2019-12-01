@@ -26,6 +26,7 @@ set (SOURCES
   SdlEngine.cc
   EngineDecorator.cc
   MouseState.cc
+  Brush.cc
   )
 
 add_library (sdl_engine SHARED
