@@ -9,15 +9,19 @@ namespace sdl {
 
       inline
       SurfaceTexture::SurfaceTexture(SDL_Renderer* renderer,
+                                     SDL_Surface* surface,
                                      const Palette::ColorRole& role,
-                                     SDL_Surface* surface):
+                                     bool takeOwnership):
         Texture(renderer, role, Type::Surface),
-        m_surface(surface)
+
+        m_surface(surface),
+        m_owner(takeOwnership)
       {}
 
       inline
       SurfaceTexture::~SurfaceTexture() {
-        if (m_surface != nullptr) {
+        // Release the raw data if needed.
+        if (m_surface != nullptr && m_owner) {
           SDL_FreeSurface(m_surface);
         }
       }
