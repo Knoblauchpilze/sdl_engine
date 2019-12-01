@@ -6,7 +6,7 @@
 # include <string>
 # include <vector>
 # include <core_utils/CoreObject.hh>
-# include <sdl_engine/Color.hh>
+# include "Color.hh"
 
 namespace sdl {
   namespace core {
@@ -25,7 +25,7 @@ namespace sdl {
         /**
          * @brief - Defines a stop for this gradient, with a coordinate and a color.
          */
-        using Stop = std::pair<float, core::engine::Color>;
+        using Stop = std::pair<float, Color>;
 
         /**
          * @brief - A list of stop.
@@ -56,9 +56,9 @@ namespace sdl {
            * @param high - the color of the coordinate `1`.
            */
           Gradient(const std::string& name,
-                  const gradient::Mode& mode,
-                  const core::engine::Color& low,
-                  const core::engine::Color& high);
+                   const gradient::Mode& mode,
+                   const Color& low,
+                   const Color& high);
 
           /**
            * @brief - Destruction of the object.
@@ -93,7 +93,7 @@ namespace sdl {
            */
           void
           setColorAt(float coord,
-                    const core::engine::Color& color);
+                     const Color& color);
 
           /**
            * @brief - Use to retrieve the color at the specified coordinate. The
@@ -106,9 +106,8 @@ namespace sdl {
            * @param coord - the coordinate at which the color should be retrieved.
            * @return - the color at the specified coordinate or transparent black.
            */
-          core::engine::Color
+          Color
           getColorAt(float coord) const noexcept;
-
 
         private:
 
@@ -136,8 +135,8 @@ namespace sdl {
            */
           bool
           isBeforeStop(float coord,
-                      float stop,
-                      bool& replace) const noexcept;
+                       float stop,
+                       bool& replace) const noexcept;
 
           /**
            * @brief - Used to compute the color mix to apply to the coordinate specified
@@ -150,10 +149,10 @@ namespace sdl {
            * @return - a color corresponding to the mix of `low` and `high` at the `coord`
            *           coordinates point.
            */
-          core::engine::Color
+          Color
           mixStops(const gradient::Stop& low,
-                  const gradient::Stop& high,
-                  float coord) const noexcept;
+                   const gradient::Stop& high,
+                   float coord) const noexcept;
 
         private:
 

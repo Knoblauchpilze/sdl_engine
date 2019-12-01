@@ -32,8 +32,8 @@ namespace sdl {
       inline
       bool
       Gradient::isBeforeStop(float coord,
-                            float stop,
-                            bool& replace) const noexcept
+                             float stop,
+                             bool& replace) const noexcept
       {
         // The coordinate is before the stop if it is smaller than it or
         // if it lies within a threshold distance from the stop.

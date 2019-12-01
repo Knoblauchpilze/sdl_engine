@@ -6,7 +6,7 @@ namespace sdl {
     namespace engine {
 
       Gradient::Gradient(const std::string& name,
-                        const gradient::Mode& mode):
+                         const gradient::Mode& mode):
         utils::CoreObject(name),
 
         m_propsLocker(),
@@ -18,9 +18,9 @@ namespace sdl {
       }
 
       Gradient::Gradient(const std::string& name,
-                        const gradient::Mode& mode,
-                        const core::engine::Color& low,
-                        const core::engine::Color& high):
+                         const gradient::Mode& mode,
+                         const Color& low,
+                         const Color& high):
         utils::CoreObject(name),
 
         m_propsLocker(),
@@ -36,7 +36,7 @@ namespace sdl {
 
       void
       Gradient::setColorAt(float coord,
-                          const core::engine::Color& color)
+                           const core::engine::Color& color)
       {
         // Protect from concurrent accesses.
         Guard guard(m_propsLocker);
@@ -67,12 +67,12 @@ namespace sdl {
         it->second = color;
       }
 
-      core::engine::Color
+      Color
       Gradient::getColorAt(float coord) const noexcept {
         // Protect from concurrent accesses.
         Guard guard(m_propsLocker);
 
-        core::engine::Color transparentBlack = core::engine::Color::fromRGBA(0.0f, 0.0f, 0.0f, 0.0f);
+        Color transparentBlack = Color::fromRGBA(0.0f, 0.0f, 0.0f, 0.0f);
 
         // Check the case where no stops are provided.
         if (m_stops.empty()) {
@@ -106,12 +106,12 @@ namespace sdl {
         // finding where.
         unsigned id = 0u;
         unsigned upBound = m_stops.size() - 1u;
-        bool smaller = true;
+        bool smaller = false;
 
-        while (id < upBound && smaller) {
+        while (id < upBound && !smaller) {
           // If the current stop is smaller than the input `coord`, continue.
           smaller = isBeforeStop(coord, m_stops[id + 1u].first, replace);
-          if (smaller) {
+          if (!smaller) {
             ++id;
           }
         }
@@ -131,10 +131,10 @@ namespace sdl {
         return mixStops(m_stops[id], m_stops[id + 1u], coord);
       }
 
-      core::engine::Color
+      Color
       Gradient::mixStops(const gradient::Stop& low,
-                        const gradient::Stop& high,
-                        float coord) const noexcept
+                         const gradient::Stop& high,
+                         float coord) const noexcept
       {
         // Compute the percentage of the interval corresponding to the
         // `coord` position. We assume that the stops are different as
@@ -146,12 +146,14 @@ namespace sdl {
         float gradB = high.second.b() - low.second.b();
         float gradA = high.second.a() - low.second.a();
 
-        return core::engine::Color::fromRGBA(
+        Color c = Color::fromRGBA(
           low.second.r() + perc * gradR,
           low.second.g() + perc * gradG,
           low.second.b() + perc * gradB,
           low.second.a() + perc * gradA
         );
+
+        return c;
       }
 
     }
