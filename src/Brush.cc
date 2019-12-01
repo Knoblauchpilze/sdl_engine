@@ -25,7 +25,7 @@ namespace sdl {
       }
 
       void
-      Brush::drawLine(const Direction& /*dir*/,
+      Brush::drawLine(const Direction& dir,
                       float coord)
       {
         // Check consistency.
@@ -36,7 +36,59 @@ namespace sdl {
           );
         }
 
-        // TODO: Draw the line.
+        // Create the surface to draw.
+        int w = m_canvas->w, h = m_canvas->h;
+        switch (dir) {
+          case Direction::Horizontal:
+            w = m_canvas->w;
+            h = 1;
+            break;
+          case Direction::Vertical:
+            w = 1;
+            h = m_canvas->h;
+            break;
+          default:
+            error(
+              std::string("Cannot draw line at ") + std::to_string(coord),
+              std::string("Invalid direction ") + std::to_string(static_cast<int>(dir))
+            );
+            break;
+        }
+
+        SDL_Surface* line = SDL_CreateRGBSurface(0, w, h, 32, 0, 0, 0, 0);
+        if (line == nullptr) {
+          error(
+            std::string("Cannot draw line at ") + std::to_string(coord),
+            SDL_GetError()
+          );
+        }
+
+        // Fill the surface with the adequate color.
+        SDL_Color c = m_color.toSDLColor();
+        SDL_FillRect(line, nullptr, SDL_MapRGBA(m_canvas->format, c.r, c.g, c.b, c.a));
+
+        // Display the line at the correct coordinates.
+        int x, y;
+        switch (dir) {
+          case Direction::Horizontal:
+            x = 0;
+            // Account for a `-1` as the `y` axis is inverted and the rows of the
+            // surface range from `[0 ; m_canvas->h - 1]` and not `[1; m_canvas->h]`.
+            y = static_cast<int>(m_canvas->h / 2.0f - coord) - 1;
+            break;
+          case Direction::Vertical:
+          default:
+            // This is not needed here because the `x` axis is not inverted.
+            x = static_cast<int>(coord + m_canvas->w / 2.0f);
+            y = 0;
+            break;
+        }
+        SDL_Rect dst{x, y, w, h};
+
+        SDL_BlitSurface(line, nullptr, m_canvas, &dst);
+
+        // Release resources.
+        SDL_FreeSurface(line);
       }
 
       void
@@ -49,7 +101,15 @@ namespace sdl {
           );
         }
 
-        // TODO: Draw gradient.
+        // Sample the gradient with as many samples as the width of
+        // the canvas.
+        for (int id = 0 ; id < m_canvas->w ; ++id) {
+          float perc = 1.0f * id / m_canvas->w;
+          float coord = 1.0f * id - m_canvas->w / 2.0f;
+
+          setColor(grad.getColorAt(perc));
+          drawLine(Direction::Vertical, coord);
+        }
       }
 
       TextureShPtr
