@@ -26,6 +26,7 @@ set (SOURCES
   SdlEngine.cc
   EngineDecorator.cc
   MouseState.cc
+  Gradient.cc
   Brush.cc
   )
 
