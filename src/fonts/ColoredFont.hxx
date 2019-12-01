@@ -2,7 +2,6 @@
 # define   COLOREDFONT_HXX
 
 # include "ColoredFont.hh"
-# include "SurfaceTexture.hh"
 
 namespace sdl {
   namespace core {

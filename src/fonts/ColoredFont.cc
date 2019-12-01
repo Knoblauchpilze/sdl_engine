@@ -1,5 +1,6 @@
 
 # include "ColoredFont.hh"
+# include "SurfaceTexture.hh"
 
 namespace sdl {
   namespace core {
@@ -35,7 +36,7 @@ namespace sdl {
         }
 
         // Build and return a texture from this raw SDL texture pointer.
-        return std::make_shared<SurfaceTexture>(renderer, role, textSurface);
+        return std::make_shared<SurfaceTexture>(renderer, textSurface, role, true);
       }
 
     }

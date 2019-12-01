@@ -4,7 +4,6 @@
 # include "Window.hh"
 # include "BasicTexture.hh"
 # include "FileTexture.hh"
-# include "SurfaceTexture.hh"
 
 namespace sdl {
   namespace core {
