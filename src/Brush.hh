@@ -6,12 +6,23 @@
 # include <core_utils/CoreObject.hh>
 # include "Texture.hh"
 # include "Palette.hh"
+# include "Gradient.hh"
 
 namespace sdl {
   namespace core {
     namespace engine {
 
       class Brush: public utils::CoreObject {
+        public:
+
+          /**
+           * @brief - Represents a direction in a 2D coordinate space.
+           */
+          enum class Direction {
+            Horizontal,
+            Vertical
+          };
+
         public:
 
           /**
@@ -78,6 +89,28 @@ namespace sdl {
            */
           void
           clear() noexcept;
+
+          /**
+           * @brief - Used to draw a line at the coordinate `coord` representing a
+           *          position in the local brush's canvas coordinate frame. The
+           *          direction of the line is specified by the `dir` argument.
+           *          If no canvas is defined an error is raised. The line is drawn
+           *          using the current color (see `setColor` to modify it).
+           * @param dir - the direction of the line to create.
+           * @param coord - a value representing the position of the line to draw.
+           */
+          void
+          drawLine(const Direction& dir,
+                   float coord);
+
+          /**
+           * @brief - Used to perform the drawing of the gradient into the internal
+           *          brush's canvas. NO allocation is performed meaning that if no
+           *          canvas is attached already to the brush an error is raised.
+           * @param grad - the gradient to represent with this brush.
+           */
+          void
+          drawGradient(const Gradient& grad);
 
           /**
            * @brief - Performs the rendering of the content of this brush using

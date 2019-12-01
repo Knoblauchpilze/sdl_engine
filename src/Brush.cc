@@ -24,6 +24,34 @@ namespace sdl {
         create(size, false);
       }
 
+      void
+      Brush::drawLine(const Direction& /*dir*/,
+                      float coord)
+      {
+        // Check consistency.
+        if (!hasCanvas()) {
+          error(
+            std::string("Cannot draw line at ") + std::to_string(coord),
+            std::string("No active canvas")
+          );
+        }
+
+        // TODO: Draw the line.
+      }
+
+      void
+      Brush::drawGradient(const Gradient& grad) {
+        // Check consistency.
+        if (!hasCanvas()) {
+          error(
+            std::string("Cannot draw gradient ") + grad.getName(),
+            std::string("No active canvas")
+          );
+        }
+
+        // TODO: Draw gradient.
+      }
+
       TextureShPtr
       Brush::render(SDL_Renderer* renderer) {
         // In case no canvas is associated to this brush, nothing to do.
