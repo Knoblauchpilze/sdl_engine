@@ -171,6 +171,16 @@ namespace sdl {
                                   const utils::Vector2f& click) noexcept;
 
           /**
+           * @brief - Used to update the last position of the mouse when a mouse wheel
+           *          event is performed. This allows to perform some zoom in behaviors
+           *          at the location of the mouse for example.
+           * @param pos - the position of the mouse at the moment of the mouse wheel
+           *              evebt.
+           */
+          void
+          updateMousePosition(const utils::Vector2f& pos) noexcept;
+
+          /**
            * @brief - Used to update the internal draggd state of this event with the
            *          input value.
            *          Note that in case this event does not describe a mouse button

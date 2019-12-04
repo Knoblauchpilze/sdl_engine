@@ -212,6 +212,12 @@ namespace sdl {
 
       inline
       void
+      MouseEvent::updateMousePosition(const utils::Vector2f& pos) noexcept {
+        m_mousePosition = pos;
+      }
+
+      inline
+      void
       MouseEvent::updateDraggedState(bool dragged) noexcept {
         m_wasDragged = dragged;
       }

@@ -209,6 +209,14 @@ namespace sdl {
            ButtonsTable m_buttons;
 
           /**
+           * @brief - Describes the last known position of the mouse as defined
+           *          when receiving a mouse motion event. This allows to populate
+           *          information about the cursor in events which don't have that
+           *          built in like in the case of mouse wheel events.
+           */
+          utils::Vector2f m_lastMousePosition;
+
+          /**
            * @brief - This boolean allows to keep track of whether the
            *          mouse is currently inside a window or not. If it
            *          is the case the `m_lastWinID` represents the id

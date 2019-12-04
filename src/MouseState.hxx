@@ -34,6 +34,8 @@ namespace sdl {
 
         m_buttons(),
 
+        m_lastMousePosition(),
+
         m_isInWindow(false),
         m_lastWinID()
       {
@@ -80,14 +82,18 @@ namespace sdl {
         if (id.valid()) {
           m_isInWindow = true;
         }
+
+        // Also update the position of the mouse.
+        m_lastMousePosition = event.getMousePosition();
       }
 
       inline
       void
-      MouseState::updateWheelData(MouseEvent& /*event*/,
+      MouseState::updateWheelData(MouseEvent& event,
                                   std::vector<EventShPtr>& /*newEvents*/)
       {
-        // Nothing to do for now.
+        // Assign the mouse position from the last known position.
+        event.updateMousePosition(m_lastMousePosition);
       }
 
       inline
