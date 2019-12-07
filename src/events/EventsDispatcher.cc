@@ -20,8 +20,9 @@ namespace sdl {
 
         m_engine(engine),
 
-        m_eventsRunning(false),
         m_executionLocker(),
+        m_eventsRunning(false),
+        m_threadLocker(),
         m_executionThread(nullptr),
 
         m_eventsLocker(),

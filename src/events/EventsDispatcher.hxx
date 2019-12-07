@@ -10,7 +10,7 @@ namespace sdl {
       inline
       void
       EventsDispatcher::run() {
-        Guard guard(m_executionLocker);
+        Guard guard(m_threadLocker);
         if (m_executionThread != nullptr) {
           error(
             std::string("Cannot start event handling"),
@@ -36,9 +36,9 @@ namespace sdl {
 
         m_eventsRunning = false;
         m_executionLocker.unlock();
-        m_executionThread->join();
 
-        Guard guard(m_executionLocker);
+        Guard guard(m_threadLocker);
+        m_executionThread->join();
         m_executionThread.reset();
       }
 

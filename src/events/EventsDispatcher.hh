@@ -189,8 +189,9 @@ namespace sdl {
 
           EngineShPtr m_engine;
 
-          bool m_eventsRunning;
           std::mutex m_executionLocker;
+          bool m_eventsRunning;
+          std::mutex m_threadLocker;
           std::shared_ptr<std::thread> m_executionThread;
 
           std::mutex m_eventsLocker;
