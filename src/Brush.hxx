@@ -9,7 +9,10 @@ namespace sdl {
 
       inline
       Brush::~Brush() {
-        destroy();
+        // Only release the texture when the brush owns it.
+        if (m_ownsCanvas) {
+          destroy();
+        }
       }
 
       inline

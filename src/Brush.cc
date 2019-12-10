@@ -6,22 +6,63 @@ namespace sdl {
   namespace core {
     namespace engine {
 
-      Brush::Brush(const std::string& name):
+      Brush::Brush(const std::string& name,
+                   bool ownsTexture):
         utils::CoreObject(name),
 
         m_color(Color::NamedColor::Black),
         m_clearColor(Color::NamedColor::White),
 
-        m_canvas(nullptr)
+        m_canvas(nullptr),
+        m_ownsCanvas(ownsTexture)
       {
         setService("brush");
       }
 
       Brush::Brush(const std::string& name,
-                   const utils::Sizef& size):
-        Brush(name)
+                   const utils::Sizef& size,
+                   bool ownsTexture):
+        Brush(name, ownsTexture)
       {
         create(size, false);
+      }
+
+      void
+      Brush::createFromRaw(const utils::Sizei& dims,
+                           const std::vector<Color>& colors)
+      {
+        // Erase any existing canvas.
+        destroy();
+
+        // Transform the input colors array into a raw array.
+        // The input array is composed of 4 channels each one
+        // having 4 bytes.
+        const unsigned channelCount = 4u;
+        const unsigned depth = channelCount * sizeof(std::uint8_t);
+        const unsigned pitch = dims.w() * depth;
+        const unsigned total = dims.w() * dims.h();
+        const std::uint32_t format = SDL_PIXELFORMAT_RGBA8888;
+
+        std::vector<std::uint8_t> raw(channelCount * total, 0u);
+
+        for (unsigned id = 0u ; id < total ; ++id) {
+          raw[channelCount * id + 0u] = colors[id].rU();
+          raw[channelCount * id + 1u] = colors[id].gU();
+          raw[channelCount * id + 2u] = colors[id].bU();
+          raw[channelCount * id + 3u] = colors[id].aU();
+        }
+
+        // Create the canvas with the requested dimensions. We
+        // use a dedicated method allowing to create the surface
+        // directly from the raw data.
+        m_canvas = SDL_CreateRGBSurfaceWithFormatFrom(raw.data(), dims.w(), dims.h(), depth, pitch, format);
+
+        if (m_canvas == nullptr) {
+          error(
+            std::string("Could not create canvas with from raw data with size ") + dims.toString(),
+            SDL_GetError()
+          );
+        }
       }
 
       void

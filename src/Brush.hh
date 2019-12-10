@@ -4,6 +4,7 @@
 # include <memory>
 # include <SDL2/SDL.h>
 # include <core_utils/CoreObject.hh>
+# include <maths_utils/Size.hh>
 # include "Texture.hh"
 # include "Palette.hh"
 # include "Gradient.hh"
@@ -35,8 +36,11 @@ namespace sdl {
            *          can be used outside of the main thread unlike most calls
            *          to the drawing method of the engine.
            * @param name - the name of the brush.
+           * @param ownsTexture - `true` if the brush owns its internal texture
+           *                      and `false` otherwise.
            */
-          Brush(const std::string& name);
+          Brush(const std::string& name,
+                bool ownsTexture = true);
 
           /**
            * @brief - Create a new brush with the specified name and size. A
@@ -46,9 +50,12 @@ namespace sdl {
            *          not request a `clear` operation.
            * @param name - the name of the brush.
            * @param size - the size of the canvas to create for this brush.
+           * @param ownsTexture - `true` if this brush owns its related texture
+           *                      and `false` otherwise.
            */
           Brush(const std::string& name,
-                const utils::Sizef& size);
+                const utils::Sizef& size,
+                bool ownsTexture = true);
 
           virtual ~Brush();
 
@@ -81,6 +88,20 @@ namespace sdl {
           void
           create(const utils::Sizef& size,
                  bool fill = false);
+
+          /**
+           * @brief - Used to create a texture from the input data. The vector is
+           *          interpreted as an array with the specified dimensions. From
+           *          this array, the brush creates a surface with a default color
+           *          format that can be used to create a texture.
+           * @param dims - the dimensions of the `colors` vector when interpreted
+           *               as a 2D array.
+           * @param colors - the raw data of the surface to associate to the brush,
+           *                 as a 1D array.
+           */
+          void
+          createFromRaw(const utils::Sizei& dims,
+                        const std::vector<Color>& colors);
 
           /**
            * @brief - Used to clear the whole canvas if any with the clear color.
@@ -170,6 +191,18 @@ namespace sdl {
            * @brief - The canvas to use to perform drawing operations.
            */
           SDL_Surface* m_canvas;
+
+          /**
+           * @brief - Use this value to determine whether the surface is
+           *          owned by the brush or if it should not be released
+           *          upon destroying the brush because it will be used
+           *          by external elements.
+           *          Note that this does not include the potential free
+           *          operations performed when some methods like `create`
+           *          are called on an existing brush (in which case the
+           *          internal surface is always freed).
+           */
+          bool m_ownsCanvas;
       };
 
       using BrushShPtr = std::shared_ptr<Brush>;
