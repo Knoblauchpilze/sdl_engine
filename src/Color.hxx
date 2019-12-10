@@ -60,6 +60,12 @@ namespace sdl {
 
       inline
       float
+      Color::rU() const noexcept {
+        return static_cast<uint8_t>(std::min(std::max(m_r, 0.0f), 1.0f) * 255.0f);
+      }
+
+      inline
+      float
       Color::g() const noexcept {
         return m_g;
       }
@@ -68,6 +74,12 @@ namespace sdl {
       float&
       Color::g() noexcept {
         return m_g;
+      }
+
+      inline
+      float
+      Color::gU() const noexcept {
+        return static_cast<uint8_t>(std::min(std::max(m_g, 0.0f), 1.0f) * 255.0f);
       }
 
       inline
@@ -84,6 +96,12 @@ namespace sdl {
 
       inline
       float
+      Color::bU() const noexcept {
+        return static_cast<uint8_t>(std::min(std::max(m_b, 0.0f), 1.0f) * 255.0f);
+      }
+
+      inline
+      float
       Color::a() const noexcept {
         return m_a;
       }
@@ -92,6 +110,12 @@ namespace sdl {
       float&
       Color::a() noexcept {
         return m_a;
+      }
+
+      inline
+      float
+      Color::aU() const noexcept {
+        return static_cast<uint8_t>(std::min(std::max(m_a, 0.0f), 1.0f) * 255.0f);
       }
 
       inline

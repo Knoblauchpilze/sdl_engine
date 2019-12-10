@@ -51,10 +51,16 @@ namespace sdl {
           r() noexcept;
 
           float
+          rU() const noexcept;
+
+          float
           g() const noexcept;
 
           float&
           g() noexcept;
+
+          float
+          gU() const noexcept;
 
           float
           b() const noexcept;
@@ -63,10 +69,16 @@ namespace sdl {
           b() noexcept;
 
           float
+          bU() const noexcept;
+
+          float
           a() const noexcept;
 
           float&
           a() noexcept;
+
+          float
+          aU() const noexcept;
 
           bool
           isOpaque() const noexcept;
