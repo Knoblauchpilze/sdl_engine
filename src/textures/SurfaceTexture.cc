@@ -7,6 +7,13 @@ namespace sdl {
 
       SDL_Texture*
       SurfaceTexture::create() {
+        if (m_surface == nullptr) {
+          error(
+            std::string("Could not create texture from surface"),
+            std::string("Invalid null surface")
+          );
+        }
+
         // Convert the surface to a valid texture.
         SDL_Texture* tex = SDL_CreateTextureFromSurface(getRenderer(), m_surface);
 
