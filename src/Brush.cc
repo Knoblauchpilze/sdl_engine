@@ -38,10 +38,10 @@ namespace sdl {
         // The input array is composed of 4 channels each one
         // having 4 bytes.
         const unsigned channelCount = 4u;
-        const unsigned depth = channelCount * sizeof(std::uint8_t);
-        const unsigned pitch = dims.w() * depth;
+        const unsigned depth = channelCount * sizeof(std::uint8_t) * 8u;
+        const unsigned pitch = dims.w() * channelCount;
         const unsigned total = dims.w() * dims.h();
-        const std::uint32_t format = SDL_PIXELFORMAT_RGBA8888;
+        const std::uint32_t format = SDL_PIXELFORMAT_RGBA32;
 
         std::vector<std::uint8_t> raw(channelCount * total, 0u);
 
@@ -165,7 +165,7 @@ namespace sdl {
           renderer,
           m_canvas,
           getDefaultTextureRole(),
-          false
+          !m_ownsCanvas
         );
       }
 
