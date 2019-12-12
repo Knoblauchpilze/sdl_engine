@@ -12,8 +12,8 @@ namespace sdl {
           getRenderer(),
           SDL_PIXELFORMAT_RGBA8888,
           SDL_TEXTUREACCESS_TARGET,
-          static_cast<int>(m_size.w()),
-          static_cast<int>(m_size.h())
+          static_cast<int>(std::round(m_size.w())),
+          static_cast<int>(std::round(m_size.h()))
         );
 
         // Check whether the window could successfully be created.

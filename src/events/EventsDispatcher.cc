@@ -189,7 +189,7 @@ namespace sdl {
           // Reset `allDone` flag.
           allDone = true;
 
-          int offset = 0;
+          unsigned offset = 0u;
           bool someListenersAdded = true;
 
           do {
@@ -208,7 +208,7 @@ namespace sdl {
             EventProcessingPass pass = getCurrentProcessingPass();
 
             // Process events for the listeners.
-            for (int id = offset ; id < static_cast<int>(existingListeners.size()) && pass == getCurrentProcessingPass() ; ++id) {
+            for (unsigned id = offset ; id < existingListeners.size() && pass == getCurrentProcessingPass() ; ++id) {
               if (existingListeners[id]->hasEvents(pass)) {
                 EngineObject* listener = existingListeners[id];
 
@@ -237,7 +237,7 @@ namespace sdl {
               // so that they can be notified of events.
               if (someListenersAdded) {
                 log("Added " + std::to_string(m_listeners.size()) + " listener(s), starting at " + std::to_string(existingListeners.size()) + " for next iteration");
-                offset = static_cast<int>(existingListeners.size());
+                offset = existingListeners.size();
                 existingListeners.insert(existingListeners.cend(), m_listeners.cbegin(), m_listeners.cend());
               }
 
@@ -308,7 +308,7 @@ namespace sdl {
         // just iterate as the iterators will most likely be invalidated if some new
         // listeners are added. Instead we first copy the existing listeners so that
         // each round only transmits the input `event` to the new listeners.
-        int offset = 0;
+        unsigned offset = 0u;
         bool someListenersAdded = true;
 
         do {
@@ -323,7 +323,7 @@ namespace sdl {
           // Dispatch the event to the existing listeners. We use the `offset` so that
           // only the listeners which have not yet processed the input `event` receive
           // it in this round.
-          for (int id = offset ; id < static_cast<int>(existingListeners.size()) ; ++id) {
+          for (unsigned id = offset ; id < existingListeners.size() ; ++id) {
             EngineObject* lis = existingListeners[id];
             withSafetyNet(
               [&event, lis]() {
@@ -343,7 +343,7 @@ namespace sdl {
             // so that they can be notified of events.
             if (someListenersAdded) {
               log("Added " + std::to_string(m_listeners.size()) + " listener(s), starting at " + std::to_string(existingListeners.size()) + " for next iteration");
-              offset = static_cast<int>(existingListeners.size());
+              offset = existingListeners.size();
               existingListeners.insert(existingListeners.cend(), m_listeners.cbegin(), m_listeners.cend());
             }
 

@@ -36,8 +36,8 @@ namespace sdl {
         destroy();
 
         // Create the canvas with the requested dimensions.
-        int w = static_cast<int>(size.w());
-        int h = static_cast<int>(size.h());
+        int w = static_cast<int>(std::round(size.w()));
+        int h = static_cast<int>(std::round(size.h()));
 
         m_canvas = SDL_CreateRGBSurface(0, w, h, 32, 0, 0, 0, 0);
         if (m_canvas == nullptr) {

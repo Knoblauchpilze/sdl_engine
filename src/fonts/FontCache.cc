@@ -39,10 +39,10 @@ namespace sdl {
         // that we have to retrieve the dimensions of the text.
         utils::Sizef size = querySize(text, exact);
 
-        int w = static_cast<int>(size.w());
+        int w = static_cast<int>(std::round(size.w()));
         int h = fm.height;
         if (exact) {
-          h = static_cast<int>(size.h());
+          h = static_cast<int>(std::round(size.h()));
         }
 
         // We cannot rely on the default mask because we want to use the alpha channel.

@@ -17,10 +17,10 @@ namespace sdl {
       SDL_Rect
       toSDLRect(const utils::Box<CoordinateType>& box) noexcept {
         return SDL_Rect{
-          static_cast<int>(box.getLeftBound()),
-          static_cast<int>(box.getBottomBound()),
-          static_cast<int>(box.w()),
-          static_cast<int>(box.h())
+          static_cast<int>(std::round(box.getLeftBound())),
+          static_cast<int>(std::round(box.getBottomBound())),
+          static_cast<int>(std::round(box.w())),
+          static_cast<int>(std::round(box.h()))
         };
       }
 
