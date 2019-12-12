@@ -8,10 +8,22 @@ namespace sdl {
       SDL_Texture*
       SurfaceTexture::create() {
         if (m_surface == nullptr) {
-          error(
-            std::string("Could not create texture from surface"),
-            std::string("Invalid null surface")
-          );
+          // Check whether we should create the texture from its raw data.
+          if (m_rawData == nullptr) {
+            error(
+              std::string("Could not create texture from surface"),
+              std::string("Invalid null surface")
+            );
+          }
+
+          // TODO: Create from raw data.
+
+          if (m_surface == nullptr) {
+            error(
+              std::string("Could not create texture from surface"),
+              SDL_GetError()
+            );
+          }
         }
 
         // Convert the surface to a valid texture.

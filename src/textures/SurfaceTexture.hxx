@@ -15,7 +15,20 @@ namespace sdl {
         Texture(renderer, role, Type::Surface),
 
         m_surface(surface),
+        m_rawData(nullptr),
+
         m_owner(takeOwnership)
+      {}
+
+      inline
+      SurfaceTexture::SurfaceTexture(SDL_Renderer* renderer,
+                                     RawSurfaceDataShPtr surface):
+        Texture(renderer, Palette::ColorRole::Background, Type::Surface),
+
+        m_surface(nullptr),
+        m_rawData(surface),
+
+        m_owner(true)
       {}
 
       inline

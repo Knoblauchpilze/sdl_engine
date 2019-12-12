@@ -13,6 +13,19 @@ namespace sdl {
         public:
 
           /**
+           * @brief - Convenience structure allowing to describe a texture
+           *          from a bunch of pixels and some information about its
+           *          dimensions and format.
+           */
+          struct RawSurfaceData {
+            // TODO: Add properties.
+          };
+
+          using RawSurfaceDataShPtr = std::shared_ptr<RawSurfaceData>;
+
+        public:
+
+          /**
            * @brief - Creates a texture from the input surface using the provided
            *          renderer.
            *          Note that the surface is only acquired (in the sense of an
@@ -32,6 +45,20 @@ namespace sdl {
                          const Palette::ColorRole& role,
                          bool takeOwnership);
 
+          /**
+           * @brief - Used to create a texture from the raw data and renderer. Unlike
+           *          the other constructor the surface here is not created yet and
+           *          we need to perform its creation before converting it into a tex.
+           *          This constructor takes implicit ownership of the surface used
+           *          to create the texture (as it is created by this object) and the
+           *          color role is not needed because the raw data already describe
+           *          the color of individual pixels.
+           * @param renderer - the renderer to use to create the texture.
+           * @param surface - the raw data describing the texture.
+           */
+          SurfaceTexture(SDL_Renderer* renderer,
+                         RawSurfaceDataShPtr surface);
+
           ~SurfaceTexture();
 
         protected:
@@ -45,6 +72,11 @@ namespace sdl {
            * @brief - The raw data to use to create the texture.
            */
           SDL_Surface* m_surface;
+
+          /**
+           * @brief - An alternative way to define the texture through its raw data.
+           */
+          RawSurfaceDataShPtr m_rawData;
 
           /**
            * @brief - Indicates whether this texture owns the data it is created from
