@@ -8,6 +8,7 @@
 # include "Texture.hh"
 # include "Palette.hh"
 # include "Gradient.hh"
+# include "SurfaceTexture.hh"
 
 namespace sdl {
   namespace core {
@@ -94,6 +95,8 @@ namespace sdl {
            *          interpreted as an array with the specified dimensions. From
            *          this array, the brush creates a surface with a default color
            *          format that can be used to create a texture.
+           *          Note that the `colors` vector is emptied by the method and
+           *          will not contain any data after the call.
            * @param dims - the dimensions of the `colors` vector when interpreted
            *               as a 2D array.
            * @param colors - the raw data of the surface to associate to the brush,
@@ -101,7 +104,7 @@ namespace sdl {
            */
           void
           createFromRaw(const utils::Sizei& dims,
-                        const std::vector<Color>& colors);
+                        std::vector<Color>& colors);
 
           /**
            * @brief - Used to clear the whole canvas if any with the clear color.
@@ -170,6 +173,14 @@ namespace sdl {
           hasCanvas() const noexcept;
 
           /**
+           * @brief - USed to check whether some raw data is available for this brush.
+           * @return - `true` if raw data is used to describe this texture and `false`
+           *           otherwise.
+           */
+          bool
+          hasRawData() const noexcept;
+
+          /**
            * @brief - Used to destroy any existing canvas.
            */
           void
@@ -191,6 +202,12 @@ namespace sdl {
            * @brief - The canvas to use to perform drawing operations.
            */
           SDL_Surface* m_canvas;
+
+          /**
+           * @brief - A raw array of pixels which can be used to describe
+           *          the canvas, rather than using the texture itself.
+           */
+          SurfaceTexture::RawSurfaceDataShPtr m_rawData;
 
           /**
            * @brief - Use this value to determine whether the surface is

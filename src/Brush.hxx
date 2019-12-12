@@ -78,11 +78,21 @@ namespace sdl {
       }
 
       inline
+      bool
+      Brush::hasRawData() const noexcept {
+        return m_rawData != nullptr;
+      }
+
+      inline
       void
       Brush::destroy() noexcept {
         if (hasCanvas()) {
           SDL_FreeSurface(m_canvas);
           m_canvas = nullptr;
+        }
+
+        if (hasRawData()) {
+          m_rawData.reset();
         }
       }
 

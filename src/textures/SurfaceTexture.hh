@@ -2,8 +2,10 @@
 # define   SURFACE_TEXTURE_HH
 
 # include <memory>
+# include <vector>
 # include <SDL2/SDL.h>
 # include "Texture.hh"
+# include "Color.hh"
 
 namespace sdl {
   namespace core {
@@ -18,10 +20,24 @@ namespace sdl {
            *          dimensions and format.
            */
           struct RawSurfaceData {
-            // TODO: Add properties.
+            utils::Sizei dims;
+            std::vector<Color> colors;
           };
 
           using RawSurfaceDataShPtr = std::shared_ptr<RawSurfaceData>;
+
+          /**
+           * @biref - Creates a new raw surface data pointer from the input
+           *          data. Note that the input vector is emptied by calling
+           *          this function and will not contain any data after that.
+           * @param dims - the dimensions of the colors array.
+           * @param colors - the list of colors representing the surface.
+           * @return - a pointer to the raw surface data created.
+           */
+          static
+          RawSurfaceDataShPtr
+          createFromData(const utils::Sizei& dims,
+                         std::vector<Color>& colors);
 
         public:
 

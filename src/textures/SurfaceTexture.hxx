@@ -8,6 +8,21 @@ namespace sdl {
     namespace engine {
 
       inline
+      SurfaceTexture::RawSurfaceDataShPtr
+      SurfaceTexture::createFromData(const utils::Sizei& dims,
+                                     std::vector<Color>& colors)
+      {
+        RawSurfaceDataShPtr data = std::make_shared<RawSurfaceData>(
+          RawSurfaceData{utils::Sizei(), std::vector<Color>()}
+        );
+
+        data->dims = dims;
+        data->colors.swap(colors);
+
+        return data;
+      }
+
+      inline
       SurfaceTexture::SurfaceTexture(SDL_Renderer* renderer,
                                      SDL_Surface* surface,
                                      const Palette::ColorRole& role,
