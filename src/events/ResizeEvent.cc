@@ -30,8 +30,12 @@ namespace sdl {
         // this operation is permitted by the base `Event` class, it means that
         // the `other` event is more recent than this one. Normally this should
         // mean that the `old size` of the `other` event corresponds to the `new
-        // size` of `this` event. If this is not the case this is a problem.
-        if (m_new != usable.m_old) {
+        // size` of `this` event. Another possibility is that two resize events
+        // have been issued very quickly and the `old size` of the `other` event
+        // matches the `old size` of `this` event.
+        // In any other case we don't really explain the situation except for a
+        // discrepancy somewhere.
+        if (m_new != usable.m_old && m_old != usable.m_old) {
           log(
             std::string("Merging resize event but sizes don't match (expected ") + m_new.toString() + " got " + usable.m_old.toString(),
             utils::Level::Warning
