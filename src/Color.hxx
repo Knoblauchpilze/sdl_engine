@@ -23,10 +23,10 @@ namespace sdl {
                    float g,
                    float b,
                    float a):
-        m_r(r),
-        m_g(g),
-        m_b(b),
-        m_a(a)
+        m_r(std::min(1.0f, std::max(0.0f, r))),
+        m_g(std::min(1.0f, std::max(0.0f, g))),
+        m_b(std::min(1.0f, std::max(0.0f, b))),
+        m_a(std::min(1.0f, std::max(0.0f, a)))
       {}
 
       inline
