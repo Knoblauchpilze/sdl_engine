@@ -44,27 +44,23 @@ namespace sdl {
         // Clamp input coordinate.
         float cCoord = std::min(1.0f, std::max(0.0f, coord));
 
-        // Traverse the internal list of stops and insert the desired
-        // stop at the right position.
-        gradient::Stops::iterator it = m_stops.begin();
-        bool isHere = false;
-        bool replace = false;
+        // Create the stop.
+        addStop(cCoord, color);
+      }
 
-        while (it != m_stops.end() && !isHere) {
-          isHere = isBeforeStop(cCoord, it->first, replace);
+      void
+      Gradient::makeWrap() {
+        // Protect from concurrent accesses.
+        Guard guard(m_propsLocker);
 
-          if (!isHere) {
-            ++it;
-          }
-        }
-
-        // Either insert the value or replace the color.
-        if (it != m_stops.end() || !replace) {
-          m_stops.insert(it, gradient::Stop{cCoord, color});
+        // Check whether wrapping is possible: if less that two colors
+        // are defined there's already implicit wrapping.
+        if (m_stops.size() < 2u) {
           return;
         }
 
-        it->second = color;
+        // Take the first stop and replicate it at `1`.
+        addStop(1.0f, m_stops.front().second);
       }
 
       Color
@@ -154,6 +150,33 @@ namespace sdl {
         );
 
         return c;
+      }
+
+      void
+      Gradient::addStop(float coord,
+                        const Color& color)
+      {
+        // Traverse the internal list of stops and insert the desired
+        // stop at the right position.
+        gradient::Stops::iterator it = m_stops.begin();
+        bool isHere = false;
+        bool replace = false;
+
+        while (it != m_stops.end() && !isHere) {
+          isHere = isBeforeStop(coord, it->first, replace);
+
+          if (!isHere) {
+            ++it;
+          }
+        }
+
+        // Either insert the value or replace the color.
+        if (it != m_stops.end() || !replace) {
+          m_stops.insert(it, gradient::Stop{coord, color});
+          return;
+        }
+
+        it->second = color;
       }
 
     }

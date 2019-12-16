@@ -96,6 +96,15 @@ namespace sdl {
                      const Color& color);
 
           /**
+           * @brief - Used to make the gradient wrap. This means adding a stop at
+           *          max coordinates (usually `1`) with a color identical to the
+           *          first one defined. Note that nothing happens if less than
+           *          two colors are defined.
+           */
+          void
+          makeWrap();
+
+          /**
            * @brief - Use to retrieve the color at the specified coordinate. The
            *          returned color is either one of the stop color defined with
            *          the `setColorAt` interface or a blend of the colors defined
@@ -153,6 +162,20 @@ namespace sdl {
           mixStops(const gradient::Stop& low,
                    const gradient::Stop& high,
                    float coord) const noexcept;
+
+          /**
+           * @brief - Used internally to actually perform the creation of the stop at the
+           *          specified coordinate and with the input color. Used by the `setColorAt`
+           *          but does *not* perform a lock on the internal mutex.
+           *          The input `coord` is assumed to be in the range `[0; 1]` and no checks
+           *          are performed to ensure this. Failure to comply will cause undefined
+           *          behavior.
+           * @param coord - the cooridnate at which the stop should be added.
+           * @param color - the color of the stop to create.
+           */
+          void
+          addStop(float coord,
+                  const Color& color);
 
         private:
 
