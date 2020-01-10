@@ -127,6 +127,9 @@ namespace sdl {
           case NamedColor::Black:
             r = 0.0f; g = 0.0f; b = 0.0f;
             break;
+          case NamedColor::Indigo:
+            r = 0.2930f; g = 0.0f; b = 0.5078f;
+            break;
           case NamedColor::CorneFlowerBlue:
           default:
             r = 0.3922f; g = 0.5843f; b = 0.9294f;

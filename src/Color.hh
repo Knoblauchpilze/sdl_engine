@@ -29,6 +29,7 @@ namespace sdl {
             Purple,
             Teal,
             Navy,
+            Indigo,
             CorneFlowerBlue
           };
 
