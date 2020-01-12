@@ -193,6 +193,18 @@ namespace sdl {
 
       inline
       Color
+      Color::blend(const Color& color,
+                   float perc) const noexcept {
+        return Color(
+          perc * r() + (1.0f - perc) * color.r(),
+          perc * g() + (1.0f - perc) * color.g(),
+          perc * b() + (1.0f - perc) * color.b(),
+          a()
+        );
+      }
+
+      inline
+      Color
       Color::fromRGB(float r,
                      float g,
                      float b) noexcept

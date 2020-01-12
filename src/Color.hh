@@ -105,6 +105,10 @@ namespace sdl {
           Color
           mix(const Color& color) const noexcept;
 
+          Color
+          blend(const Color& color,
+                float perc) const noexcept;
+
           /**
            * @brief - Generates a color from the input color channels values.
            *          Each value is expected to lie in the range `[0; 1]`. If
