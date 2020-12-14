@@ -34,7 +34,7 @@ add_library (sdl_engine SHARED
   ${SOURCES}
   )
 
-set(SDL_ENGINE_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}" PARENT_SCOPE)
+set (SDL_ENGINE_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}" PARENT_SCOPE)
 
 target_link_libraries(sdl_engine
   ${SDL2_LIBRARIES}
