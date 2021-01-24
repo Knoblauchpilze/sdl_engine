@@ -156,7 +156,7 @@ namespace sdl {
       bool
       Event::mergePrivate(const Event& other) noexcept {
         // Check timestamps to notify in case we merge with an older event.
-        if (m_timestamp >= other.m_timestamp) {
+        if (m_timestamp >= other.m_timestamp && m_type != Type::Repaint) {
           log(
             "Merging event with timestamp " + other.getTimestampAsString() + " anterior to own " + getTimestampAsString(),
             utils::Level::Warning

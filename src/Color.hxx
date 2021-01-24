@@ -61,7 +61,7 @@ namespace sdl {
       inline
       float
       Color::rU() const noexcept {
-        return static_cast<uint8_t>(std::min(std::max(m_r, 0.0f), 1.0f) * 255.0f);
+        return static_cast<uint8_t>(utils::clamp(m_r, 0.0f, 1.0f) * 255.0f);
       }
 
       inline
@@ -79,7 +79,7 @@ namespace sdl {
       inline
       float
       Color::gU() const noexcept {
-        return static_cast<uint8_t>(std::min(std::max(m_g, 0.0f), 1.0f) * 255.0f);
+        return static_cast<uint8_t>(utils::clamp(m_g, 0.0f, 1.0f) * 255.0f);
       }
 
       inline
@@ -97,7 +97,7 @@ namespace sdl {
       inline
       float
       Color::bU() const noexcept {
-        return static_cast<uint8_t>(std::min(std::max(m_b, 0.0f), 1.0f) * 255.0f);
+        return static_cast<uint8_t>(utils::clamp(m_b, 0.0f, 1.0f) * 255.0f);
       }
 
       inline
@@ -115,7 +115,7 @@ namespace sdl {
       inline
       float
       Color::aU() const noexcept {
-        return static_cast<uint8_t>(std::min(std::max(m_a, 0.0f), 1.0f) * 255.0f);
+        return static_cast<uint8_t>(utils::clamp(m_a, 0.0f, 1.0f) * 255.0f);
       }
 
       inline
@@ -162,10 +162,10 @@ namespace sdl {
       SDL_Color
       Color::toSDLColor() const noexcept {
         return SDL_Color{
-          static_cast<uint8_t>(std::min(std::max(m_r, 0.0f), 1.0f) * 255.0f),
-          static_cast<uint8_t>(std::min(std::max(m_g, 0.0f), 1.0f) * 255.0f),
-          static_cast<uint8_t>(std::min(std::max(m_b, 0.0f), 1.0f) * 255.0f),
-          static_cast<uint8_t>(std::min(std::max(m_a, 0.0f), 1.0f) * 255.0f),
+          static_cast<uint8_t>(utils::clamp(m_r, 0.0f, 1.0f) * 255.0f),
+          static_cast<uint8_t>(utils::clamp(m_g, 0.0f, 1.0f) * 255.0f),
+          static_cast<uint8_t>(utils::clamp(m_b, 0.0f, 1.0f) * 255.0f),
+          static_cast<uint8_t>(utils::clamp(m_a, 0.0f, 1.0f) * 255.0f),
         };
       }
 
