@@ -2,6 +2,7 @@
 # define   COLOR_HH
 
 # include <memory>
+# include <string>
 # include <SDL2/SDL.h>
 
 namespace sdl {
