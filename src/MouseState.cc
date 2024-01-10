@@ -95,11 +95,7 @@ namespace sdl {
         if (!vl && !vm && !vr) {
           // Not a single button was found even though it's a drag event.
           // This is weird.
-          log(
-            std::string("Found drag event with no known button being pressed, coult not") +
-            std::string(" update initial mouse position"),
-            utils::Level::Warning
-          );
+          warn("Found drag event with no known button being pressed, coult not update initial mouse position");
 
           return;
         }
@@ -126,10 +122,9 @@ namespace sdl {
 
           // Issue a `Drop` event if possible.
           if (desc.lastClick == nullptr) {
-            log(
+            warn(
               std::string("Released mouse button ") + mouse::getNameFromButton(event.getButton()) +
-              " while no click has been registered so far",
-              utils::Level::Warning
+              " while no click has been registered so far"
             );
           }
           else {
@@ -178,10 +173,9 @@ namespace sdl {
 
           // Initialize the click position for this button.
           if (desc.lastClick == nullptr) {
-            log(
-              std::string("Could not assign initial position of button ") + mouse::getNameFromButton(button) +
-              std::string(" which has not been clicked yet"),
-              utils::Level::Warning
+            warn(
+              "Could not assign initial position of button " + mouse::getNameFromButton(button) +
+              " which has not been clicked yet"
             );
           }
           else {

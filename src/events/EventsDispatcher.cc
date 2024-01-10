@@ -1,6 +1,6 @@
 
 # include "EventsDispatcher.hh"
-# include <core_utils/CoreWrapper.hh>
+# include <core_utils/SafetyNet.hh>
 # include "KeyEvent.hh"
 # include "QuitEvent.hh"
 
@@ -65,11 +65,10 @@ namespace sdl {
           // Check whether the rendering time is compatible with the desired framerate.
           if (1.0f * processingDuration > m_frameDuration) {
             // Log this problem.
-            log(
+            warn(
               std::string("Event handling took ") + std::to_string(processingDuration) + "ms " +
               "which is greater than the " + std::to_string(m_frameDuration) + "ms " +
-              " authorized to maintain " + std::to_string(m_framerate) + "fps",
-              utils::Level::Warning
+              " authorized to maintain " + std::to_string(m_framerate) + "fps"
             );
 
             // Move on to the next frame.
@@ -83,7 +82,7 @@ namespace sdl {
           }
         }
 
-        log(std::string("Exiting events thread"), utils::Level::Notice);
+        notice("Exiting events thread");
       }
 
       int
@@ -130,7 +129,7 @@ namespace sdl {
         Events broadcast;
 
         {
-          Guard guard(m_eventsLocker);
+          const std::lock_guard guard(m_eventsLocker);
           broadcast.swap(m_broadcastEvents);
         }
 
@@ -198,7 +197,7 @@ namespace sdl {
             Listeners existingListeners;
             {
               existingListeners.clear();
-              Guard guard(m_listenersLocker);
+              const std::lock_guard guard(m_listenersLocker);
               existingListeners.swap(m_listeners);
             }
 
@@ -229,14 +228,14 @@ namespace sdl {
 
             // Check whether some listeners were added.
             {
-              Guard guard(m_listenersLocker);
+              const std::lock_guard guard(m_listenersLocker);
               someListenersAdded = !m_listeners.empty();
 
               // If some listeners were added, merge them with the
               // existing list and then swap it to the internal array
               // so that they can be notified of events.
               if (someListenersAdded) {
-                log("Added " + std::to_string(m_listeners.size()) + " listener(s), starting at " + std::to_string(existingListeners.size()) + " for next iteration");
+                debug("Added " + std::to_string(m_listeners.size()) + " listener(s), starting at " + std::to_string(existingListeners.size()) + " for next iteration");
                 offset = existingListeners.size();
                 existingListeners.insert(existingListeners.cend(), m_listeners.cbegin(), m_listeners.cend());
               }
@@ -299,7 +298,7 @@ namespace sdl {
         // the `dispatchEventsForListener` method.
         if (event->isDirected()) {
           // Warn the user and trash the event.
-          log("Cannot dispatch event " + Event::getNameFromEvent(event) + " directed towards " + event->getReceiver()->getName(), utils::Level::Warning);
+          warn("Cannot dispatch event " + Event::getNameFromEvent(event) + " directed towards " + event->getReceiver()->getName());
           return;
         }
 
@@ -316,7 +315,7 @@ namespace sdl {
           Listeners existingListeners;
           {
             existingListeners.clear();
-            Guard guard(m_listenersLocker);
+            const std::lock_guard guard(m_listenersLocker);
             existingListeners.swap(m_listeners);
           }
 
@@ -335,14 +334,14 @@ namespace sdl {
 
           // Check whether some listeners were added.
           {
-            Guard guard(m_listenersLocker);
+            const std::lock_guard guard(m_listenersLocker);
             someListenersAdded = !m_listeners.empty();
 
             // If some listeners were added, merge them with the
             // existing list and then swap it to the internal array
             // so that they can be notified of events.
             if (someListenersAdded) {
-              log("Added " + std::to_string(m_listeners.size()) + " listener(s), starting at " + std::to_string(existingListeners.size()) + " for next iteration");
+              debug("Added " + std::to_string(m_listeners.size()) + " listener(s), starting at " + std::to_string(existingListeners.size()) + " for next iteration");
               offset = existingListeners.size();
               existingListeners.insert(existingListeners.cend(), m_listeners.cbegin(), m_listeners.cend());
             }

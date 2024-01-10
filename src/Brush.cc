@@ -160,10 +160,7 @@ namespace sdl {
         }
 
         // No known data, return an empty texture.
-        log(
-          std::string("Could not determine type of data held by brush"),
-          utils::Level::Warning
-        );
+        warn("Could not determine type of data held by brush");
 
         return nullptr;
       }

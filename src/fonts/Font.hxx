@@ -16,7 +16,7 @@ namespace sdl {
       void
       Font::unloadAll() {
         // Acquire the lock to prevent concurrent addition of fonts.
-        Guard guard(*m_cacheLocker);
+        const std::lock_guard guard(*m_cacheLocker);
 
         // Release resources used by the internal cache table.
         for (std::unordered_map<int, FontCacheShPtr>::iterator font = m_fonts.begin() ; font != m_fonts.end() ; ++font) {

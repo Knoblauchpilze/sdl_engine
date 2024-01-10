@@ -57,7 +57,7 @@ namespace sdl {
       void
       Brush::clear() noexcept {
         if (!hasCanvas()) {
-          log(std::string("Trying to clear canvas without active one"), utils::Level::Warning);
+          warn("Trying to clear canvas without active one");
           return;
         }
 

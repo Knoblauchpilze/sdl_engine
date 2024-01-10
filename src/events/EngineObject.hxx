@@ -46,7 +46,7 @@ namespace sdl {
       bool
       EngineObject::hasEvents(const EventProcessingPass& pass) {
         // Lock the mutex to access events.
-        Guard guard(m_eventsLocker);
+        const std::lock_guard guard(m_eventsLocker);
 
         // Traverse the internal list of events and search for one belonging
         // to the input pass.

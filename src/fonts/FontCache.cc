@@ -125,10 +125,7 @@ namespace sdl {
         for (unsigned id = 0u; id < text.size() ; ++id) {
           // Check whether the current character is provided by the font.
           if (!exists(text[id])) {
-            log(
-              std::string("Could not determine size of glyph '") + std::to_string(static_cast<int>(text[id])) + "' (not found in font \"" + getName() + "\"",
-              utils::Level::Warning
-            );
+            warn(std::string("Could not determine size of glyph '") + std::to_string(static_cast<int>(text[id])) + "' (not found in font \"" + getName() + "\"");
 
             // The size will probably be inaccurate but what can we do ?
             continue;
@@ -161,7 +158,7 @@ namespace sdl {
 
         if (it != m_glyphs.cend()) {
           if (color != it->second.c) {
-            log("Using glyph with color " + color.toString() + " while cached glyph has color " + it->second.c.toString(), utils::Level::Error);
+            warn("Using glyph with color " + color.toString() + " while cached glyph has color " + it->second.c.toString());
           }
           // Return the cached version of the glyph.
           return it->second.tex;

@@ -49,11 +49,7 @@ namespace sdl {
       EngineObject::installEventFilter(EngineObject* filter) {
         // Check filter validity.
         if (filter == nullptr) {
-          log(
-            std::string("Cannot install event filter, invalid null filter"),
-            utils::Level::Warning
-          );
-
+          warn("Cannot install event filter, invalid null filter");
           return;
         }
 
@@ -77,10 +73,7 @@ namespace sdl {
       {
         // Check event coherence.
         if (e == nullptr) {
-          log(
-            std::string("Cannot post empty event in queue"),
-            utils::Level::Warning
-          );
+          warn("Cannot post empty event in queue");
           return;
         }
 
@@ -113,10 +106,7 @@ namespace sdl {
           else {
             // We cannot direct the event to the suited object as no
             // queue is provided.
-            log(
-              std::string("Cannot post event ") + Event::getNameFromEvent(e) + ", no queue provided",
-              utils::Level::Warning
-            );
+            warn("Cannot post event " + Event::getNameFromEvent(e) + ", no queue provided");
             return;
           }
         }
@@ -145,7 +135,7 @@ namespace sdl {
         // So we have to determine which kind of events already exist in the internal
         // array before inserting the new one.
 
-        Guard guard(m_eventsLocker);
+        const std::lock_guard guard(m_eventsLocker);
 
         // Traverse the existing events and try to find a duplicate, i.e. an event
         // which has same type as the input one.
@@ -169,13 +159,13 @@ namespace sdl {
         if (unique) {
           // Proceed to the insertion of the input event into the internal
           // array.
-          // log("Queuing " + Event::getNameFromEvent(e), utils::Level::Notice);
+          // notice("Queuing " + Event::getNameFromEvent(e));
           m_events.push_back(e);
         }
         else {
           // This event is not unique: use the dedicated merge function to
           // merge both events into a single one.
-          // log("Merging " + Event::getNameFromEvent(e) + " with more recent event", utils::Level::Notice);
+          // notice("Merging " + Event::getNameFromEvent(e) + " with more recent event");
 
           (*event)->merge(*e);
 
@@ -200,14 +190,14 @@ namespace sdl {
       void
       EngineObject::clearEvents() {
         // Clear internal events array.
-        Guard guard(m_eventsLocker);
+        const std::lock_guard guard(m_eventsLocker);
         m_events.clear();
       }
 
       void
       EngineObject::removeEventsFrom(EngineObject* object) {
         // Acquire the lock to protect from concurrency.
-        Guard guard(m_eventsLocker);
+        const std::lock_guard guard(m_eventsLocker);
 
         // Scan the internal events array and remove any events which
         // has been emitted by the input object.
@@ -220,7 +210,7 @@ namespace sdl {
             m_events.push_back(old[id]);
           }
           else {
-            log("Removing event " + Event::getNameFromEvent(old[id]) + " emitted by " + object->getName());
+            debug("Removing event " + Event::getNameFromEvent(old[id]) + " emitted by " + object->getName());
           }
         }
 
@@ -267,7 +257,7 @@ namespace sdl {
           // Additionally we process the first event which belongs
           // to the input events processing pass.
           {
-            Guard guard(m_eventsLocker);
+            const std::lock_guard guard(m_eventsLocker);
 
             // Check if at least one event can be retrieved.
             if (m_events.empty()) {
@@ -298,10 +288,9 @@ namespace sdl {
           // Check whether this event is actually directed towards us.
           if (toProcess->isDirected() && !isReceiver(*toProcess)) {
             // Requeue this event.
-            log(
+            warn(
               std::string("Could not process event \"") + Event::getNameFromEvent(*toProcess) +
-              "\" (invalid receiver \"" + toProcess->getReceiver()->getName() + "\"",
-              utils::Level::Warning
+              "\" (invalid receiver \"" + toProcess->getReceiver()->getName() + "\""
             );
 
             postEvent(toProcess);
@@ -317,7 +306,7 @@ namespace sdl {
       EngineObject::removeEvents(const Event::Type& type) noexcept {
         // Traverse the internal events list and remove the ones with
         // the specified input type.
-        Guard guard(m_eventsLocker);
+        const std::lock_guard guard(m_eventsLocker);
 
         Events::iterator event = m_events.begin();
 
@@ -338,7 +327,7 @@ namespace sdl {
       EngineObject::handleEvent(EventShPtr e) {
         // Check for degenerate event.
         if (e == nullptr) {
-          log(std::string("Dropping invalid null event"), utils::Level::Warning);
+          warn("Dropping invalid null event");
           // The event was not recognized.
           return false;
         }
@@ -346,7 +335,7 @@ namespace sdl {
         // Handle the event if this element is active or if it is a show event.
         if (isActive(e->getType())) {
           if (e->getType() != Event::Type::MouseMove) {
-            log("Handling " + Event::getNameFromEvent(e), utils::Level::Verbose);
+            verbose("Handling " + Event::getNameFromEvent(e));
           }
 
           // Check the event type and dispatch to the corresponding handler.

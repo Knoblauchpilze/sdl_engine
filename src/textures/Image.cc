@@ -35,7 +35,7 @@ namespace sdl {
 
       void
       Image::unload() {
-        Guard guard(m_locker);
+        const std::lock_guard guard(m_locker);
 
         if (isLoaded()) {
           SDL_FreeSurface(m_image);

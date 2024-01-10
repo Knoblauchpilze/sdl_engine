@@ -27,10 +27,9 @@ namespace sdl {
         ButtonsPositions::iterator it = m_initMousePositions.find(button);
 
         if (it != m_initMousePositions.end()) {
-          log(
-            std::string("Registering last click position for button ") + mouse::getNameFromButton(button) +
-            " but value already exist at " +it->second.toString(),
-            utils::Level::Warning
+          warn(
+            "Registering last click position for button " + mouse::getNameFromButton(button) +
+            " but value already exist at " +it->second.toString()
           );
 
           it->second = click;

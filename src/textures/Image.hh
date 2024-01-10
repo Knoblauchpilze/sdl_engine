@@ -2,6 +2,7 @@
 # define   IMAGE_HH
 
 # include <memory>
+# include <mutex>
 # include <core_utils/CoreObject.hh>
 # include <maths_utils/Size.hh>
 # include <SDL2/SDL.h>

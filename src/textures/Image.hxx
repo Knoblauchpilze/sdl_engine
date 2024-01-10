@@ -29,7 +29,7 @@ namespace sdl {
       utils::Sizef
       Image::getSize() {
         // Acquire the lock.
-        Guard guard(m_locker);
+        const std::lock_guard guard(m_locker);
 
         // We need to load the data if it is not already done.
         load();
@@ -47,7 +47,7 @@ namespace sdl {
       SDL_Surface*
       Image::getSurface() {
         // Acquire the lock.
-        Guard guard(m_locker);
+        const std::lock_guard guard(m_locker);
 
         // Load the data.
         load();

@@ -10,7 +10,7 @@ namespace sdl {
       inline
       gradient::Mode
       Gradient::getMode() const noexcept {
-        Guard guard(m_propsLocker);
+        const std::lock_guard guard(m_propsLocker);
 
         return m_mode;
       }
@@ -18,7 +18,7 @@ namespace sdl {
       inline
       gradient::Stops
       Gradient::getStops() const noexcept {
-        Guard guard(m_propsLocker);
+        const std::lock_guard guard(m_propsLocker);
 
         return m_stops;
       }

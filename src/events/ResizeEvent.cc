@@ -36,10 +36,7 @@ namespace sdl {
         // In any other case we don't really explain the situation except for a
         // discrepancy somewhere.
         if (m_new != usable.m_old && m_old != usable.m_old) {
-          log(
-            std::string("Merging resize event but sizes don't match (expected ") + m_new.toString() + " got " + usable.m_old.toString(),
-            utils::Level::Warning
-          );
+          warn("Merging resize event but sizes don't match (expected " + m_new.toString() + " got " + usable.m_old.toString());
         }
 
         m_new = usable.m_new;

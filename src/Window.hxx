@@ -144,10 +144,7 @@ namespace sdl {
 
         // Warn the user if the texture could not be removed.
         if (erased != 1) {
-          log(
-            std::string("Could not erase inexisting texture ") + uuid.toString(),
-            utils::Level::Warning
-          );
+          warn("Could not erase inexisting texture " + uuid.toString());
         }
       }
 

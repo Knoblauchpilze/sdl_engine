@@ -69,10 +69,9 @@ namespace sdl {
 
         // Check success.
         if (failure) {
-          log(
+          warn(
             std::string("Error while determining size of glyph ") + c + " for font \"" + getName() + "\" " +
-            "(err: \"" + TTF_GetError() + "\", status: " + std::to_string(failure) + ")",
-            utils::Level::Warning
+            "(err: \"" + TTF_GetError() + "\", status: " + std::to_string(failure) + ")"
           );
 
           // Reset metrics.

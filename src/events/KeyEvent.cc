@@ -57,13 +57,12 @@ namespace sdl {
         // Retrieve the key modifiers.
         m_mods = fromSDLMod(m_key.keysym.mod);
 
-        log(
+        verbose(
           std::string("Pressed ") +
           "key " + std::to_string(m_key.keysym.sym) + " " +
           "(scan: " + std::to_string(m_key.keysym.scancode) + ", name: \"" + SDL_GetKeyName(m_key.keysym.sym) + "\") " +
           "converted to " + std::to_string(static_cast<int>(m_raw)) + " "
-          " (mode: " + keyboard::toString(getKeyboardLayout()) + ")",
-          utils::Level::Verbose
+          " (mode: " + keyboard::toString(getKeyboardLayout()) + ")"
         );
 
         setType(type);

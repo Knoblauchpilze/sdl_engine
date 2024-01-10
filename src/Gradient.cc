@@ -39,7 +39,7 @@ namespace sdl {
                            const core::engine::Color& color)
       {
         // Protect from concurrent accesses.
-        Guard guard(m_propsLocker);
+        const std::lock_guard guard(m_propsLocker);
 
         // Clamp input coordinate.
         float cCoord = std::min(1.0f, std::max(0.0f, coord));
@@ -51,7 +51,7 @@ namespace sdl {
       void
       Gradient::makeWrap() {
         // Protect from concurrent accesses.
-        Guard guard(m_propsLocker);
+        const std::lock_guard guard(m_propsLocker);
 
         // Check whether wrapping is possible: if less that two colors
         // are defined there's already implicit wrapping.
@@ -66,7 +66,7 @@ namespace sdl {
       Color
       Gradient::getColorAt(float coord) const noexcept {
         // Protect from concurrent accesses.
-        Guard guard(m_propsLocker);
+        const std::lock_guard guard(m_propsLocker);
 
         Color transparentBlack = Color::fromRGBA(0.0f, 0.0f, 0.0f, 0.0f);
 
@@ -114,10 +114,9 @@ namespace sdl {
 
         // Check consistency.
         if (id > upBound) {
-          log(
+          warn(
             std::string("Could not determine color for coordinate ") + std::to_string(coord) +
-            ", last stop is " + std::to_string(m_stops.back().first),
-            utils::Level::Error
+            ", last stop is " + std::to_string(m_stops.back().first)
           );
 
           return transparentBlack;
