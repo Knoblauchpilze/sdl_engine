@@ -24,4 +24,4 @@ target_sources (sdl_engine PRIVATE
 	${CMAKE_CURRENT_SOURCE_DIR}/MouseState.cc
 	${CMAKE_CURRENT_SOURCE_DIR}/Gradient.cc
 	${CMAKE_CURRENT_SOURCE_DIR}/Brush.cc
-)
+	)
